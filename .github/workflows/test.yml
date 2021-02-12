@@ -40,6 +40,6 @@ jobs:
       - name: Run Node lints
         run: npm run lint
       - name: Run Python lints
-        run: flask lint --check
+        run: poetry run flask lint --check
       # - name: Run Python tests
       #   run: flask test
