@@ -19,10 +19,11 @@ jobs:
           node-version: "15.x"
           registry-url: "https://registry.npmjs.org"
       - uses: actions/cache@v2
-        path: ~/.cache/pypoetry/virtualenvs
-        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-poetry-
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
       - uses: actions/cache@v2
         with:
           path: ~/.npm
