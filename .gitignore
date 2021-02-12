@@ -149,3 +149,4 @@ dmypy.json
 
 # Flask env file
 .env
+node_modules
