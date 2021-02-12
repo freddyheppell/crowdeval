@@ -8,6 +8,7 @@ authors = ["Freddy Heppell <freddy@freddyheppell.com>"]
 python = "^3.9"
 Flask = "^1.1.2"
 environs = "^9.3.1"
+Flask-Static-Digest = "^0.2.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.6"

@@ -190,6 +190,17 @@ docs = ["sphinx", "pallets-sphinx-themes", "sphinxcontrib-log-cabinet", "sphinx-
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "flask-static-digest"
+version = "0.2.1"
+description = "Flask extension for md5 tagging and gzipping static files."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+Flask = ">=1.0"
+
+[[package]]
 name = "isort"
 version = "5.7.0"
 description = "A Python utility / library to sort Python imports."
@@ -502,7 +513,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "f0d61cefaa682275c34153d26ddad24cbdf64a88163559302984c74b92ef4454"
+content-hash = "242ee97a0a85c2b46edb62a12f23731a282dbc1d5907182d09faf399ae2b89f0"
 
 [metadata.files]
 appdirs = [
@@ -562,6 +573,9 @@ flake8-polyfill = [
 flask = [
     {file = "Flask-1.1.2-py2.py3-none-any.whl", hash = "sha256:8a4fdd8936eba2512e9c85df320a37e694c93945b33ef33c89946a340a238557"},
     {file = "Flask-1.1.2.tar.gz", hash = "sha256:4efa1ae2d7c9865af48986de8aeb8504bf32c7f3d6fdc9353d34b21f4b127060"},
+]
+flask-static-digest = [
+    {file = "Flask-Static-Digest-0.2.1.tar.gz", hash = "sha256:7528b08a2c12dc3a828096b66ee2612f323d50be36d01f2817b767fbb1ceca6e"},
 ]
 isort = [
     {file = "isort-5.7.0-py3-none-any.whl", hash = "sha256:fff4f0c04e1825522ce6949973e83110a6e907750cd92d128b0d14aaaadbffdc"},

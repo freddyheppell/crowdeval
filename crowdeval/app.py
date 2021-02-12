@@ -5,6 +5,7 @@ import sys
 from flask import Flask
 
 from crowdeval import commands, test
+from crowdeval.extensions import flask_static_digest
 
 
 def create_app(config_object="crowdeval.settings"):
@@ -12,12 +13,18 @@ def create_app(config_object="crowdeval.settings"):
     app = Flask(__name__.split(".")[0])
     app.config.from_object(config_object)
 
+    register_extensions(app)
     register_blueprints(app)
     register_commands(app)
 
     configure_logger(app)
 
     return app
+
+
+def register_extensions(app):
+    """Register extensions."""
+    flask_static_digest.init_app(app)
 
 
 def register_blueprints(app):

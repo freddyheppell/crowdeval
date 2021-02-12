@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+        <meta name="generator" content="Hugo 0.80.0">
+        <title>
+            {% block page_title %}{% endblock %}
+        </title>
+
+        <link rel="stylesheet" type="text/css" href="{{ static_url_for('static', filename='css/app.css') }}"/>
+
+        <script type="text/javascript" src="{{ static_url_for('static', filename='js/app.js') }}" defer></script>
+    </head>
+    <body>
+        <h1>welcome to bootstrap</h1>
+        {% block content %}{% endblock %}
+    </body>
+</html>
