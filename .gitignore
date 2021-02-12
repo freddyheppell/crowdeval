@@ -146,3 +146,6 @@ dmypy.json
 .vscode/*
 
 # End of https://www.toptal.com/developers/gitignore/api/python,vscode
+
+# Flask env file
+.env
