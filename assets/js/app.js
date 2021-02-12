@@ -1,2 +1,2 @@
-window.Popper = require('@popperjs/core').default;
-require('bootstrap');
+window.Popper = require('@popperjs/core').default
+require('bootstrap')
