@@ -38,8 +38,8 @@ jobs:
         run: npm ci
       - run: cp .env.example .env
       - name: Run Node lints
-        run: npm run lint
+        run: npm run lint-js
       - name: Run Python lints
-        run: poetry run flask lint --check
+        run: npm run lint-py -- --check
       # - name: Run Python tests
       #   run: flask test
