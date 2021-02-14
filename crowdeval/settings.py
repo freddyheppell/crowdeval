@@ -10,6 +10,7 @@ env.read_env()
 
 ENV = env.str("FLASK_ENV", default="production")
 DEBUG = ENV == "development"
+SECRET_KEY = env.str("SECRET_KEY")
 
 TWITTER_OAUTH_CLIENT_KEY = env.str("TWITTER_OAUTH_CLIENT_KEY")
 TWITTER_OAUTH_CLIENT_SECRET = env.str("TWITTER_OAUTH_CLIENT_SECRET")

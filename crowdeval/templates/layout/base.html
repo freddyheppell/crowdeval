@@ -16,6 +16,17 @@
     </head>
     <body>
         {% include 'layout/_nav.html' %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        {{ message }}
+                    </div>
+                    <!-- end .alert -->
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         {% block content_noc %}{% endblock %}
         <div class="container">
             {% block content %}{% endblock %}
