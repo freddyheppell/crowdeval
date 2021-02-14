@@ -5,7 +5,6 @@ import sys
 from flask import Flask
 
 from crowdeval import commands, extensions, test, users
-from crowdeval.extensions import flask_static_digest
 
 
 def create_app(config_object="crowdeval.settings"):

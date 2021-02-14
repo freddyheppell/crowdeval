@@ -3,11 +3,11 @@ from flask import flash, redirect, url_for
 from flask_dance.consumer import oauth_authorized, oauth_error
 from flask_dance.consumer.storage.sqla import SQLAlchemyStorage
 from flask_dance.contrib.twitter import make_twitter_blueprint
-from flask_login import current_user, login_user, login_required, logout_user
+from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy.orm.exc import NoResultFound
 
 from crowdeval.extensions import db, login_manager
-from crowdeval.users.models import User, OAuth
+from crowdeval.users.models import OAuth, User
 
 
 @login_manager.user_loader
@@ -19,7 +19,7 @@ def load_user(user_id):
 blueprint = make_twitter_blueprint(
     login_url="/login/twitter",
     authorized_url="/login/twitter/authorized",
-    storage=SQLAlchemyStorage(OAuth, db.session, user=current_user)
+    storage=SQLAlchemyStorage(OAuth, db.session, user=current_user),
 )
 
 
@@ -54,23 +54,20 @@ def twitter_logged_in(blueprint, token):
         )
 
     if oauth.user:
-        print('login attempt:',login_user(oauth.user))
+        print("login attempt:", login_user(oauth.user))
         flash("Successfully signed in.")
 
     else:
         # Create a new local user account for this user
         print(info)
-        user = User(
-            username=info["screen_name"],
-            email=info["email"]
-        )
+        user = User(username=info["screen_name"], email=info["email"])
         # Associate the new local user account with the OAuth token
         oauth.user = user
         # Save and commit our database models
         db.session.add_all([user, oauth])
         db.session.commit()
         # Log in the new local user account
-        print('login attempt:',login_user(user))
+        print("login attempt:", login_user(user))
         flash("Successfully signed in.")
 
     # Disable Flask-Dance's default behavior for saving the OAuth token
@@ -84,7 +81,6 @@ def logout():
     logout_user()
     flash("You are logged out.", "info")
     return redirect(url_for("public.index"))
-
 
 
 @oauth_error.connect_via(blueprint)
