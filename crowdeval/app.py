@@ -7,8 +7,6 @@ from flask import Flask
 from crowdeval import commands, extensions, test, users
 from crowdeval.extensions import flask_static_digest
 
-from crowdeval.users.models import User
-
 
 def create_app(config_object="crowdeval.settings"):
     """Create application."""
