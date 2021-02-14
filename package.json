@@ -15,7 +15,8 @@
     "start": "concurrently -n \"MIX,FLASK\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run mix-watch\" \"npm run flask\"",
     "flask": "poetry run flask run",
     "mix-watch": "npx mix watch",
-    "lint": "eslint \"assets/js/*.js\""
+    "lint-js": "eslint \"assets/js/*.js\"",
+    "lint-py": "poetry run flask lint"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",

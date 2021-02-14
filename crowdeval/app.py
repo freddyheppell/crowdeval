@@ -4,8 +4,10 @@ import sys
 
 from flask import Flask
 
-from crowdeval import commands, test
+from crowdeval import commands, extensions, test, users
 from crowdeval.extensions import flask_static_digest
+
+from crowdeval.users.models import User
 
 
 def create_app(config_object="crowdeval.settings"):
@@ -15,8 +17,8 @@ def create_app(config_object="crowdeval.settings"):
 
     register_extensions(app)
     register_blueprints(app)
+    register_shellcontext(app)
     register_commands(app)
-
     configure_logger(app)
 
     return app
@@ -24,12 +26,26 @@ def create_app(config_object="crowdeval.settings"):
 
 def register_extensions(app):
     """Register extensions."""
-    flask_static_digest.init_app(app)
+    extensions.flask_static_digest.init_app(app)
+    extensions.db.init_app(app)
+    extensions.migrate.init_app(app, extensions.db)
+    extensions.login_manager.init_app(app)
 
 
 def register_blueprints(app):
     """Register application blueprints."""
     app.register_blueprint(test.views.blueprint)
+    app.register_blueprint(users.routes.blueprint)
+
+
+def register_shellcontext(app):
+    """Register shell context objects."""
+
+    def shell_context():
+        """Shell context objects."""
+        return {"db": extensions.db, "User": users.models.User}
+
+    app.shell_context_processor(shell_context)
 
 
 def register_commands(app):
