@@ -53,11 +53,7 @@ def twitter_logged_in(blueprint, token):
             token=token,
         )
 
-    if oauth.user:
-        print("login attempt:", login_user(oauth.user))
-        flash("Successfully signed in.")
-
-    else:
+    if not oauth.user:
         # Create a new local user account for this user
         print(info)
         user = User(username=info["screen_name"], email=info["email"])
@@ -68,7 +64,8 @@ def twitter_logged_in(blueprint, token):
         db.session.commit()
         # Log in the new local user account
         print("login attempt:", login_user(user))
-        flash("Successfully signed in.")
+
+    flash("Successfully signed in.", category="success")
 
     # Disable Flask-Dance's default behavior for saving the OAuth token
     return False

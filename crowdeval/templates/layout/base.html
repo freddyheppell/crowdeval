@@ -4,8 +4,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
-        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-        <meta name="generator" content="Hugo 0.80.0">
         <title>
             {% block page_title %}{% endblock %}
         </title>
@@ -15,6 +13,7 @@
         <script type="text/javascript" src="{{ static_url_for('static', filename='js/app.js') }}" defer></script>
     </head>
     <body>
+        {% import "bootstrap/wtf.html" as wtf %}
         {% include 'layout/_nav.html' %}
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

@@ -4,7 +4,7 @@ import sys
 
 from flask import Flask
 
-from crowdeval import commands, extensions, test, users
+from crowdeval import commands, extensions, posts, test, users
 
 
 def create_app(config_object="crowdeval.settings"):
@@ -28,12 +28,15 @@ def register_extensions(app):
     extensions.migrate.init_app(app, extensions.db)
     extensions.login_manager.init_app(app)
     extensions.debug_toolbar.init_app(app)
+    extensions.csrf.init_app(app)
+    extensions.bootstrap.init_app(app)
 
 
 def register_blueprints(app):
     """Register application blueprints."""
     app.register_blueprint(test.views.blueprint)
     app.register_blueprint(users.routes.blueprint)
+    app.register_blueprint(posts.routes.blueprint)
 
 
 def register_shellcontext(app):
