@@ -14,7 +14,7 @@ TEST_PATH = "tests/"
 @click.command()
 def test():
     """Run the tests."""
-    rv = call(["pytest", TEST_PATH, '--verbose'])
+    rv = call(["pytest", TEST_PATH, "--verbose"])
     exit(rv)
 
 

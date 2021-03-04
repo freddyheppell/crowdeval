@@ -1,3 +1,3 @@
 """Module containing post functionality."""
 
-from . import routes
+from . import routes  # noqa

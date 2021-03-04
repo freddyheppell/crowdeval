@@ -7,11 +7,12 @@ import pytest
 from webtest import TestApp
 
 from crowdeval.app import create_app
-from crowdeval.users.models import User
 from crowdeval.database import db as _db
 from crowdeval.extensions import login_manager
+from crowdeval.users.models import User
 
 from .factories import UserFactory
+
 
 @pytest.fixture
 def app():
@@ -45,12 +46,14 @@ def db(app):
     _db.session.close()
     _db.drop_all()
 
+
 @pytest.fixture
 def user(db):
     """Create user for the tests."""
     user = UserFactory()
     db.session.commit()
     return user
+
 
 @pytest.fixture
 def test_with_authenticated_user(app, user):

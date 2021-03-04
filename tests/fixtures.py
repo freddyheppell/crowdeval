@@ -1,5 +1,6 @@
 import json
 
+
 def load_fixture(family, fixture):
     with open("tests/fixtures/" + family + "/" + fixture) as fixture:
         fixture_data = fixture.read()
