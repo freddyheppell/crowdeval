@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: cp .env.ci .env
       - name: Start CI Environment
         run: docker-compose up -d mysql-test
       - name: Set up Python
@@ -38,7 +39,6 @@ jobs:
         run: poetry install
       - name: Install Node dependencies
         run: npm ci
-      - run: cp .env.ci .env
       - name: Run Node lints
         run: npm run lint-js
       - name: Run Python lints
