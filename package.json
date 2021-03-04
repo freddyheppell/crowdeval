@@ -12,7 +12,7 @@
   },
   "homepage": "https://github.com/freddyheppell/crowdeval#readme",
   "scripts": {
-    "start": "concurrently -n \"MIX,FLASK,DOCKER\" -c \"bgBlue.bold,bgMagenta.bold,bgYellow.bold\" \"npm run mix-watch\" \"npm run flask\" \"docker-compose up\"",
+    "start": "concurrently -n \"MIX,FLASK,DOCKER\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run mix-watch\" \"npm run flask\" \"docker-compose up\"",
     "flask": "poetry run flask run",
     "mix-watch": "npx mix watch",
     "lint-js": "eslint \"assets/js/*.js\"",

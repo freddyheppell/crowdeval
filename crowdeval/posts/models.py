@@ -1,15 +1,11 @@
+"""Models for stored posts."""
+
 import datetime as dt
-from enum import Enum
 
 from sqlalchemy.dialects.mysql import JSON, TINYINT
 
 from crowdeval.database import Column, PkModel
 from crowdeval.extensions import db
-
-
-class PostType(Enum):
-    TWITTER = 1
-    GENERIC = 2
 
 
 class Post(PkModel):
@@ -28,15 +24,16 @@ class Post(PkModel):
         platform,
         external_post_id,
         text,
-        external_author_name,
+        author_name,
         external_author_id,
         additional_metadata,
     ):
+        """Create a new post."""
         super().__init__(
             platform=platform,
             external_post_id=external_post_id,
             text=text,
-            author_name=external_author_name,
+            author_name=author_name,
             external_author_id=external_author_id,
             additional_metadata=additional_metadata,
         )

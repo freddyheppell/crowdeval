@@ -63,7 +63,9 @@ def twitter_logged_in(blueprint, token):
         db.session.add_all([user, oauth])
         db.session.commit()
         # Log in the new local user account
-        print("login attempt:", login_user(user))
+        login_user(user)
+    else:
+        login_user(oauth.user)
 
     flash("Successfully signed in.", category="success")
 
