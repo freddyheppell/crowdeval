@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Start CI Environment
+        run: docker-compose up -d mysql-test
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -36,10 +38,10 @@ jobs:
         run: poetry install
       - name: Install Node dependencies
         run: npm ci
-      - run: cp .env.example .env
+      - run: cp .env.ci .env
       - name: Run Node lints
         run: npm run lint-js
       - name: Run Python lints
         run: npm run lint-py -- --check
-      # - name: Run Python tests
-      #   run: flask test
+      - name: Run Python tests
+        run: flask test
