@@ -17,7 +17,7 @@ jobs:
           python-version: 3.9
       - name: Setup Poetry
         run: pip install poetry==1.1.4
-      - name: Node Cache
+      - name: Setup Node
         uses: actions/setup-node@v2.1.2
         with:
           node-version: "15.x"
@@ -29,7 +29,8 @@ jobs:
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-poetry-
-      - uses: actions/cache@v2
+      - name: Node Cache
+        uses: actions/cache@v2
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
@@ -39,9 +40,9 @@ jobs:
         run: poetry install
       - name: Install Node dependencies
         run: npm ci
-      - name: Run Node lints
-        run: npm run lint-js
-      - name: Run Python lints
-        run: npm run lint-py -- --check
-      - name: Run Python tests
-        run: flask test
+      - name: Node Lints
+        run: npm run lint
+      - name: Python Lints
+        run: poetry run flask lint --check
+      - name: Python Tests
+        run: poetry run flask test
