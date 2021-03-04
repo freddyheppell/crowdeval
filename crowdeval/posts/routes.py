@@ -33,8 +33,8 @@ def submit():
             existing_post = query.one()
             return json.dumps(existing_post)
         except NoResultFound:
-            tweet_data = external_post.get_data()
-            post = Post(**tweet_data)
+            post_data = external_post.get_data()
+            post = Post(**post_data)
             db.session.add_all([post])
             db.session.commit()
 

@@ -4,7 +4,7 @@
 
 {% block content %}
     <h1>Submit a Post</h1>
-    <form action="{{ url_for('posts.submit') }}" method="post">
+    <form action="{{ url_for('posts.submit') }}" method="post" id="submit_post">
         {{ form.csrf_token }}
         {{ wtf.form_errors(form, hiddens="only") }}
         {{ wtf.form_field(form.url) }}
