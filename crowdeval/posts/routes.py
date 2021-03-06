@@ -1,7 +1,7 @@
 """Routes relating to posts functionality."""
 
 from flask import Blueprint, abort, redirect, render_template
-from flask.helpers import flash, url_for
+from flask.helpers import url_for
 from flask_login import login_required
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -24,6 +24,7 @@ def show(id):
 
 @blueprint.route("/post/<id>/rate")
 def rate(id):
+    """Show the rating form for a post."""
     return id
 
 

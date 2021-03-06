@@ -1,7 +1,6 @@
 """Functionality to store and retrieve posts from Twitter."""
 
 import json
-from datetime import datetime
 
 from flask.globals import current_app
 from TwitterAPI import TwitterAPI
