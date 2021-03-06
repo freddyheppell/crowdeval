@@ -1,4 +1,4 @@
-"""empty message
+"""Add posts table
 
 Revision ID: d38c9ab2e1d1
 Revises: f247b74f218f
@@ -27,6 +27,7 @@ def upgrade():
     sa.Column('author_name', sa.String(length=255), nullable=False),
     sa.Column('external_author_id', sa.String(length=64), nullable=False),
     sa.Column('additional_metadata', mysql.JSON(), nullable=True),
+    sa.Column('external_created_at', sa.DateTime(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )

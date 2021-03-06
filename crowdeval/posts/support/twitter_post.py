@@ -1,6 +1,7 @@
 """Functionality to store and retrieve posts from Twitter."""
 
 import json
+from datetime import datetime
 
 from flask.globals import current_app
 from TwitterAPI import TwitterAPI
@@ -43,6 +44,7 @@ class TwitterPost:
             "additional_metadata": json.dumps(
                 {"verified": tweet["author_id"]["verified"]}
             ),
+            "external_created_at": tweet["created_at"],
         }
 
     def _retrieve_tweet(self):

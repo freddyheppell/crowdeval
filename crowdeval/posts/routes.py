@@ -1,8 +1,7 @@
 """Routes relating to posts functionality."""
 
-import json
-
-from flask import Blueprint, render_template
+from flask import Blueprint, abort, redirect, render_template
+from flask.helpers import flash, url_for
 from flask_login import login_required
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -12,6 +11,20 @@ from crowdeval.posts.models import Post
 from crowdeval.posts.support.post_recogniser import detect_post
 
 blueprint = Blueprint("posts", __name__, static_folder="../static")
+
+
+@blueprint.route("/post/<id>")
+def show(id):
+    """Return a post given an id."""
+    if (post := Post.get_by_id(id)) is None:
+        abort(404)
+
+    return render_template("posts/show.html", post=post)
+
+
+@blueprint.route("/post/<id>/rate")
+def rate(id):
+    return id
 
 
 @blueprint.route("/submit", methods=["GET", "POST"])
@@ -31,11 +44,12 @@ def submit():
 
         try:
             existing_post = query.one()
-            return json.dumps(existing_post)
+            return redirect(url_for("posts.rate", id=existing_post.id))
         except NoResultFound:
             post_data = external_post.get_data()
             post = Post(**post_data)
             db.session.add_all([post])
             db.session.commit()
+            return redirect(url_for("posts.rate", id=post.id))
 
     return render_template("posts/create.html", form=form)

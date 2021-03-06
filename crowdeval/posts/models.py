@@ -1,6 +1,6 @@
 """Models for stored posts."""
 
-import datetime as dt
+from datetime import datetime
 
 from sqlalchemy.dialects.mysql import JSON, TINYINT
 
@@ -17,7 +17,8 @@ class Post(PkModel):
     author_name = Column(db.String(length=255), nullable=False)
     external_author_id = Column(db.String(length=64), nullable=False)
     additional_metadata = Column(JSON(), nullable=True)
-    created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    external_created_at = Column(db.DateTime, nullable=False)
+    created_at = Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __init__(
         self,
@@ -27,6 +28,7 @@ class Post(PkModel):
         author_name,
         external_author_id,
         additional_metadata,
+        external_created_at,
     ):
         """Create a new post."""
         super().__init__(
@@ -36,4 +38,7 @@ class Post(PkModel):
             author_name=author_name,
             external_author_id=external_author_id,
             additional_metadata=additional_metadata,
+            external_created_at=datetime.strptime(
+                external_created_at, "%Y-%m-%dT%H:%M:%S.%fZ"
+            ),
         )
