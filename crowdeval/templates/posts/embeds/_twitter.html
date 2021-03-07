@@ -1,0 +1,12 @@
+{% macro twitter_embed(post) %}
+    <div class="d-flex">
+        <div class="flex-shrink-0">
+            <img src="https://placekitten.com/32" alt="Placekitten">
+        </div>
+        <div class="flex-grow-1 ms-3">
+            <p>
+            {{ post.text_with_breaks() | safe | urlize(40, true, target='_blank') }}
+            </p>
+        </div>
+    </div>
+{% endmacro %}

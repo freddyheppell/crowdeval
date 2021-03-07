@@ -42,3 +42,8 @@ class Post(PkModel):
                 external_created_at, "%Y-%m-%dT%H:%M:%S.%fZ"
             ),
         )
+
+    def text_with_breaks(self):
+        """Convert newlines to <br> tags."""
+        return "<br>".join(escape(self.text).split("\\n"))
+

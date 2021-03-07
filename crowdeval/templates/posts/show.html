@@ -4,4 +4,6 @@
 
 {% block content %}
     <h1>Rating for {{ post.author_name }}'s Post</h1>
+     {% from 'posts/embeds/_embed.html' import embed %}
+    {{ embed(post) }}
 {% endblock content %}
