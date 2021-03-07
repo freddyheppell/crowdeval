@@ -11,4 +11,10 @@
     &__text {
         margin-bottom: 0.5rem;
     }
+
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 }

@@ -9,7 +9,12 @@
             <p class="embed__text">
             {{ post.text | newline_to_br | urlize(40, true, target='_blank') }}
             </p>
-            <div class="text-muted">{{ post.formatted_date() }}</div>
+            <div class="embed__footer">
+                <div class="text-muted">{{ post.formatted_external_created_at() }}</div>
+                <button class="btn btn-sm btn-link btn-icon-left text-muted" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Archived {{ post.formatted_created_at() }}">
+                    <i class="fas fa-archive"></i>Archive Info
+                </button>
+            </div>
         </div>
     </div>
 {% endmacro %}

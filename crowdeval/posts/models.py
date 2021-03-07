@@ -50,9 +50,13 @@ class Post(PkModel):
             ),
         )
 
-    def formatted_date(self):
-        """Return datetime formatted for user display."""
-        return self.external_created_at.strftime("%I:%M %p · %b %d, %Y")
+    def formatted_external_created_at(self):
+        """Return datetime formatted for user display of platform creation time."""
+        return self.external_created_at.strftime("%I:%M %p · %b %-d, %Y")
+
+    def formatted_created_at(self):
+        """Return datetime formatted for user display of model creation time."""
+        return self.created_at.strftime("%-d %b %Y, %X")
 
 
 class Rating(PkModel):
