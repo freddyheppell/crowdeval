@@ -3,8 +3,9 @@
 from datetime import datetime
 
 from sqlalchemy.dialects.mysql import JSON, TINYINT
+from sqlalchemy.dialects.mysql.types import TEXT
 
-from crowdeval.database import Column, PkModel
+from crowdeval.database import Column, PkModel, reference_col
 from crowdeval.extensions import db
 
 
@@ -15,6 +16,8 @@ class Post(PkModel):
     external_post_id = Column(db.String(length=64), nullable=False)
     text = Column(db.Text(), nullable=False)
     author_name = Column(db.String(length=255), nullable=False)
+    author_username = Column(db.String(length=255), nullable=False)
+    author_profile_url = Column(db.String(length=255), nullable=False)
     external_author_id = Column(db.String(length=64), nullable=False)
     additional_metadata = Column(JSON(), nullable=True)
     external_created_at = Column(db.DateTime, nullable=False)
@@ -51,3 +54,15 @@ class Post(PkModel):
         """Return datetime formatted for user display."""
         return self.external_created_at.strftime("%I:%M %p · %b %d, %Y")
 
+
+class Rating(PkModel):
+    """Represent's an individual's ratings of a post."""
+
+    user_id = reference_col("users")
+    user = db.relationship("User", backref="ratings")
+    rating = Column(TINYINT(unsigned=True), nullable=False)
+    comments = Column(TEXT(), nullable=False)
+
+    def __init__(self, rating, comments):
+        """Create a new rating instance."""
+        super().__init__(rating=rating, comments=comments)

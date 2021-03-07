@@ -25,7 +25,10 @@ def show(id):
 @blueprint.route("/post/<id>/rate")
 def rate(id):
     """Show the rating form for a post."""
-    return id
+    if (post := Post.get_by_id(id)) is None:
+        abort(404)
+
+    return render_template("posts/rate.html", post=post)
 
 
 @blueprint.route("/submit", methods=["GET", "POST"])

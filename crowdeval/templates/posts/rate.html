@@ -1,0 +1,10 @@
+{% extends "layout/base.html" %}
+
+{% block page_title %}Rate Post{% endblock %}
+
+{% block content %}
+    <h1>Rate a post</h1>
+
+    {% from 'posts/embeds/_embed.html' import embed %}
+    {{ embed(post) }}
+{% endblock content %}
