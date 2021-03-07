@@ -26,6 +26,8 @@ class Post(PkModel):
         external_post_id,
         text,
         author_name,
+        author_username,
+        author_profile_url,
         external_author_id,
         additional_metadata,
         external_created_at,
@@ -36,6 +38,8 @@ class Post(PkModel):
             external_post_id=external_post_id,
             text=text,
             author_name=author_name,
+            author_username=author_username,
+            author_profile_url=author_profile_url,
             external_author_id=external_author_id,
             additional_metadata=additional_metadata,
             external_created_at=datetime.strptime(
@@ -43,7 +47,7 @@ class Post(PkModel):
             ),
         )
 
-    def text_with_breaks(self):
-        """Convert newlines to <br> tags."""
-        return "<br>".join(escape(self.text).split("\\n"))
+    def formatted_date(self):
+        """Return datetime formatted for user display."""
+        return self.external_created_at.strftime("%I:%M %p · %b %d, %Y")
 

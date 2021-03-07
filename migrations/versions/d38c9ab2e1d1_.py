@@ -25,6 +25,8 @@ def upgrade():
     sa.Column('external_post_id', sa.String(length=64), nullable=False),
     sa.Column('text', sa.Text(), nullable=False),
     sa.Column('author_name', sa.String(length=255), nullable=False),
+    sa.Column('author_username', sa.String(length=255), nullable=False),
+    sa.Column('author_profile_url', sa.String(length=255), nullable=False),
     sa.Column('external_author_id', sa.String(length=64), nullable=False),
     sa.Column('additional_metadata', mysql.JSON(), nullable=True),
     sa.Column('external_created_at', sa.DateTime(), nullable=False),

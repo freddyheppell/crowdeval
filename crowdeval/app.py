@@ -4,7 +4,7 @@ import sys
 
 from flask import Flask
 
-from crowdeval import commands, extensions, posts, test, users
+from crowdeval import commands, extensions, posts, template_filters, test, users
 
 
 def create_app(config_object="crowdeval.settings"):
@@ -16,6 +16,7 @@ def create_app(config_object="crowdeval.settings"):
     register_blueprints(app)
     register_shellcontext(app)
     register_commands(app)
+    register_template_filters(app)
     configure_logger(app)
 
     return app
@@ -53,6 +54,11 @@ def register_commands(app):
     """Register commands to the flask cli."""
     app.cli.add_command(commands.test)
     app.cli.add_command(commands.lint)
+
+
+def register_template_filters(app):
+    """Register custom filters."""
+    app.register_blueprint(template_filters.blueprint)
 
 
 def configure_logger(app):

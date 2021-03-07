@@ -1,12 +1,15 @@
 {% macro twitter_embed(post) %}
     <div class="d-flex">
         <div class="flex-shrink-0">
-            <img src="https://placekitten.com/32" alt="Placekitten">
+            <img src="{{ post.author_profile_url }}" alt="{{ post.author_name }}'s Profile Photo" width="48px" height="48px" class="rounded-circle">
         </div>
         <div class="flex-grow-1 ms-3">
-            <p>
-            {{ post.text_with_breaks() | safe | urlize(40, true, target='_blank') }}
+            <h5 class="card-title embed__author-name">{{ post.author_name }}</h5>
+            <div class="text-muted embed__author-username">@{{ post.author_username }}</div>
+            <p class="embed__text">
+            {{ post.text | newline_to_br | urlize(40, true, target='_blank') }}
             </p>
+            <div class="text-muted">{{ post.formatted_date() }}</div>
         </div>
     </div>
 {% endmacro %}

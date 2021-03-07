@@ -39,6 +39,8 @@ class TwitterPost:
             "external_post_id": tweet["id"],
             "text": tweet["text"],
             "author_name": tweet["author_id"]["name"],
+            "author_username": tweet["author_id"]["username"],
+            "author_profile_url": tweet["author_id"]["profile_image_url"],
             "external_author_id": tweet["author_id"]["id"],
             "additional_metadata": json.dumps(
                 {"verified": tweet["author_id"]["verified"]}
