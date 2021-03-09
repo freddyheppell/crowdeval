@@ -54,11 +54,13 @@ def user(db):
     db.session.commit()
     return user
 
+
 @pytest.fixture
 def post(db):
     post = PostFactory()
     db.session.commit()
     return post
+
 
 @pytest.fixture
 def category(db):

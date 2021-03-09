@@ -92,7 +92,6 @@ class Category(PkModel):
         """Create a new category."""
         super().__init__(name=name, icon_class=icon_class, category_type=category_type)
 
-
     @staticmethod
     def get_tuples():
         """Return a list of (id, name) tuples of all categories."""
