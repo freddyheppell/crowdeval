@@ -27,5 +27,12 @@ class TestSubmitPost:
         form = res.form
         form["url"] = "https://twitter.com/freddyheppell/status/1362771196945793024"
 
-        res = form.submit()
+        res = form.submit().follow()
         assert Post.query.one().external_post_id == "1362771196945793024"
+
+    @pytest.mark.usefixtures("test_with_authenticated_user")
+    def test_can_view_post(self, testapp, user, post):
+        res = testapp.get(url_for("posts.show", id=post.id))
+
+        assert res.status_int == 200
+        res.mustcontain(post.text)
