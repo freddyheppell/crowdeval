@@ -10,7 +10,7 @@
             {{ post.text | newline_to_br | urlize(40, true, target='_blank') }}
             </p>
             <div class="embed__footer">
-                <div class="text-muted">{{ post.formatted_external_created_at() }}</div>
+                <div class="text-muted"><i class="fab fa-twitter"></i> {{ post.formatted_external_created_at() }}</div>
                 <button class="btn btn-sm btn-link btn-icon-left text-muted" data-ce-archive-info data-ce-archive-date="{{ post.formatted_created_at() }}" data-ce-original-url="https://twitter.com/{{ post.author_username }}/status/{{ post.external_post_id }}">
                     <i class="fas fa-archive"></i>Archived
                 </button>

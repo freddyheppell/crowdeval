@@ -4,13 +4,16 @@ from datetime import datetime
 
 from sqlalchemy.dialects.mysql import JSON, TINYINT
 from sqlalchemy.dialects.mysql.types import TEXT
+from sqlalchemy.sql.schema import PrimaryKeyConstraint
 
-from crowdeval.database import Column, PkModel, reference_col
+from crowdeval.database import Column, Model, PkModel, reference_col
 from crowdeval.extensions import db
 
 
 class Post(PkModel):
     """Represents the model of a post."""
+
+    __tablename__ = "posts"
 
     platform = Column(TINYINT(unsigned=True), nullable=False)
     external_post_id = Column(db.String(length=64), nullable=False)
@@ -62,11 +65,45 @@ class Post(PkModel):
 class Rating(PkModel):
     """Represent's an individual's ratings of a post."""
 
+    __tablename__ = "ratings"
+
     user_id = reference_col("users")
     user = db.relationship("User", backref="ratings")
+    post_id = reference_col("posts")
+    post = db.relationship("Post", backref="ratings")
     rating = Column(TINYINT(unsigned=True), nullable=False)
     comments = Column(TEXT(), nullable=False)
+    categories = db.relationship("Category", secondary="category_rating")
 
     def __init__(self, rating, comments):
         """Create a new rating instance."""
         super().__init__(rating=rating, comments=comments)
+
+
+class Category(PkModel):
+    """Represents a category of rumour."""
+
+    __tablename__ = "categories"
+
+    name = Column(db.String(length=64), nullable=False)
+    icon_class = Column(db.String(length=64), nullable=True)
+    category_type = Column(db.String(length=64), nullable=True)
+
+    def __init__(self, name, icon_class, category_type):
+        """Create a new category."""
+        super().__init__(name=name, icon_class=icon_class, category_type=category_type)
+
+    @staticmethod
+    def get_tuples():
+        categories = Category.query.all()
+
+        category_tuples = []
+        for category in categories:
+            category_tuples.append((str(category.id), category.name))
+
+        return category_tuples
+
+category_rating = db.Table('category_rating',
+    db.Column('category_id', db.Integer, db.ForeignKey('categories.id')),
+    db.Column('rating_id', db.Integer, db.ForeignKey('ratings.id'))
+)

@@ -277,9 +277,9 @@ docs = ["sphinx", "pallets-sphinx-themes", "sphinxcontrib-log-cabinet", "sphinx-
 dotenv = ["python-dotenv"]
 
 [[package]]
-name = "flask-bootstrap"
-version = "3.3.7.1"
-description = "An extension that includes Bootstrap in your project, without any boilerplate code."
+name = "flask-bs4"
+version = "5.0.0.0"
+description = "Include Bootstrap4 in your Flask project"
 category = "main"
 optional = false
 python-versions = "*"
@@ -287,7 +287,9 @@ python-versions = "*"
 [package.dependencies]
 dominate = "*"
 Flask = ">=0.8"
+Flask-WTF = ">=0.14.0"
 visitor = "*"
+WTForms = ">=2.3.1"
 
 [[package]]
 name = "flask-dance"
@@ -996,7 +998,7 @@ locale = ["Babel (>=1.3)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "696b7b1a2f13a5d3489ce2f12e992a724ca72b7cc1d4a215b00a963fa3ba1191"
+content-hash = "40960f2fb28a50f4e1fe995be57405e7eb10c10f69edd8a9ea3899ea0457572a"
 
 [metadata.files]
 alembic = [
@@ -1088,8 +1090,9 @@ flask = [
     {file = "Flask-1.1.2-py2.py3-none-any.whl", hash = "sha256:8a4fdd8936eba2512e9c85df320a37e694c93945b33ef33c89946a340a238557"},
     {file = "Flask-1.1.2.tar.gz", hash = "sha256:4efa1ae2d7c9865af48986de8aeb8504bf32c7f3d6fdc9353d34b21f4b127060"},
 ]
-flask-bootstrap = [
-    {file = "Flask-Bootstrap-3.3.7.1.tar.gz", hash = "sha256:cb08ed940183f6343a64e465e83b3a3f13c53e1baabb8d72b5da4545ef123ac8"},
+flask-bs4 = [
+    {file = "Flask-BS4-5.0.0.0.tar.gz", hash = "sha256:6a2b70efecbef76fe6f75f95fe84addba7d20bacb69ea66b9248a2b665cec49a"},
+    {file = "Flask_BS4-5.0.0.0-py3-none-any.whl", hash = "sha256:e6e583263e3f3a45d577d75c58b28b8cff992c69b187df32557dcbd2d616cd9a"},
 ]
 flask-dance = [
     {file = "Flask-Dance-3.3.1.tar.gz", hash = "sha256:6a570e051fe40148698080c65b815704641bf05091fbb9becae549b8d8e1e33b"},

@@ -5,6 +5,23 @@
 {% block content %}
     <h1>Rate a post</h1>
 
-    {% from 'posts/embeds/_embed.html' import embed %}
-    {{ embed(post) }}
+    <div class="row">
+        <div class="col-md-4">
+            {% from 'posts/embeds/_embed.html' import embed %}
+            {{ embed(post) }}
+        </div>
+        <div class="col-md-8">
+            <form action="{{ url_for('posts.rate', id=post.id) }}" method="post" id="submit_rating">
+                {{ wtf.form_errors(form) }}
+                {{ form.csrf_token }}
+                {{ wtf.form_field(form.rating) }}
+                {{ wtf.form_field(form.category_id) }}
+                {{ wtf.form_field(form.comments) }}
+                {{ form.recaptcha }}
+                
+                <button type="submit" class="btn btn-primary">Submit and Rate</button>
+            </form>
+        </div>
+    </div>
+
 {% endblock content %}

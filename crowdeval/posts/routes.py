@@ -2,12 +2,13 @@
 
 from flask import Blueprint, abort, redirect, render_template
 from flask.helpers import url_for
-from flask_login import login_required
+from flask_login import current_user, login_required
 from sqlalchemy.orm.exc import NoResultFound
 
 from crowdeval.extensions import db
+from crowdeval.posts.forms.rate_post_form import SubmitRatingForm
 from crowdeval.posts.forms.submit_post_form import SubmitPostForm
-from crowdeval.posts.models import Post
+from crowdeval.posts.models import Category, Post, Rating, category_rating
 from crowdeval.posts.support.post_recogniser import detect_post
 
 blueprint = Blueprint("posts", __name__, static_folder="../static")
@@ -22,13 +23,31 @@ def show(id):
     return render_template("posts/show.html", post=post)
 
 
-@blueprint.route("/post/<id>/rate")
+@blueprint.route("/post/<id>/rate", methods=["GET", "POST"])
+@login_required
 def rate(id):
     """Show the rating form for a post."""
     if (post := Post.get_by_id(id)) is None:
         abort(404)
 
-    return render_template("posts/rate.html", post=post)
+    form = SubmitRatingForm()
+    form.category_id.choices = Category.get_tuples()
+
+    if form.validate_on_submit():
+        rating = Rating(rating=form.rating.data, comments=form.comments.data)
+        rating.post = post
+        rating.user = current_user
+
+        db.session.add(rating)
+        db.session.commit()
+
+        for category_id in form.category_id.data:
+            db.session.execute(category_rating.insert().values(rating_id=rating.id, category_id=category_id))
+        db.session.commit()
+
+        return redirect("/")
+
+    return render_template("posts/rate.html", post=post, form=form)
 
 
 @blueprint.route("/submit", methods=["GET", "POST"])
@@ -52,7 +71,7 @@ def submit():
         except NoResultFound:
             post_data = external_post.get_data()
             post = Post(**post_data)
-            db.session.add_all([post])
+            db.session.add(post)
             db.session.commit()
             return redirect(url_for("posts.rate", id=post.id))
 

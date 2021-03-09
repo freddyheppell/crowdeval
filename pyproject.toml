@@ -17,8 +17,8 @@ blinker = "^1.4"
 Flask-DebugToolbar = "^0.11.0"
 mysql-connector-python = "^8.0.23"
 Flask-WTF = "^0.14.3"
-Flask-Bootstrap = "^3.3.7"
 TwitterAPI = "^2.6.9"
+Flask-BS4 = "^5.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"
