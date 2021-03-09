@@ -1,8 +1,6 @@
 import pytest
 import TwitterAPI
 from flask import url_for
-from flask_dance.consumer.storage import MemoryStorage
-from flask_login import login_user
 from pytest_mock import MockFixture
 
 from crowdeval.posts.models import Post
@@ -11,12 +9,9 @@ from tests.fixtures import load_fixture
 
 class TestSubmitPost:
     @pytest.mark.usefixtures("test_with_authenticated_user")
-    def test_can_submit_tweet(self, testapp, user, mocker: MockFixture):
-        # storage = MemoryStorage({"access_token": "fake-token"})
-        # monkeypatch.setattr(tw_blueprint, "storage", storage)
+    def test_can_submit_tweet(self, testapp, mocker: MockFixture):
 
         res = testapp.get(url_for("posts.submit"))
-        # print(res)
 
         mocker.patch.object(
             TwitterAPI.TwitterAPI,
@@ -31,7 +26,7 @@ class TestSubmitPost:
         assert Post.query.one().external_post_id == "1362771196945793024"
 
     @pytest.mark.usefixtures("test_with_authenticated_user")
-    def test_can_view_post(self, testapp, user, post):
+    def test_can_view_post(self, testapp, post):
         res = testapp.get(url_for("posts.show", id=post.id))
 
         assert res.status_int == 200

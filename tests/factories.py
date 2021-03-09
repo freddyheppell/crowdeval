@@ -1,4 +1,4 @@
-from crowdeval.posts.models import Post
+from crowdeval.posts.models import Category, Post
 from factory import Sequence
 from factory.alchemy import SQLAlchemyModelFactory
 
@@ -45,3 +45,9 @@ class PostFactory(BaseFactory):
 
     class Meta:
         model = Post
+
+class CategoryFactory(BaseFactory):
+    name = faker.sentence()
+    
+    class Meta:
+        model = Category

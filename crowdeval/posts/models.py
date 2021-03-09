@@ -88,9 +88,10 @@ class Category(PkModel):
     icon_class = Column(db.String(length=64), nullable=True)
     category_type = Column(db.String(length=64), nullable=True)
 
-    def __init__(self, name, icon_class, category_type):
+    def __init__(self, name, icon_class=None, category_type=None):
         """Create a new category."""
         super().__init__(name=name, icon_class=icon_class, category_type=category_type)
+
 
     @staticmethod
     def get_tuples():

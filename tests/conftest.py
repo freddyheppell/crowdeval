@@ -11,7 +11,7 @@ from crowdeval.database import db as _db
 from crowdeval.extensions import login_manager
 from crowdeval.users.models import User
 
-from .factories import PostFactory, UserFactory
+from .factories import CategoryFactory, PostFactory, UserFactory
 
 
 @pytest.fixture
@@ -59,6 +59,13 @@ def post(db):
     post = PostFactory()
     db.session.commit()
     return post
+
+@pytest.fixture
+def category(db):
+    category = CategoryFactory()
+    db.session.commit()
+    return category
+
 
 @pytest.fixture
 def test_with_authenticated_user(app, user):
