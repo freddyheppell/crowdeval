@@ -21,6 +21,3 @@ class SubmitRatingForm(FlaskForm):
     category_id = SelectMultipleField("Category")
     comments = TextAreaField("Comments", validators=[Optional(), Length(max=65000)])
     recaptcha = RecaptchaField()
-
-    def __init__(self):
-        super().__init__()

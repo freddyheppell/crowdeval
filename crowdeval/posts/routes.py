@@ -42,7 +42,11 @@ def rate(id):
         db.session.commit()
 
         for category_id in form.category_id.data:
-            db.session.execute(category_rating.insert().values(rating_id=rating.id, category_id=category_id))
+            db.session.execute(
+                category_rating.insert().values(
+                    rating_id=rating.id, category_id=category_id
+                )
+            )
         db.session.commit()
 
         return redirect("/")

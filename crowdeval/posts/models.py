@@ -4,9 +4,8 @@ from datetime import datetime
 
 from sqlalchemy.dialects.mysql import JSON, TINYINT
 from sqlalchemy.dialects.mysql.types import TEXT
-from sqlalchemy.sql.schema import PrimaryKeyConstraint
 
-from crowdeval.database import Column, Model, PkModel, reference_col
+from crowdeval.database import Column, PkModel, reference_col
 from crowdeval.extensions import db
 
 
@@ -95,6 +94,7 @@ class Category(PkModel):
 
     @staticmethod
     def get_tuples():
+        """Return a list of (id, name) tuples of all categories."""
         categories = Category.query.all()
 
         category_tuples = []
@@ -103,7 +103,9 @@ class Category(PkModel):
 
         return category_tuples
 
-category_rating = db.Table('category_rating',
-    db.Column('category_id', db.Integer, db.ForeignKey('categories.id')),
-    db.Column('rating_id', db.Integer, db.ForeignKey('ratings.id'))
+
+category_rating = db.Table(
+    "category_rating",
+    db.Column("category_id", db.Integer, db.ForeignKey("categories.id")),
+    db.Column("rating_id", db.Integer, db.ForeignKey("ratings.id")),
 )
