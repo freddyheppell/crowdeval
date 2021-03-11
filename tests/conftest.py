@@ -4,16 +4,15 @@
 import logging
 
 import pytest
+from pytest_mock import MockFixture
 from webtest import TestApp
 
 from crowdeval.app import create_app
 from crowdeval.database import db as _db
 from crowdeval.extensions import login_manager
 from crowdeval.users.models import User
-from pytest_mock import MockFixture
 
 from .factories import CategoryFactory, PostFactory, UserFactory
-
 
 
 @pytest.fixture
@@ -77,6 +76,7 @@ def test_with_authenticated_user(app, user):
     def load_user_from_request(request):
         return User.query.first()
 
+
 @pytest.fixture(autouse=True)
 def mock_elasticsearch(mocker: MockFixture):
-    mocker.patch('elasticsearch.Elasticsearch.index')
+    mocker.patch("elasticsearch.Elasticsearch.index")
