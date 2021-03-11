@@ -7,12 +7,14 @@ from sqlalchemy.dialects.mysql.types import TEXT
 
 from crowdeval.database import Column, PkModel, reference_col
 from crowdeval.extensions import db
+from crowdeval.search.support.db_mixin import SearchableMixin
 
 
-class Post(PkModel):
+class Post(SearchableMixin, PkModel):
     """Represents the model of a post."""
 
     __tablename__ = "posts"
+    __searchable__ = ["text", "external_created_at"]
 
     platform = Column(TINYINT(unsigned=True), nullable=False)
     external_post_id = Column(db.String(length=64), nullable=False)

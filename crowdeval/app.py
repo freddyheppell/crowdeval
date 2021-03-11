@@ -31,6 +31,7 @@ def register_extensions(app):
     extensions.debug_toolbar.init_app(app)
     extensions.csrf.init_app(app)
     extensions.bootstrap.init_app(app)
+    extensions.es.init_app(app)
 
 
 def register_blueprints(app):
