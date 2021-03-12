@@ -81,6 +81,7 @@ def test_with_authenticated_user(app, user):
 def mock_elasticsearch(mocker: MockFixture):
     mocker.patch("elasticsearch.Elasticsearch.index")
 
+
 @pytest.fixture(autouse=True)
 def mock_bert(mocker: MockFixture):
     mocker.patch("bert_serving.client.BertClient.encode", return_value=[[]])
