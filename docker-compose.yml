@@ -34,6 +34,13 @@ services:
       discovery.type: 'single-node'
     volumes:
     - 'cesearch:/usr/share/elasticsearch/data'
+  bert:
+    build:
+      context: './infrastructure/bert'
+      dockerfile: Dockerfile
+    ports:
+    - '5555:5555'
+    - '5556:5556'
 volumes:
   cedb:
   cedb_test:

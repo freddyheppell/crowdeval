@@ -55,6 +55,7 @@ def register_commands(app):
     """Register commands to the flask cli."""
     app.cli.add_command(commands.test)
     app.cli.add_command(commands.lint)
+    app.cli.add_command(commands.create_index)
 
 
 def register_template_filters(app):

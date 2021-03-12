@@ -2,9 +2,13 @@
 """Click commands."""
 import os
 from glob import glob
+from json import load
 from subprocess import call
 
 import click
+from flask.cli import with_appcontext
+
+from crowdeval.extensions import es
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.join(HERE, os.pardir)
@@ -62,3 +66,15 @@ def lint(fix_imports, check):
         execute_tool("Fixing import order", "isort", *isort_args)
     execute_tool("Formatting style", "black", *black_args)
     execute_tool("Checking code style", "flake8")
+
+
+@click.command()
+@click.option("-i", "--index", help="The ES Index name")
+@click.option("-c", "--config", help="The ES Index file")
+@with_appcontext
+def create_index(index, config):
+    """Create the elasticsearch index."""
+    with open(config) as file:
+        config = load(file)
+
+        es.indices.create(index=index, body=config)

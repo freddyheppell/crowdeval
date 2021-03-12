@@ -15,6 +15,7 @@ class Post(SearchableMixin, PkModel):
 
     __tablename__ = "posts"
     __searchable__ = ["text", "external_created_at"]
+    __bertify__ = ["text"]
 
     platform = Column(TINYINT(unsigned=True), nullable=False)
     external_post_id = Column(db.String(length=64), nullable=False)
