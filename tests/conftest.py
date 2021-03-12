@@ -2,9 +2,9 @@
 """Defines fixtures available to all tests."""
 
 import logging
-from bert_serving.client import BertClient
 
 import pytest
+from bert_serving.client import BertClient
 from pytest_mock import MockFixture
 from webtest import TestApp
 
@@ -81,6 +81,7 @@ def test_with_authenticated_user(app, user):
 @pytest.fixture(autouse=True)
 def mock_elasticsearch(mocker: MockFixture):
     mocker.patch("elasticsearch.Elasticsearch.index")
+
 
 @pytest.fixture(autouse=True)
 def mock_bert(mocker: MockFixture):
