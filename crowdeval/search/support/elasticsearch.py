@@ -7,7 +7,7 @@ from crowdeval.extensions import es
 
 def add_to_index(index, model):
     """Push the model to the specified index."""
-    bc = BertClient(output_fmt="list", check_length=False)
+    bc = BertClient(timeout=5000, output_fmt="list", check_length=False)
 
     payload = {}
     for field in model.__searchable__:
@@ -46,7 +46,7 @@ def bert_search(query):
 
     TODO: make function more generic.
     """
-    bc = BertClient(output_fmt="list", check_length=False)
+    bc = BertClient(timeout=5000, output_fmt="list", check_length=False)
     query_vector = bc.encode([query])[0]
     script_query = {
         "script_score": {
