@@ -16,9 +16,16 @@ TEST_PATH = "tests/"
 
 
 @click.command()
-def test():
+@click.option(
+    '-x',
+    '--exit-on-fail',
+    default=False,
+    is_flag=True,
+    help="End testing at first failure"
+)
+def test(exit_on_fail):
     """Run the tests."""
-    rv = call(["pytest", TEST_PATH, "--verbose"])
+    rv = call(["pytest", TEST_PATH, "--verbose", "-x" if exit_on_fail else ''])
     exit(rv)
 
 
