@@ -84,4 +84,5 @@ def mock_elasticsearch(mocker: MockFixture):
 
 @pytest.fixture(autouse=True)
 def mock_bert(mocker: MockFixture):
+    mocker.patch("bert_serving.client.BertClient")
     mocker.patch("bert_serving.client.BertClient.encode", return_value=[[]])
