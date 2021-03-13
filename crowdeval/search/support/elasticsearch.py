@@ -2,12 +2,11 @@
 
 from bert_serving.client import BertClient
 
-from crowdeval.extensions import es
+from crowdeval.extensions import es, bert
 
 
 def add_to_index(index, model):
     """Push the model to the specified index."""
-    bc = BertClient(timeout=5000, output_fmt="list", check_length=False)
 
     payload = {}
     for field in model.__searchable__:
@@ -15,8 +14,7 @@ def add_to_index(index, model):
 
     if hasattr(model, "__bertify__"):
         for field in model.__bertify__:
-            data = getattr(model, field)
-            vectorised = bc.encode([data])[0]
+            vectorised = bert.connection.encode([getattr(model, field)])[0]
             payload[field + "_vector"] = vectorised
 
     es.index(index=index, id=model.id, body=payload)
@@ -46,8 +44,7 @@ def bert_search(query):
 
     TODO: make function more generic.
     """
-    bc = BertClient(timeout=5000, output_fmt="list", check_length=False)
-    query_vector = bc.encode([query])[0]
+    query_vector = bert.connection.encode([query])[0]
     script_query = {
         "script_score": {
             "query": {"match_all": {}},

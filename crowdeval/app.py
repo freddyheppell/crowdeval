@@ -32,6 +32,7 @@ def register_extensions(app):
     extensions.csrf.init_app(app)
     extensions.bootstrap.init_app(app)
     extensions.es.init_app(app)
+    extensions.bert.init_app(app)
 
 
 def register_blueprints(app):

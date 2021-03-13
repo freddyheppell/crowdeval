@@ -8,6 +8,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_static_digest import FlaskStaticDigest
 from flask_wtf import CSRFProtect
 
+from crowdeval.search.support.ext_bert import FlaskBert
+
 flask_static_digest = FlaskStaticDigest()
 db = SQLAlchemy()
 migrate = Migrate()
@@ -20,3 +22,4 @@ csrf = CSRFProtect()
 bootstrap = Bootstrap()
 
 es = FlaskElasticsearch()
+bert = FlaskBert()
