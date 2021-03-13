@@ -1,13 +1,11 @@
 """Utilities for pushing to ElasticSearch."""
 
-from bert_serving.client import BertClient
 
-from crowdeval.extensions import es, bert
+from crowdeval.extensions import bert, es
 
 
 def add_to_index(index, model):
     """Push the model to the specified index."""
-
     payload = {}
     for field in model.__searchable__:
         payload[field] = getattr(model, field)
