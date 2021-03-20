@@ -3,7 +3,38 @@
 {% block page_title %}Show Post{% endblock %}
 
 {% block content %}
-    <h1>Rating for {{ post.author_name }}'s Post</h1>
-     {% from 'posts/embeds/_embed.html' import embed %}
-    {{ embed(post) }}
+    <h1 class="mb-3">Rating for {{ post.author_name }}'s Post</h1>
+
+    <div class="row">
+        <div class="col-md-5 rating__embed">
+            {% from 'posts/embeds/_embed.html' import embed %}
+            {{ embed(post) }}
+        </div>
+        <div class="col-md-7">
+            <div class="rating">
+                <div class="rating__header">
+                    <h2>CrowdEval Rating</h2>
+                    <a href="#" class="text-muted btn-icon-left"><i class="fas fa-question-circle"></i>How is this calculated?</a>
+                </div>
+                <div class="rating__label rating--is-false">
+                    <i class="fas fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
+                    False
+                </div>
+                <ul class="rating__counts">
+                    <li>
+                        <span class="fa-layers fa-fw rating__counts-icon" data-fa-transform="shrink-2">
+                            <i class="fas fa-certificate"></i>
+                            <i class="fa-inverse fas fa-users" data-fa-transform="shrink-8"></i>
+                        </span>
+                        This post rated by <strong>7 users</strong>.
+                    </li>
+                    <li>
+                        <i class="fas fa-chart-network fa-fw fa-fw rating__counts-icon" data-fa-transform="shrink-2"></i>
+                        Similar posts rated by <strong>50 users</strong>.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+     
 {% endblock content %}

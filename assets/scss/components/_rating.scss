@@ -1,0 +1,56 @@
+.rating {
+    &--is-false {
+        color: $colour-false;
+    }
+
+    &--is-mostly-false {
+        color: $colour-mostly-false;
+    }
+
+    &--is-mixed {
+        color: $colour-mixed;
+    }
+
+    &--is-mostly-true {
+        color: $colour-mostly-true;
+    }
+
+    &--is-true {
+        color: $colour-true;
+    }
+
+    &__embed {
+        margin-bottom: 1rem;
+    }
+
+    &__header {
+        display: flex;
+        align-items: flex-end;
+
+        h2 {
+            margin-bottom: 0;
+            margin-right: 1rem;
+            @include font-size(1.5rem);
+        }
+
+        a {
+            font-size: 0.8rem;
+        }
+    }
+
+    &__label {
+        font-weight: bold;
+        font-size: 3rem;
+    }
+
+    &__counts {
+        @include font-size(1.25rem);
+        margin-top: 0.5rem;
+        list-style-type: none;
+        padding-left: 0;
+
+        &-icon {
+            margin-right: 0.2em;
+        }
+    }
+}
