@@ -57,6 +57,7 @@ def register_commands(app):
     app.cli.add_command(commands.test)
     app.cli.add_command(commands.lint)
     app.cli.add_command(commands.create_index)
+    app.cli.add_command(commands.import_tweet_seeds)
 
 
 def register_template_filters(app):

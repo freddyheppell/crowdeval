@@ -15,12 +15,21 @@ TWEET_FIELDS = "created_at,author_id,public_metrics"
 USER_FIELDS = "location,profile_image_url,verified"
 
 
+class NoTweetsFoundException(Exception):
+    """Exception meaning that no matching tweets could be retrived from the API."""
+
+    def __init__(self, tweet_id):
+        """Create a new exception insance, with the tweet id."""
+        super().__init__("Could not find tweet " + str(tweet_id))
+
+
 class TwitterPost:
     """Represents an external post on Twitter."""
 
     def __init__(self, status_id):
         """Create a new post."""
         self.status_id = status_id
+        print(status_id)
 
     def get_platform(self):
         """Get the enum representation of this platform."""
@@ -51,7 +60,7 @@ class TwitterPost:
     def _retrieve_tweet(self):
         api = self._get_api()
 
-        tweet = api.request(
+        response = api.request(
             f"tweets/:{self.status_id}",
             {
                 "expansions": EXPANSIONS,
@@ -62,8 +71,13 @@ class TwitterPost:
             hydrate_tweets=True,
         )
 
+        response_tweets = list(response.get_iterator())
+
+        if len(response_tweets) == 0:
+            raise NoTweetsFoundException(self.status_id)
+
         # Returns a list of tweets so only use first
-        return list(tweet.get_iterator())[0]
+        return response_tweets[0]
 
     def _get_api(self):
         return TwitterAPI(
