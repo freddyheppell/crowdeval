@@ -56,7 +56,7 @@ def bert_search_by_vector(index, query_vector, page, per_page):
         }
     }
 
-    response = es.search(
+    search = es.search(
         index=index,
         body={
             "size": per_page,
@@ -66,4 +66,6 @@ def bert_search_by_vector(index, query_vector, page, per_page):
         },
     )
 
-    return response
+    ids = [int(hit["_id"]) for hit in search["hits"]["hits"]]
+
+    return ids, search["hits"]["total"]["value"]
