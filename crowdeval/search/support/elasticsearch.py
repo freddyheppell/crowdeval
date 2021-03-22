@@ -37,12 +37,15 @@ def query_index(index, query, page, per_page):
     return ids, search["hits"]["total"]["value"]
 
 
-def bert_search(query):
-    """Search the specified query using BERT.
-
-    TODO: make function more generic.
-    """
+def bert_search_by_term(index, query, page, per_page):
+    """Search with a textual query using BERT."""
     query_vector = bert.connection.encode([query])[0]
+
+    return bert_search_by_vector(index, query_vector, page, per_page)
+
+
+def bert_search_by_vector(index, query_vector, page, per_page):
+    """Search with a pre-obtained vector using BERT."""
     script_query = {
         "script_score": {
             "query": {"match_all": {}},
@@ -54,9 +57,10 @@ def bert_search(query):
     }
 
     response = es.search(
-        index="posts",  # name of the index
+        index=index,
         body={
-            "size": 1,
+            "size": per_page,
+            "from": (page - 1) * per_page,
             "query": script_query,
             "_source": {"includes": ["text"]},
         },
