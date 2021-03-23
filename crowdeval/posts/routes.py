@@ -20,7 +20,11 @@ def show(id):
     if (post := Post.get_by_id(id)) is None:
         abort(404)
 
-    return render_template("posts/show.html", post=post)
+    similar_posts, total = post.get_similar_posts(1, 10)
+
+    return render_template(
+        "posts/show.html", post=post, similar_posts=similar_posts.all()
+    )
 
 
 @blueprint.route("/post/<id>/rate", methods=["GET", "POST"])

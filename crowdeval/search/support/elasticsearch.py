@@ -37,20 +37,20 @@ def query_index(index, query, page, per_page):
     return ids, search["hits"]["total"]["value"]
 
 
-def bert_search_by_term(index, query, page, per_page):
+def bert_search_by_term(index, field, query, page, per_page):
     """Search with a textual query using BERT."""
     query_vector = bert.connection.encode([query])[0]
 
-    return bert_search_by_vector(index, query_vector, page, per_page)
+    return bert_search_by_vector(index, field, query_vector, page, per_page)
 
 
-def bert_search_by_vector(index, query_vector, page, per_page):
+def bert_search_by_vector(index, field, query_vector, page, per_page):
     """Search with a pre-obtained vector using BERT."""
     script_query = {
         "script_score": {
             "query": {"match_all": {}},
             "script": {
-                "source": "cosineSimilarity(params.query_vector, 'text_vector') + 1.0",
+                "source": f"cosineSimilarity(params.query_vector, '{field}') + 1.0",
                 "params": {"query_vector": query_vector},
             },
         }

@@ -3,6 +3,7 @@
 from crowdeval.extensions import db
 from crowdeval.search.support.elasticsearch import (
     add_to_index,
+    bert_search_by_term,
     query_index,
     remove_from_index,
 )
@@ -12,9 +13,7 @@ class SearchableMixin(object):
     """A mixin to add event-based elasticsearch behaviour."""
 
     @classmethod
-    def search(cls, expression, page, per_page):
-        """Search the model."""
-        ids, total = query_index(cls.__tablename__, expression, page, per_page)
+    def _process_search(cls, ids, total):
         if total == 0:
             return cls.query.filter_by(id=0), 0
         when = []
@@ -24,6 +23,25 @@ class SearchableMixin(object):
             cls.query.filter(cls.id.in_(ids)).order_by(db.case(when, value=cls.id)),
             total,
         )
+
+    @classmethod
+    def search(cls, expression, page, per_page):
+        """Search the model."""
+        ids, total = query_index(cls.__tablename__, expression, page, per_page)
+
+        return cls._process_search(ids, total)
+
+    @classmethod
+    def bert_search(cls, expression, field, page, per_page):
+        """Search the model with BERT."""
+        if not hasattr(cls, "__bertify__") or field not in cls.__bertify__:
+            raise Exception(f"Trying to search non-bertified field {field}")
+
+        ids, total = bert_search_by_term(
+            cls.__tablename__, f"{field}_vector", expression, page, per_page
+        )
+
+        return cls._process_search(ids, total)
 
     @classmethod
     def before_commit(cls, session):

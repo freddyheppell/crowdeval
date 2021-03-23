@@ -63,6 +63,10 @@ class Post(SearchableMixin, PkModel):
         """Return datetime formatted for user display of model creation time."""
         return self.created_at.strftime("%-d %b %Y, %X")
 
+    def get_similar_posts(self, page, per_page):
+        """Get posts with similar text to this one."""
+        return self.bert_search(self.text, "text", page, per_page)
+
 
 class Rating(PkModel):
     """Represent's an individual's ratings of a post."""

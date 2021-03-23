@@ -36,5 +36,11 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        {% for post in similar_posts %}
+            {{ embed(post) }}
+        {% endfor %}
+    </div>
      
 {% endblock content %}
