@@ -39,7 +39,9 @@
 
     <div class="row">
         {% for post in similar_posts %}
+            {{ scores[post.id] }}
             {{ embed(post) }}
+            <hr>
         {% endfor %}
     </div>
      

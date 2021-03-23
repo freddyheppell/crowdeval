@@ -27,9 +27,9 @@ class SearchableMixin(object):
     @classmethod
     def search(cls, expression, page, per_page):
         """Search the model."""
-        ids, total = query_index(cls.__tablename__, expression, page, per_page)
+        ids, total, scores = query_index(cls.__tablename__, expression, page, per_page)
 
-        return cls._process_search(ids, total)
+        return *cls._process_search(ids, total), scores
 
     @classmethod
     def bert_search(cls, expression, field, page, per_page):
@@ -37,11 +37,11 @@ class SearchableMixin(object):
         if not hasattr(cls, "__bertify__") or field not in cls.__bertify__:
             raise Exception(f"Trying to search non-bertified field {field}")
 
-        ids, total = bert_search_by_term(
+        ids, total, scores = bert_search_by_term(
             cls.__tablename__, f"{field}_vector", expression, page, per_page
         )
 
-        return cls._process_search(ids, total)
+        return *cls._process_search(ids, total), scores
 
     @classmethod
     def before_commit(cls, session):

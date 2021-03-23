@@ -34,7 +34,8 @@ def query_index(index, query, page, per_page):
         },
     )
     ids = [int(hit["_id"]) for hit in search["hits"]["hits"]]
-    return ids, search["hits"]["total"]["value"]
+    scores = dict(zip(ids, {int(hit["_score"]) for hit in search["hits"]["hits"]}))
+    return ids, search["hits"]["total"]["value"], scores
 
 
 def bert_search_by_term(index, field, query, page, per_page):
@@ -68,4 +69,6 @@ def bert_search_by_vector(index, field, query_vector, page, per_page):
 
     ids = [int(hit["_id"]) for hit in search["hits"]["hits"]]
 
-    return ids, search["hits"]["total"]["value"]
+    scores = dict(zip(ids, [hit["_score"] for hit in search["hits"]["hits"]]))
+
+    return ids, search["hits"]["total"]["value"], scores
