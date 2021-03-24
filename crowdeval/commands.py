@@ -2,6 +2,7 @@
 """Click commands."""
 import json
 import os
+import random
 import time
 import traceback
 from glob import glob
@@ -15,6 +16,8 @@ from flask_migrate import downgrade, upgrade
 from crowdeval.extensions import db, es
 from crowdeval.posts.models import Post
 from crowdeval.posts.support.twitter_post import TwitterPost
+from crowdeval.users.models import User
+from tests.factories import RatingFactory
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.join(HERE, os.pardir)
@@ -208,3 +211,18 @@ def import_tweet_seeds(directory, rate, delay):
     print("FINISHED")
     print("Imported", succesful_imports, "ok")
     print("Failed for", failed_imports)
+
+
+@click.command()
+@with_appcontext
+def seed_ratings():
+    """Create number of ratings for each post."""
+    all_posts = Post.query.all()
+    user = User.query.first()
+
+    with click.progressbar(all_posts) as bar:
+        for post in bar:
+            RatingFactory.create_batch(
+                random.randrange(0, 20), post_id=post.id, user_id=user.id
+            )
+            db.session.commit()

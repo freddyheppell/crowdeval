@@ -81,9 +81,11 @@ class Rating(PkModel):
     comments = Column(TEXT(), nullable=False)
     categories = db.relationship("Category", secondary="category_rating")
 
-    def __init__(self, rating, comments):
+    def __init__(self, rating, comments, user_id=None, post_id=None):
         """Create a new rating instance."""
-        super().__init__(rating=rating, comments=comments)
+        super().__init__(
+            rating=rating, comments=comments, user_id=user_id, post_id=post_id
+        )
 
 
 class Category(PkModel):

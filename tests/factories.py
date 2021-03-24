@@ -1,10 +1,11 @@
-from factory import Sequence
+from factory import LazyAttribute, Sequence
 from factory.alchemy import SQLAlchemyModelFactory
+from factory.fuzzy import FuzzyInteger
 from faker import Faker
 from faker.providers import date_time, lorem, profile
 
 from crowdeval.database import db
-from crowdeval.posts.models import Category, Post
+from crowdeval.posts.models import Category, Post, Rating
 from crowdeval.users.models import User
 
 faker = Faker()
@@ -53,3 +54,14 @@ class CategoryFactory(BaseFactory):
 
     class Meta:
         model = Category
+
+
+class RatingFactory(BaseFactory):
+    user_id = LazyAttribute(lambda a: UserFactory().save().id)
+    post_id = LazyAttribute(lambda a: PostFactory().save().id)
+    rating = FuzzyInteger(0, 4)
+    comments = LazyAttribute(lambda a: faker.paragraph())
+
+    class Meta:
+        model = Rating
+        sqlalchemy_session = db.session
