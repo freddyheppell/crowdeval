@@ -1,9 +1,7 @@
 """Settings module for test app."""
 ENV = "development"
 TESTING = True
-SQLALCHEMY_DATABASE_URI = (
-    "mysql+mysqlconnector://crowdeval:crowdeval@localhost:3308/crowdeval-test"
-)
+SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://crowdeval:crowdeval@localhost:3308/crowdeval-test?charset=utf8mb4"
 SECRET_KEY = "not-so-secret-in-tests"
 BCRYPT_LOG_ROUNDS = (
     4  # For faster tests; needs at least 4 to avoid "ValueError: Invalid rounds"
@@ -20,3 +18,4 @@ TWITTER_OAUTH_CLIENT_SECRET = "secret"
 TWITTER_ACCESS_TOKEN = "token"
 TWITTER_ACCESS_TOKEN_SECRET = "secret"
 ELASTICSEARCH_HOST = "elasticsearch"
+BERT_HOST = "bert"

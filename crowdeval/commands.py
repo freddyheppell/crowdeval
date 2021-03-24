@@ -10,6 +10,7 @@ from subprocess import call
 
 import click
 from flask.cli import with_appcontext
+from flask_migrate import downgrade, upgrade
 
 from crowdeval.extensions import db, es
 from crowdeval.posts.models import Post
@@ -28,9 +29,20 @@ TEST_PATH = "tests/"
     is_flag=True,
     help="End testing at first failure",
 )
-def test(exit_on_fail):
+@click.option(
+    "-s", "--nocapture", default=False, is_flag=True, help="Disables per test capturing"
+)
+def test(exit_on_fail, nocapture):
     """Run the tests."""
-    rv = call(["pytest", TEST_PATH, "--verbose", "-x" if exit_on_fail else ""])
+    rv = call(
+        [
+            "pytest",
+            TEST_PATH,
+            "--verbose",
+            "-x" if exit_on_fail else "",
+            "-s" if nocapture else "",
+        ]
+    )
     exit(rv)
 
 
@@ -93,6 +105,32 @@ def create_index(index, config):
 
 
 @click.command()
+@with_appcontext
+@click.pass_context
+def wipeout(ctx):
+    """Reset the application's data."""
+    click.confirm("Are you sure you want to reset the database and search?", abort=True)
+
+    print("Downgrading database...")
+    downgrade(revision="base")
+    print("Database downgraded.\n\n")
+
+    print("Clearing elasticsearch...")
+    call(["curl", "-XDELETE", "localhost:9200/_all"])
+    print("Elasticsearch cleared.\n\n")
+
+    print("Migrating...")
+    upgrade()
+    print("Migrations completed.\n\n")
+
+    print("Creating elasticsearch index...")
+    ctx.invoke(
+        create_index, index="posts", config="infrastructure/elasticsearch/posts.json"
+    )
+    print("Elasticsearch index created.")
+
+
+@click.command()
 @click.argument("directory", type=click.Path(exists=True))
 @click.option(
     "-r",
@@ -132,15 +170,10 @@ def import_tweet_seeds(directory, rate, delay):
 
     grouped_tweets = grouper(rate, tweet_ids)
 
-    print(
-        "There are",
-        len(tweet_ids),
-        "tweets to import. This will take approximately",
-        len(grouped_tweets * delay),
-        "seconds to import. Continue?",
+    click.confirm(
+        f"There are {len(tweet_ids)} tweets to import. This will take approximately {len(grouped_tweets) * delay} seconds to import. Continue?",
+        abort=True,
     )
-
-    input()
 
     for group in grouped_tweets:
         for tweet_id in group:

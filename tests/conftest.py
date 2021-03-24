@@ -12,6 +12,7 @@ from crowdeval.app import create_app
 from crowdeval.database import db as _db
 from crowdeval.extensions import login_manager
 from crowdeval.users.models import User
+from tests.fixtures import load_fixture
 
 from .factories import CategoryFactory, PostFactory, UserFactory
 
@@ -58,7 +59,7 @@ def user(db):
 
 
 @pytest.fixture
-def post(db):
+def post(db, mock_elasticsearch):
     post = PostFactory()
     db.session.commit()
     return post
@@ -81,9 +82,16 @@ def test_with_authenticated_user(app, user):
 @pytest.fixture(autouse=True)
 def mock_elasticsearch(mocker: MockFixture):
     mocker.patch("elasticsearch.Elasticsearch.index")
+    mocker.patch(
+        "elasticsearch.Elasticsearch.search",
+        return_value=load_fixture("es", "no_results.json"),
+    )
 
 
 @pytest.fixture(autouse=True)
 def mock_bert(mocker: MockFixture):
     mocker.patch("bert_serving.client.BertClient.__init__", return_value=None)
-    mocker.patch("bert_serving.client.BertClient.encode", return_value=[[]])
+    mocker.patch(
+        "bert_serving.client.BertClient.encode",
+        return_value=load_fixture("bert", "test.pickle"),
+    )

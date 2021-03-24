@@ -14,14 +14,12 @@ DEBUG = ENV == "development"
 SECRET_KEY = env.str("SECRET_KEY")
 
 # SQlAlchemy
-SQLALCHEMY_DATABASE_URI = (
-    "mysql+mysqlconnector://{username}:{password}@{hostname}:{port}/{database}".format(
-        username=env.str("DB_USER"),
-        password=env.str("DB_PASSWORD"),
-        hostname=env.str("DB_HOSTNAME"),
-        port=env.str("DB_PORT"),
-        database=env.str("DB_DATABASE"),
-    )
+SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}:{port}/{database}?charset=utf8mb4".format(
+    username=env.str("DB_USER"),
+    password=env.str("DB_PASSWORD"),
+    hostname=env.str("DB_HOSTNAME"),
+    port=env.str("DB_PORT"),
+    database=env.str("DB_DATABASE"),
 )
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
