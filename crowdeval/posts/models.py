@@ -70,8 +70,15 @@ class Post(SearchableMixin, PkModel):
         """Get posts with similar text to this one."""
         return self.bert_search(self.text, "text", page, per_page)
 
+    def get_scorer(self, force_rescore=False) -> PostScorer:
+        """Return the scorer instance."""
+        if force_rescore or self._scorer is None:
+            self._scorer = PostScorer(self)
+
+        return self._scorer
+
     def get_score(self, force_rescore=False) -> Tuple[float, float]:
-        """Get the lower bound and certainty width of this post's score.
+        """Get the chosen bound and certainty width of this post's score.
 
         force_rescore:  Force the scorer to be recalculated
         """
@@ -111,6 +118,10 @@ class Rating(PkModel):
         super().__init__(
             rating=rating, comments=comments, user_id=user_id, post_id=post_id
         )
+
+    def to_enum(self):
+        """Return the instance of the rating enum for this rating."""
+        return ScoreEnum(self.rating)
 
 
 class Category(PkModel):

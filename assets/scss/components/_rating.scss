@@ -44,7 +44,11 @@
 
     &__label {
         font-weight: bold;
-        font-size: 3rem;
+        font-size: 3em;
+    }
+
+    &__label.rating--is-small {
+        font-size: 1em;
     }
 
     &__info {

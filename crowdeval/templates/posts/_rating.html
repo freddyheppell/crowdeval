@@ -1,45 +1,51 @@
+{% macro rating_badge(score, small=False) %}
+    {% if score == "TRUE" %}
+        <div class="rating__label rating--is-true {% if small %} rating--is-small {% endif %}">
+            <i class="fas fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
+            True
+        </div>
+    {% elif score == "MOSTLY_TRUE" %}
+        <div class="rating__label rating--is-mostly-true {% if small %} rating--is-small {% endif %}">
+            <i class="fas fa-adjust" data-fa-transform="shrink-4" class="rating__badge"></i>
+            Mostly True
+        </div>
+    {% elif score == "MIXED" %}
+        <div class="rating__label rating--is-mixed {% if small %} rating--is-small {% endif %}">
+            <i class="far fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
+            Mixed
+        </div>
+    {% elif score == "MOSTLY_FALSE" %}
+        <div class="rating__label rating--is-mostly-false {% if small %} rating--is-small {% endif %}">
+            <i class="fas fa-adjust" data-fa-transform="shrink-4 flip-h" class="rating__badge"></i>
+            Mostly False
+        </div>
+    {% elif score == "FALSE" %}
+        <div class="rating__label rating--is-false {% if small %} rating--is-small {% endif %}">
+            <i class="fas fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
+            False
+        </div>
+    {% endif %}
+{% endmacro %}
+
 {% macro rating(post) %}
     <div class="rating">
         <div class="rating__header">
             <h2>CrowdEval Rating:</h2>
-            <a href="#" class="text-muted btn-icon-left"><i class="fas fa-question-circle"></i>How is this calculated?</a>
+            <a href="#" class="text-muted btn-icon-left" data-bs-toggle="modal" data-bs-target="#rating-explanation-{{post.id}}"><i class="fas fa-question-circle"></i>How is this calculated?</a>
         </div>
-            {% set score = post.get_rounded_score().name %}
-            {% set exact_score, width = post.get_score() %}
-            {% if width > 1%}
-                <div class="rating__label rating--is-indeterm">
-                    <span class="fa-layers rating__counts-icon" >
-                        <i class="fas fa-circle" data-fa-transform="shrink-4"></i>
-                        <i class="fa-inverse fas fa-tilde" data-fa-transform="shrink-8"></i>
-                    </span><span>Not Sure</span>
-                </div>
-                <div class="rating__info"><i class="fal fa-info-square fa-fw"></i> This post doesn't have enough consistent ratings yet.</div>
-            {% elif score == "TRUE" %}
-                <div class="rating__label rating--is-true">
-                    <i class="fas fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
-                    True
-                </div>
-            {% elif score == "MOSTLY_TRUE" %}
-                <div class="rating__label rating--is-mostly-true">
-                    <i class="fas fa-adjust" data-fa-transform="shrink-4" class="rating__badge"></i>
-                    Mostly True
-                </div>
-            {% elif score == "MIXED" %}
-                <div class="rating__label rating--is-mixed">
-                    <i class="far fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
-                    Mixed
-                </div>
-            {% elif score == "MOSTLY_FALSE" %}
-                <div class="rating__label rating--is-mostly-false">
-                    <i class="fas fa-adjust" data-fa-transform="shrink-4 flip-h" class="rating__badge"></i>
-                    Mostly False
-                </div>
-            {% elif score == "FALSE" %}
-                <div class="rating__label rating--is-false">
-                    <i class="fas fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
-                    False
-                </div>
-            {% endif %}
+        {% set score = post.get_rounded_score().name %}
+        {% set exact_score, width = post.get_score() %}
+        {% if width > 1 %}
+            <div class="rating__label rating--is-indeterm">
+                <span class="fa-layers rating__counts-icon" >
+                    <i class="fas fa-circle" data-fa-transform="shrink-4"></i>
+                    <i class="fa-inverse fas fa-tilde" data-fa-transform="shrink-8"></i>
+                </span><span>Not Sure</span>
+            </div>
+            <div class="rating__info"><i class="fal fa-info-square fa-fw"></i> This post doesn't have enough consistent ratings yet.</div>
+        {% else %}
+            {{ rating_badge(score) }}
+        {% endif %}
 
         <ul class="rating__counts">
             <li>
@@ -54,5 +60,30 @@
                 Similar posts rated by <strong>50 users</strong>.
             </li> #}
         </ul>
+    </div>
+
+    <div class="modal fade" id="rating-explanation-{{ post.id }}" tabindex="-1" aria-labelledby="rating-explanation-{{ post.id }}-title" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rating-explanation-{{ post.id }}-title">Rating Breakdown</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            {% if post.get_rating_count() == 0 %}
+                <p>This post doesn't have any ratings yet.</p>
+            {% else %}
+                {% set calculator = post.get_scorer().get_calculator() %}        
+                <p>The score has a 95% certainty of being in the range {{ "{:.3f}".format(calculator.get_lower_bound()) }} - {{ "{:.3f}".format(calculator.get_upper_bound()) }}</p>
+
+                {% if calculator.get_credible_width() > 1 %}
+                    <p>Since this range is larger than 1, it can't be confidently assigned to a single score.</p>
+                {% else %}
+                    <p>This range is less than 1, so it can be assigned a single score.</p>
+                {% endif %}
+            {% endif %}
+            </div>
+            </div>
+        </div>
     </div>
 {% endmacro %}

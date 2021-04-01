@@ -2,14 +2,14 @@
 
 from collections import Counter
 from enum import IntEnum
-from math import sqrt
+from math import inf, sqrt
 
 
 class ScoreEnum(IntEnum):
     """Represents score options."""
 
     TRUE = 5
-    MOSTLY_TRUE = 5
+    MOSTLY_TRUE = 4
     MIXED = 3
     MOSTLY_FALSE = 2
     FALSE = 1
@@ -27,18 +27,19 @@ class PostScorer:
 
         ratings = [(rating.rating) for rating in self.post.ratings]
         score_counts = dict(Counter(ratings))
+        score_values = dict(zip(list(map(int, ScoreEnum)), list(map(int, ScoreEnum))))
 
-        calculator = BayesianRatingCalculator(score_counts)
+        self.calculator = BayesianRatingCalculator(score_counts, score_values)
 
-        center = calculator.get_center()
+        center = self.calculator.get_center()
 
-        self.width = calculator.get_credible_width()
+        self.width = self.calculator.get_credible_width()
 
         # Use the center-biased bound
         if center >= 3:
-            self.bound = calculator.get_lower_bound()
+            self.bound = self.calculator.get_lower_bound()
         else:
-            self.bound = calculator.get_upper_bound()
+            self.bound = self.calculator.get_upper_bound()
 
     def get_width(self):
         """Return the width of the interval."""
@@ -48,6 +49,10 @@ class PostScorer:
         """Return the center-biased bound."""
         return self.bound
 
+    def get_calculator(self):
+        """Return the current calculator instance."""
+        return self.calculator
+
 
 class BayesianRatingCalculator:
     """Calculates the Bayesian approximation of a star rating.
@@ -56,7 +61,7 @@ class BayesianRatingCalculator:
     This algorithm performs an optimised version of the equation, check the page for the human-readable form.
     """
 
-    def __init__(self, score_counts, score_values=None) -> None:
+    def __init__(self, score_counts, score_values) -> None:
         """Create a new rating calculator.
 
         score_counts:   a dict of the score (k) -> the count of that score (n_k).
@@ -72,8 +77,8 @@ class BayesianRatingCalculator:
 
         # Precalculate the total number of reviews
         self.N = sum(score_counts.values())
-        # ... and the number of dufferent scores
-        self.K = len(score_counts.keys())
+        # ... and the number of different scores
+        self.K = len(score_values.keys())
         # Precomputed value for the value on a normalised normal distribution where the certainty is 95%
         self.z = 1.65
 
@@ -81,12 +86,12 @@ class BayesianRatingCalculator:
         self._lower_bound = None
         self._upper_bound = None
 
-        # Throw an exception if the possible scores are inconsistent between the counts and values dicts
-        if (count_keys := set(score_counts.keys())) != (
-            score_keys := set(score_values.keys())
-        ):
+        count_keys = set(score_counts.keys())
+        score_keys = set(score_values.keys())
+
+        if not score_keys.issuperset(count_keys):
             raise Exception(
-                f"The score count keys ({count_keys}) and score value keys ({score_keys}) are not consistent"
+                f"The score value keys ({score_keys}) must be a superset of the score count keys ({count_keys})"
             )
 
     def calculate(self):
@@ -94,7 +99,16 @@ class BayesianRatingCalculator:
         score_sum = 0
         score_sum_sq = 0
 
-        for score in self.score_counts.keys():
+        # Check if no ratings have been supplied
+        if len(self.score_counts) == 0:
+            # Say the credible width is infinitely wide
+            self._credible_width = inf
+            self._lower_bound = 0
+            self._upper_bound = 0
+            self._center = 0
+            return
+
+        for score in self.score_values.keys():
             # For each score we need to compute three summations
 
             # First, compute (n_k + 1) / (N+K)
@@ -102,14 +116,19 @@ class BayesianRatingCalculator:
             # N is the total number of ratings
             # K is the number of different assignable scores
 
-            frac = (self.score_counts[score] + 1) / (self.N + self.K)
+            frac = (self.score_counts.get(score, 0) + 1) / (self.N + self.K)
 
             # compute both s_k * frac and s_k^2 * frac
             score_sum += self.score_values[score] * frac
             score_sum_sq += (self.score_values[score] ** 2) * frac
 
+        print(score_sum)
+        print(score_sum_sq)
+
         # Compute the variance and standard deviations
-        variance = (score_sum ** 2) / (self.N + self.K + 1)
+        # TODO check this is right, missing score sum
+        variance = (score_sum_sq - (score_sum ** 2)) / (self.N + self.K + 1)
+        print(variance)
         stdev = sqrt(variance)
 
         # This is the credible amount the score could be above or below the expectation
