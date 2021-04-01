@@ -6,11 +6,11 @@ from wtforms.fields.simple import TextAreaField
 from wtforms.validators import DataRequired, Length, Optional
 
 RATING_CHOICES = [
-    ("0", "True"),
-    ("1", "Mostly True"),
-    ("2", "Mixed"),
-    ("3", "Mostly False"),
-    ("4", "False"),
+    ("5", "True"),
+    ("4", "Mostly True"),
+    ("3", "Mixed"),
+    ("2", "Mostly False"),
+    ("1", "False"),
 ]
 
 

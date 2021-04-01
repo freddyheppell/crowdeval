@@ -1,29 +1,52 @@
 """Support for scoring posts."""
 
 from collections import Counter
+from enum import IntEnum
 from math import sqrt
 
-from crowdeval.posts.models import Post
+
+class ScoreEnum(IntEnum):
+    """Represents score options."""
+
+    TRUE = 5
+    MOSTLY_TRUE = 5
+    MIXED = 3
+    MOSTLY_FALSE = 2
+    FALSE = 1
 
 
 class PostScorer:
     """Responsible for scoring a post's ratings."""
 
-    def __init__(self, post: Post) -> None:
+    def __init__(self, post) -> None:
         """Create a new scorer.
 
         post:   The post to score
         """
         self.post = post
 
-    def calculate_score(self):
-        """Calculate the score of the given post."""
         ratings = [(rating.rating) for rating in self.post.ratings]
         score_counts = dict(Counter(ratings))
 
         calculator = BayesianRatingCalculator(score_counts)
 
-        return calculator.get_lower_bound(), calculator.get_credible_width()
+        center = calculator.get_center()
+
+        self.width = calculator.get_credible_width()
+
+        # Use the center-biased bound
+        if center >= 3:
+            self.bound = calculator.get_lower_bound()
+        else:
+            self.bound = calculator.get_upper_bound()
+
+    def get_width(self):
+        """Return the width of the interval."""
+        return self.width
+
+    def get_bound(self):
+        """Return the center-biased bound."""
+        return self.bound
 
 
 class BayesianRatingCalculator:
@@ -44,7 +67,7 @@ class BayesianRatingCalculator:
 
         if score_values is None:
             # Assume score's value is itself
-            score_values = zip(score_counts.keys(), score_counts.keys())
+            score_values = dict(zip(score_counts.keys(), score_counts.keys()))
         self.score_values = score_values
 
         # Precalculate the total number of reviews
@@ -98,6 +121,8 @@ class BayesianRatingCalculator:
         # The higher bound of the score
         self._upper_bound = score_sum + credible_diff
         # In theory the 'true' score lies between these two
+        # Also store the middle
+        self._center = score_sum
 
     def get_credible_width(self):
         """Return the width of the credible interval of this score."""
@@ -119,3 +144,10 @@ class BayesianRatingCalculator:
             self.calculate()
 
         return self._upper_bound
+
+    def get_center(self):
+        """Return the center of this score's uncertainty window."""
+        if self._upper_bound is None:
+            self.calculate()
+
+        return self._center

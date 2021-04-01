@@ -19,6 +19,10 @@
         color: $colour-true;
     }
 
+    &--is-indeterm {
+        color: $colour-indeterm;
+    }
+
     &__embed {
         margin-bottom: 1rem;
     }
@@ -41,6 +45,10 @@
     &__label {
         font-weight: bold;
         font-size: 3rem;
+    }
+
+    &__info {
+        margin-bottom: 1rem;
     }
 
     &__counts {

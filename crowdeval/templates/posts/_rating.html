@@ -1,0 +1,58 @@
+{% macro rating(post) %}
+    <div class="rating">
+        <div class="rating__header">
+            <h2>CrowdEval Rating:</h2>
+            <a href="#" class="text-muted btn-icon-left"><i class="fas fa-question-circle"></i>How is this calculated?</a>
+        </div>
+            {% set score = post.get_rounded_score().name %}
+            {% set exact_score, width = post.get_score() %}
+            {% if width > 1%}
+                <div class="rating__label rating--is-indeterm">
+                    <span class="fa-layers rating__counts-icon" >
+                        <i class="fas fa-circle" data-fa-transform="shrink-4"></i>
+                        <i class="fa-inverse fas fa-tilde" data-fa-transform="shrink-8"></i>
+                    </span><span>Not Sure</span>
+                </div>
+                <div class="rating__info"><i class="fal fa-info-square fa-fw"></i> This post doesn't have enough consistent ratings yet.</div>
+            {% elif score == "TRUE" %}
+                <div class="rating__label rating--is-true">
+                    <i class="fas fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
+                    True
+                </div>
+            {% elif score == "MOSTLY_TRUE" %}
+                <div class="rating__label rating--is-mostly-true">
+                    <i class="fas fa-adjust" data-fa-transform="shrink-4" class="rating__badge"></i>
+                    Mostly True
+                </div>
+            {% elif score == "MIXED" %}
+                <div class="rating__label rating--is-mixed">
+                    <i class="far fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
+                    Mixed
+                </div>
+            {% elif score == "MOSTLY_FALSE" %}
+                <div class="rating__label rating--is-mostly-false">
+                    <i class="fas fa-adjust" data-fa-transform="shrink-4 flip-h" class="rating__badge"></i>
+                    Mostly False
+                </div>
+            {% elif score == "FALSE" %}
+                <div class="rating__label rating--is-false">
+                    <i class="fas fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
+                    False
+                </div>
+            {% endif %}
+
+        <ul class="rating__counts">
+            <li>
+                <span class="fa-layers fa-fw rating__counts-icon" data-fa-transform="shrink-2">
+                    <i class="fas fa-certificate"></i>
+                    <i class="fa-inverse fas fa-users" data-fa-transform="shrink-8"></i>
+                </span>
+                This post rated by <strong>{{ post.get_rating_count() }} users</strong>.
+            </li>
+            {# <li>
+                <i class="fas fa-chart-network fa-fw fa-fw rating__counts-icon" data-fa-transform="shrink-2"></i>
+                Similar posts rated by <strong>50 users</strong>.
+            </li> #}
+        </ul>
+    </div>
+{% endmacro %}

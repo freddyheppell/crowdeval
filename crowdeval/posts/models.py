@@ -1,12 +1,14 @@
 """Models for stored posts."""
 
 from datetime import datetime
+from typing import Tuple
 
 from sqlalchemy.dialects.mysql import JSON, TINYINT
 from sqlalchemy.dialects.mysql.types import TEXT
 
 from crowdeval.database import Column, PkModel, reference_col
 from crowdeval.extensions import db
+from crowdeval.posts.support.scoring import PostScorer, ScoreEnum
 from crowdeval.search.support.db_mixin import SearchableMixin
 
 
@@ -16,6 +18,7 @@ class Post(SearchableMixin, PkModel):
     __tablename__ = "posts"
     __searchable__ = ["text", "external_created_at"]
     __bertify__ = ["text"]
+    _scorer = None
 
     platform = Column(TINYINT(unsigned=True), nullable=False)
     external_post_id = Column(db.String(length=64), nullable=False)
@@ -66,6 +69,28 @@ class Post(SearchableMixin, PkModel):
     def get_similar_posts(self, page, per_page):
         """Get posts with similar text to this one."""
         return self.bert_search(self.text, "text", page, per_page)
+
+    def get_score(self, force_rescore=False) -> Tuple[float, float]:
+        """Get the lower bound and certainty width of this post's score.
+
+        force_rescore:  Force the scorer to be recalculated
+        """
+        if force_rescore or self._scorer is None:
+            self._scorer = PostScorer(self)
+
+        return self._scorer.get_bound(), self._scorer.get_width()
+
+    def get_rounded_score(self, force_rescore=False) -> ScoreEnum:
+        """Get the score rounded to the nearest integer.
+
+        force_rescore:  Force the scorer to be recalculated
+        """
+        rounded = max(1, min(round(self.get_score(force_rescore)[0]), 5))
+        return ScoreEnum(rounded)
+
+    def get_rating_count(self) -> int:
+        """Get the number of valid ratings for this post."""
+        return len(self.ratings)
 
 
 class Rating(PkModel):

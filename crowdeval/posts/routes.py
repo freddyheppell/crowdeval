@@ -23,7 +23,10 @@ def show(id):
     similar_posts, total, scores = post.get_similar_posts(1, 10)
 
     return render_template(
-        "posts/show.html", post=post, similar_posts=similar_posts.all(), scores=scores
+        "posts/show.html",
+        post=post,
+        similar_posts=similar_posts.all()[1:],
+        scores=scores,
     )
 
 
