@@ -16,7 +16,7 @@ class TestCanViewRateForm:
     def test_can_submit_rate_form(self, testapp, post, category):
         res = testapp.get(url_for("posts.rate", id=post.id))
         form = res.form
-        form["rating"] = "0"
+        form["rating"] = "1"
         form["category_id"] = str(category.id)
         form["comments"] = "Lorem ipsum"
 
