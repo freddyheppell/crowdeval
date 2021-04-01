@@ -86,7 +86,7 @@ class BayesianRatingCalculator:
             score_keys := set(score_values.keys())
         ):
             raise Exception(
-                f"The score count keys ({count_keys}) and score value keys ({score_keys})"
+                f"The score count keys ({count_keys}) and score value keys ({score_keys}) are not consistent"
             )
 
     def calculate(self):
