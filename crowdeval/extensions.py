@@ -1,5 +1,6 @@
 """Instantiate all flask extensions."""
 from flask_bs4 import Bootstrap
+from flask_caching import Cache
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_elasticsearch import FlaskElasticsearch
 from flask_login import LoginManager
@@ -23,3 +24,5 @@ bootstrap = Bootstrap()
 
 es = FlaskElasticsearch()
 bert = FlaskBert()
+
+cache = Cache()

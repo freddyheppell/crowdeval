@@ -333,6 +333,17 @@ visitor = "*"
 WTForms = ">=2.3.1"
 
 [[package]]
+name = "flask-caching"
+version = "1.10.1"
+description = "Adds caching support to your Flask application"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+Flask = "*"
+
+[[package]]
 name = "flask-dance"
 version = "3.3.1"
 description = "Doing the OAuth dance with style using Flask, requests, and oauthlib"
@@ -801,6 +812,17 @@ cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 py = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
+name = "redis"
+version = "3.5.3"
+description = "Python client for Redis key-value store"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[package.extras]
+hiredis = ["hiredis (>=0.1.3)"]
+
+[[package]]
 name = "regex"
 version = "2020.11.13"
 description = "Alternative regular expression module, to replace re."
@@ -1087,7 +1109,7 @@ locale = ["Babel (>=1.3)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "31d7735498dbdee62aa7c1a26ef5e87b21ba4b4cbac6f2a443e0bcb0ca260b08"
+content-hash = "f14f635d754b8a8910230f4b4df8e378b87c525eacafbdd5156408862dc5f0f3"
 
 [metadata.files]
 alembic = [
@@ -1230,6 +1252,10 @@ flask = [
 flask-bs4 = [
     {file = "Flask-BS4-5.0.0.1.tar.gz", hash = "sha256:74eba0434e280c5ff5c05a306bcb61b82a2409e922c724a09fa4cf22cb9ceaad"},
     {file = "Flask_BS4-5.0.0.1-py3-none-any.whl", hash = "sha256:843ce9e186936120366863184c021ce96f5537e7f6276bd9ced16339fe6dd40d"},
+]
+flask-caching = [
+    {file = "Flask-Caching-1.10.1.tar.gz", hash = "sha256:cf19b722fcebc2ba03e4ae7c55b532ed53f0cbf683ce36fafe5e881789a01c00"},
+    {file = "Flask_Caching-1.10.1-py3-none-any.whl", hash = "sha256:bcda8acbc7508e31e50f63e9b1ab83185b446f6b6318bd9dd1d45626fba2e903"},
 ]
 flask-dance = [
     {file = "Flask-Dance-3.3.1.tar.gz", hash = "sha256:6a570e051fe40148698080c65b815704641bf05091fbb9becae549b8d8e1e33b"},
@@ -1558,6 +1584,10 @@ pyzmq = [
     {file = "pyzmq-22.0.3-pp37-pypy37_pp73-manylinux2010_x86_64.whl", hash = "sha256:13465c1ff969cab328bc92f7015ce3843f6e35f8871ad79d236e4fbc85dbe4cb"},
     {file = "pyzmq-22.0.3-pp37-pypy37_pp73-win32.whl", hash = "sha256:279cc9b51db48bec2db146f38e336049ac5a59e5f12fb3a8ad864e238c1c62e3"},
     {file = "pyzmq-22.0.3.tar.gz", hash = "sha256:f7f63ce127980d40f3e6a5fdb87abf17ce1a7c2bd8bf2c7560e1bbce8ab1f92d"},
+]
+redis = [
+    {file = "redis-3.5.3-py2.py3-none-any.whl", hash = "sha256:432b788c4530cfe16d8d943a09d40ca6c16149727e4afe8c2c9d5580c59d9f24"},
+    {file = "redis-3.5.3.tar.gz", hash = "sha256:0e7e0cfca8660dea8b7d5cd8c4f6c5e29e11f31158c0b0ae91a397f00e5a05a2"},
 ]
 regex = [
     {file = "regex-2020.11.13-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:8b882a78c320478b12ff024e81dc7d43c1462aa4a3341c754ee65d857a521f85"},

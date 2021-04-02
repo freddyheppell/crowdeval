@@ -25,7 +25,7 @@ def show(id):
     return render_template(
         "posts/show.html",
         post=post,
-        similar_posts=similar_posts.all()[1:],
+        similar_posts=similar_posts[1:],
         scores=scores,
     )
 

@@ -41,8 +41,12 @@ services:
       context: './infrastructure/bert'
       dockerfile: Dockerfile
     ports:
-    - '5555:5555'
-    - '5556:5556'
+      - '5555:5555'
+      - '5556:5556'
+  redis:
+    image: 'redis:6.2'
+    ports:
+      - '6379:6379'
 volumes:
   cedb:
   cedb_test:

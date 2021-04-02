@@ -59,6 +59,10 @@ class PkModel(Model):
         return None
 
 
+class CacheableMixin(object):
+    def __repr__(self):
+        return "%s(%s)" % (self.__class__.__name__, self.id)
+
 def reference_col(
     tablename, nullable=False, pk_name="id", foreign_key_kwargs=None, column_kwargs=None
 ):

@@ -7,13 +7,13 @@ import timeago
 from sqlalchemy.dialects.mysql import JSON, TINYINT
 from sqlalchemy.dialects.mysql.types import TEXT
 
-from crowdeval.database import Column, PkModel, reference_col
-from crowdeval.extensions import db
+from crowdeval.database import Column, PkModel, CacheableMixin, reference_col
+from crowdeval.extensions import db, cache
 from crowdeval.posts.support.scoring import PostScorer, ScoreEnum
 from crowdeval.search.support.db_mixin import SearchableMixin
 
 
-class Post(SearchableMixin, PkModel):
+class Post(SearchableMixin, PkModel, CacheableMixin):
     """Represents the model of a post."""
 
     __tablename__ = "posts"
@@ -67,9 +67,13 @@ class Post(SearchableMixin, PkModel):
         """Return datetime formatted for user display of model creation time."""
         return self.created_at.strftime("%-d %b %Y, %X")
 
+    @cache.memoize()
     def get_similar_posts(self, page, per_page):
         """Get posts with similar text to this one."""
-        return self.bert_search(self.text, "text", page, per_page)
+        similar_posts, total, scores = self.bert_search(self.text, "text", page, per_page)
+        similar_posts = similar_posts.all()
+
+        return similar_posts, total, scores
 
     def get_scorer(self, force_rescore=False) -> PostScorer:
         """Return the scorer instance."""
