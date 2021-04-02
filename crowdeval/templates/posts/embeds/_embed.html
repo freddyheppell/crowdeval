@@ -1,5 +1,5 @@
-{% macro embed(post) %}
-<div class="card">
+{% macro embed(post, classes="") %}
+<div class="card {{ classes }}">
     <div class="card-body">
     {% if post.platform == 1 %}
         {% from 'posts/embeds/_twitter.html' import twitter_embed %}

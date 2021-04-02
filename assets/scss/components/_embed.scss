@@ -1,4 +1,15 @@
 .embed {
+    &--is-stacked {
+        .embed__footer {
+            flex-direction: column;
+            align-items: flex-start;
+
+            button {
+                padding-left: 0;
+            }
+        }
+    }
+
     &__author-name {
         font-weight: bold;
         margin-bottom: 0;

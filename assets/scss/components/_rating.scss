@@ -45,6 +45,8 @@
     &__label {
         font-weight: bold;
         font-size: 3em;
+        font-family: $headings-font-family;
+        font-weight: 900;
     }
 
     &__label.rating--is-small {

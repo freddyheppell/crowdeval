@@ -7,7 +7,7 @@
     {% elif score == "MOSTLY_TRUE" %}
         <div class="rating__label rating--is-mostly-true {% if small %} rating--is-small {% endif %}">
             <i class="fas fa-adjust" data-fa-transform="shrink-4" class="rating__badge"></i>
-            Mostly True
+            Likely True
         </div>
     {% elif score == "MIXED" %}
         <div class="rating__label rating--is-mixed {% if small %} rating--is-small {% endif %}">
@@ -17,7 +17,7 @@
     {% elif score == "MOSTLY_FALSE" %}
         <div class="rating__label rating--is-mostly-false {% if small %} rating--is-small {% endif %}">
             <i class="fas fa-adjust" data-fa-transform="shrink-4 flip-h" class="rating__badge"></i>
-            Mostly False
+            Likely False
         </div>
     {% elif score == "FALSE" %}
         <div class="rating__label rating--is-false {% if small %} rating--is-small {% endif %}">
@@ -31,6 +31,8 @@
     <div class="rating">
         <div class="rating__header">
             <h2>CrowdEval Rating:</h2>
+        </div>
+        <div class="rating__actions">
             <a href="#" class="text-muted btn-icon-left" data-bs-toggle="modal" data-bs-target="#rating-explanation-{{post.id}}"><i class="fas fa-question-circle"></i>How is this calculated?</a>
         </div>
         {% set score = post.get_rounded_score().name %}
@@ -80,6 +82,14 @@
                     <p>Since this range is larger than 1, it can't be confidently assigned to a single score.</p>
                 {% else %}
                     <p>This range is less than 1, so it can be assigned a single score.</p>
+
+                    {% if calculator.get_center() >= 3%}
+                        <p>The center of this region is further towards <em>True</em> than the middle, so use the lower bound.</p>
+                    {% else %}
+                        <p>The center of this region is further towards <em>False</em> than the middle, so use the upper bound.</p>
+                    {% endif %}
+
+                    <p>Rounded to the nearest number, this post scores {{ post.get_rounded_score().value }}</p>
                 {% endif %}
             {% endif %}
             </div>

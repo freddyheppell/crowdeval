@@ -5,7 +5,7 @@
 {% block content %}
     <h1 class="mb-3">Rating for {{ post.author_name }}'s Post</h1>
 
-    <div class="row">
+    <div class="row mb-5">
         <div class="col-md-5 rating__embed">
             {% from 'posts/embeds/_embed.html' import embed %}
             {{ embed(post) }}
@@ -24,9 +24,8 @@
 
             <div class="row">
                 {% for post in similar_posts %}
-                    <div class="col-md-6">
-                    {# {{ scores[post.id] }} #}
-                    {{ embed(post) }}
+                    <div class="col-md-6 mb-2">
+                        {{ embed(post, "embed--is-stacked") }}
                     </div>
                 {% endfor %}
             </div>
@@ -34,6 +33,7 @@
 
         <div class="col-md-6">
             <h2>Comments</h2>
+
             {% for rating in post.ratings %}
             <div>
                 {{ rating.comments }}<br>
