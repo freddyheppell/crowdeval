@@ -32,9 +32,6 @@
         <div class="rating__header">
             <h2>CrowdEval Rating:</h2>
         </div>
-        <div class="rating__actions">
-            <a href="#" class="text-muted btn-icon-left" data-bs-toggle="modal" data-bs-target="#rating-explanation-{{post.id}}"><i class="fas fa-question-circle"></i>How is this calculated?</a>
-        </div>
         {% set score = post.get_rounded_score().name %}
         {% set exact_score, width = post.get_score() %}
         {% if width > 1 %}
@@ -48,6 +45,11 @@
         {% else %}
             {{ rating_badge(score) }}
         {% endif %}
+
+        <div class="rating__actions">
+            <a href="#" class="text-muted btn-icon-left" data-bs-toggle="modal" data-bs-target="#rating-explanation-{{post.id}}"><i class="fas fa-question-circle"></i>How is this calculated?</a>
+            <a href="#" class="text-muted btn-icon-left"><i class="fas fa-chart-pie"></i>Statistics</a>
+        </div>
 
         <ul class="rating__counts">
             <li>
@@ -64,6 +66,11 @@
         </ul>
     </div>
 
+    {{ rating_modal(post) }}
+{% endmacro %}
+
+
+{% macro rating_modal(post) %}
     <div class="modal fade" id="rating-explanation-{{ post.id }}" tabindex="-1" aria-labelledby="rating-explanation-{{ post.id }}-title" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

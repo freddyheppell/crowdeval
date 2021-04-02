@@ -35,10 +35,17 @@
             <h2>Comments</h2>
 
             {% for rating in post.ratings %}
-            <div>
-                {{ rating.comments }}<br>
-                {{ rating.user.username }}
-                {{ rating_badge(rating.to_enum().name, small=True) }}
+            <div class="review">
+                <div class="review__text">
+                    {{ rating.comments }}
+                </div>
+                <div class="review__footer">
+                    <div>{{ rating_badge(rating.to_enum().name, small=True) }}</div>
+                    <div>
+                        <a href="#" class="text-muted"><i class="fas fa-flag"></i></a>
+                        <span class="review__date text-muted">{{ rating.get_human_created_at() }}</span>
+                    </div>
+                </div>
             </div>
             {% endfor %}
         </div>

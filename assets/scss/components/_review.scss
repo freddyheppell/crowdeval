@@ -1,0 +1,13 @@
+.review {
+    margin-bottom: 1rem;
+
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__date {
+        margin-left: 1rem;
+        text-transform: uppercase;
+    }
+}

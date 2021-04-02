@@ -3,6 +3,7 @@
 from datetime import datetime
 from typing import Tuple
 
+import timeago
 from sqlalchemy.dialects.mysql import JSON, TINYINT
 from sqlalchemy.dialects.mysql.types import TEXT
 
@@ -112,16 +113,21 @@ class Rating(PkModel):
     rating = Column(TINYINT(unsigned=True), nullable=False)
     comments = Column(TEXT(), nullable=False)
     categories = db.relationship("Category", secondary="category_rating")
+    created_at = Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-    def __init__(self, rating, comments, user_id=None, post_id=None):
+    def __init__(self, rating, comments, user_id=None, post_id=None) -> None:
         """Create a new rating instance."""
         super().__init__(
             rating=rating, comments=comments, user_id=user_id, post_id=post_id
         )
 
-    def to_enum(self):
+    def to_enum(self) -> ScoreEnum:
         """Return the instance of the rating enum for this rating."""
         return ScoreEnum(self.rating)
+
+    def get_human_created_at(self) -> str:
+        """Get the time difference string for the created at date."""
+        return timeago.format(self.created_at, datetime.now())
 
 
 class Category(PkModel):

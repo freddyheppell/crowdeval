@@ -21,6 +21,7 @@ TwitterAPI = "^2.6.9"
 Flask-BS4 = "^5.0.0"
 Flask-Elasticsearch = "^0.2.5"
 bert-serving-client = "^1.10.0"
+timeago = "^1.0.15"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"
