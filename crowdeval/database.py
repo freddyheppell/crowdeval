@@ -60,8 +60,12 @@ class PkModel(Model):
 
 
 class CacheableMixin(object):
+    """Add behaviours to cache this class's methods."""
+
     def __repr__(self):
+        """Return a string representation to use for cache keys."""
         return "%s(%s)" % (self.__class__.__name__, self.id)
+
 
 def reference_col(
     tablename, nullable=False, pk_name="id", foreign_key_kwargs=None, column_kwargs=None
