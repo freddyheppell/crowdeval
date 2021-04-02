@@ -1,8 +1,9 @@
 """The app module, builds and configures the application."""
 import logging
+import os
 import sys
 
-from flask import Flask
+from flask import Flask, send_from_directory
 
 from crowdeval import commands, extensions, posts, template_filters, test, users
 
@@ -17,6 +18,7 @@ def create_app(config_object="crowdeval.settings"):
     register_shellcontext(app)
     register_commands(app)
     register_template_filters(app)
+    register_basic_routes(app)
     configure_logger(app)
 
     return app
@@ -65,6 +67,18 @@ def register_commands(app):
 def register_template_filters(app):
     """Register custom filters."""
     app.register_blueprint(template_filters.blueprint)
+
+
+def register_basic_routes(app):
+    """Register simple routes."""
+
+    @app.route("/favicon.ico")
+    def favicon():
+        return send_from_directory(
+            os.path.join(app.root_path, "static"),
+            "icons/favicon.ico",
+            mimetype="image/vnd.microsoft.icon",
+        )
 
 
 def configure_logger(app):
