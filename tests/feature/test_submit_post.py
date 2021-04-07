@@ -26,6 +26,16 @@ class TestSubmitPost:
         assert Post.query.one().external_post_id == "1362771196945793024"
 
     @pytest.mark.usefixtures("test_with_authenticated_user")
+    def test_can_submit_dummy_post(self, testapp):
+        res = testapp.get(url_for("posts.submit"))
+
+        form = res.form
+        form["url"] = "https://example.org/2830388933812890"
+
+        res = form.submit().follow()
+        assert Post.query.one().external_post_id == "2830388933812890"
+
+    @pytest.mark.usefixtures("test_with_authenticated_user")
     def test_can_submit_tweet_with_emoji(self, testapp, mocker: MockFixture):
         res = testapp.get(url_for("posts.submit"))
 
