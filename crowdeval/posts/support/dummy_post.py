@@ -24,6 +24,7 @@ class DummyPost:
         return self.id
 
     def get_data(self):
+        """Get the post data based on id seed."""
         faker = Faker()
         Faker.seed(self.id)
         faker.add_provider(lorem)
@@ -43,5 +44,7 @@ class DummyPost:
             ),
             "external_author_id": faker.pyint(),
             "additional_metadata": json.dumps({"verified": faker.pybool()}),
-            "external_created_at": faker.date_time_this_century(before_now=True).strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+            "external_created_at": faker.date_time_this_century(
+                before_now=True
+            ).strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
         }
