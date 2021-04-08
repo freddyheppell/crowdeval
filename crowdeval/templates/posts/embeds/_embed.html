@@ -4,6 +4,9 @@
     {% if post.platform == 1 %}
         {% from 'posts/embeds/_twitter.html' import twitter_embed %}
         {{ twitter_embed(post) }}
+    {% elif post.platform == 2 %}
+        {% from 'posts/embeds/_dummy.html' import dummy_embed %}
+        {{ dummy_embed(post) }}
     {% else %}
         <strong class="text-danger">Unable to embed post, unknown platform</strong>
     {% endif %}
