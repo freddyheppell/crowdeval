@@ -40,8 +40,10 @@ class WeightedAverageSimilarPostScorer:
             sum_weighted_scores, sum_weights = tuple(
                 sum(x) for x in zip(*similar_post_scores)
             )
-        else:
+        elif len(similar_post_scores) == 1:
             sum_weighted_scores, sum_weights = similar_post_scores[0]
+        else:
+            return 0
 
         return sum_weighted_scores / sum_weights
 
