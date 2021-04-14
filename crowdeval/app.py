@@ -63,6 +63,7 @@ def register_commands(app):
     app.cli.add_command(commands.import_tweet_seeds)
     app.cli.add_command(commands.wipeout)
     app.cli.add_command(commands.seed_ratings)
+    app.cli.add_command(commands.reindex)
 
 
 def register_template_filters(app):

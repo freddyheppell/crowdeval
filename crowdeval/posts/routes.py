@@ -20,7 +20,7 @@ def show(id):
     if (post := Post.get_by_id(id)) is None:
         abort(404)
 
-    similar_posts, total, scores = post.get_similar_posts(1, 10)
+    similar_posts, total, scores = post.get_similar_posts(page=1, per_page=64)
 
     return render_template(
         "posts/show.html",

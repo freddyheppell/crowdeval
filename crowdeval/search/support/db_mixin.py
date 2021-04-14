@@ -32,13 +32,13 @@ class SearchableMixin(object):
         return *cls._process_search(ids, total), scores
 
     @classmethod
-    def bert_search(cls, expression, field, page, per_page):
+    def bert_search(cls, expression, field, page, per_page, min_score):
         """Search the model with BERT."""
         if not hasattr(cls, "__bertify__") or field not in cls.__bertify__:
             raise Exception(f"Trying to search non-bertified field {field}")
 
         ids, total, scores = bert_search_by_term(
-            cls.__tablename__, f"{field}_vector", expression, page, per_page
+            cls.__tablename__, f"{field}_vector", expression, page, per_page, min_score
         )
 
         return *cls._process_search(ids, total), scores

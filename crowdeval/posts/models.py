@@ -71,7 +71,7 @@ class Post(SearchableMixin, PkModel, CacheableMixin):
     def get_similar_posts(self, page, per_page):
         """Get posts with similar text to this one."""
         similar_posts, total, scores = self.bert_search(
-            self.text, "text", page, per_page
+            self.text, "text", page, per_page, 1.75
         )
         similar_posts = similar_posts.all()
 

@@ -226,3 +226,10 @@ def seed_ratings():
                 random.randrange(0, 20), post_id=post.id, user_id=user.id
             )
             db.session.commit()
+
+
+@click.command()
+@with_appcontext
+def reindex():
+    """Reindex all posts."""
+    Post.reindex()
