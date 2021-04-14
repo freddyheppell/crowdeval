@@ -4,7 +4,6 @@ from datetime import datetime
 from typing import Tuple
 
 import timeago
-from sqlalchemy.orm import subqueryload
 from sqlalchemy.dialects.mysql import JSON, TINYINT
 from sqlalchemy.dialects.mysql.types import TEXT
 
@@ -71,9 +70,7 @@ class Post(SearchableMixin, PkModel, CacheableMixin):
     @cache.memoize()
     def get_similar_post_ids(self, page, per_page):
         """Get posts with similar text to this one."""
-        return self.bert_search(
-            self.text, "text", page, per_page, 1.75
-        )
+        return self.bert_search(self.text, "text", page, per_page, 1.75)
 
     def get_scorer(self, force_rescore=False) -> PostScorer:
         """Return the scorer instance."""

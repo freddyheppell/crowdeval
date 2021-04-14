@@ -2,8 +2,9 @@
 
 from collections import Counter
 from enum import IntEnum
-from math import inf, sqrt
 from itertools import starmap
+from math import inf, sqrt
+
 
 class ScoreEnum(IntEnum):
     """Represents score options."""
@@ -36,7 +37,9 @@ class WeightedAverageSimilarPostScorer:
         similar_post_scores = list(starmap(self._process_post, self.similar_posts))
 
         if len(similar_post_scores) > 1:
-            sum_weighted_scores, sum_weights = tuple(sum(x) for x in zip(*similar_post_scores))
+            sum_weighted_scores, sum_weights = tuple(
+                sum(x) for x in zip(*similar_post_scores)
+            )
         else:
             sum_weighted_scores, sum_weights = similar_post_scores[0]
 
