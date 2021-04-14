@@ -126,14 +126,13 @@ class BayesianRatingCalculator:
         print(score_sum_sq)
 
         # Compute the variance and standard deviations
-        # TODO check this is right, missing score sum
         variance = (score_sum_sq - (score_sum ** 2)) / (self.N + self.K + 1)
         print(variance)
         stdev = sqrt(variance)
 
         # This is the credible amount the score could be above or below the expectation
         credible_diff = self.z * stdev
-        # The width that the width lies in. If this is > 1 then no single score is certain
+        # The width that the answer lies in. If this is > 1 then no single score is certain
         self._credible_width = credible_diff * 2
         # The lower bound of the score
         self._lower_bound = score_sum - credible_diff
