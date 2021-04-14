@@ -21,11 +21,10 @@
     <div class="row">
         <div class="col-md-6">
             <h2>Similar Posts</h2>
-
+            <div>Similar posts are generally {{ rating_badge(similar_post_rating.name, small=True, inline=True) }}</div>
             <div class="row">
                 {% for post in similar_posts %}
                     <div class="col-md-6 mb-2">
-                        {{ scores[post.id] }}
                         {{ embed(post, "embed--is-stacked") }}
                     </div>
                 {% endfor %}

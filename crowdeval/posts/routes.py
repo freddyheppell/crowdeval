@@ -1,9 +1,13 @@
 """Routes relating to posts functionality."""
 
+from crowdeval.posts.support.scoring import WeightedAverageSimilarPostScorer, ScoreEnum
 from flask import Blueprint, abort, redirect, render_template
 from flask.helpers import url_for
 from flask_login import current_user, login_required
+from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
+
+import json
 
 from crowdeval.extensions import db
 from crowdeval.posts.forms.rate_post_form import SubmitRatingForm
@@ -17,16 +21,21 @@ blueprint = Blueprint("posts", __name__, static_folder="../static")
 @blueprint.route("/post/<id>")
 def show(id):
     """Return a post given an id."""
-    if (post := Post.get_by_id(id)) is None:
+    if (post := Post.query.options(subqueryload('ratings')).get(id)) is None:
         abort(404)
 
-    similar_posts, total, scores = post.get_similar_posts(page=1, per_page=64)
-
+    similar_post_ids, total, scores = post.get_similar_post_ids(page=1, per_page=64)
+    similar_posts = Post.query.options(subqueryload('ratings')).filter(Post.id.in_(similar_post_ids)).all()
+    weighted_scorer = WeightedAverageSimilarPostScorer(similar_posts, scores)
+    similar_post_score = weighted_scorer.get_score()
+    similar_post_rating = ScoreEnum(max(1, min(round(similar_post_score), 5)))
     return render_template(
         "posts/show.html",
         post=post,
         similar_posts=similar_posts[1:],
         scores=scores,
+        similar_post_score=similar_post_score,
+        similar_post_rating=similar_post_rating
     )
 
 

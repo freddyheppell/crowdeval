@@ -41,7 +41,7 @@ class SearchableMixin(object):
             cls.__tablename__, f"{field}_vector", expression, page, per_page, min_score
         )
 
-        return *cls._process_search(ids, total), scores
+        return ids, total, scores
 
     @classmethod
     def before_commit(cls, session):

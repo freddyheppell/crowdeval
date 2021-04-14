@@ -1,26 +1,26 @@
-{% macro rating_badge(score, small=False) %}
+{% macro rating_badge(score, small=False, inline=False) %}
     {% if score == "TRUE" %}
-        <div class="rating__label rating--is-true {% if small %} rating--is-small {% endif %}">
+        <div class="rating__label rating--is-true {% if small %} rating--is-small {% endif %} {% if inline %} rating--is-inline {% endif %}">
             <i class="fas fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
             True
         </div>
     {% elif score == "MOSTLY_TRUE" %}
-        <div class="rating__label rating--is-mostly-true {% if small %} rating--is-small {% endif %}">
+        <div class="rating__label rating--is-mostly-true {% if small %} rating--is-small {% endif %} {% if inline %} rating--is-inline {% endif %}">
             <i class="fas fa-adjust" data-fa-transform="shrink-4" class="rating__badge"></i>
             Likely True
         </div>
     {% elif score == "MIXED" %}
-        <div class="rating__label rating--is-mixed {% if small %} rating--is-small {% endif %}">
+        <div class="rating__label rating--is-mixed {% if small %} rating--is-small {% endif %} {% if inline %} rating--is-inline {% endif %}">
             <i class="far fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
             Mixed
         </div>
     {% elif score == "MOSTLY_FALSE" %}
-        <div class="rating__label rating--is-mostly-false {% if small %} rating--is-small {% endif %}">
+        <div class="rating__label rating--is-mostly-false {% if small %} rating--is-small {% endif %} {% if inline %} rating--is-inline {% endif %}">
             <i class="fas fa-adjust" data-fa-transform="shrink-4 flip-h" class="rating__badge"></i>
             Likely False
         </div>
     {% elif score == "FALSE" %}
-        <div class="rating__label rating--is-false {% if small %} rating--is-small {% endif %}">
+        <div class="rating__label rating--is-false {% if small %} rating--is-small {% endif %} {% if inline %} rating--is-inline {% endif %}">
             <i class="fas fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
             False
         </div>

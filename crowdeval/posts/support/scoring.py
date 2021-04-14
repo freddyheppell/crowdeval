@@ -3,7 +3,7 @@
 from collections import Counter
 from enum import IntEnum
 from math import inf, sqrt
-
+from itertools import starmap
 
 class ScoreEnum(IntEnum):
     """Represents score options."""
@@ -13,6 +13,34 @@ class ScoreEnum(IntEnum):
     MIXED = 3
     MOSTLY_FALSE = 2
     FALSE = 1
+
+
+class WeightedAverageSimilarPostScorer:
+    """Returns the score of similar posts."""
+
+    def __init__(self, similar_posts, scores) -> None:
+        """Create a new weighted average scorer for similar posts."""
+        self.similar_posts = zip(similar_posts, scores)
+
+    def _process_post(self, post, score) -> int:
+        """Convert elasticsearch cosine similarity scores into 0-01 range."""
+        scorer = PostScorer(post)
+        # Spread out values: 1.75 -> 0, 2 -> 1
+        weight = (score - 1.75) * 4
+        weighted_score = scorer.get_bound() * weight
+
+        return weighted_score, weight
+
+    def get_score(self) -> float:
+        """Get the weighted average."""
+        similar_post_scores = list(starmap(self._process_post, self.similar_posts))
+
+        if len(similar_post_scores) > 1:
+            sum_weighted_scores, sum_weights = tuple(sum(x) for x in zip(*similar_post_scores))
+        else:
+            sum_weighted_scores, sum_weights = similar_post_scores[0]
+
+        return sum_weighted_scores / sum_weights
 
 
 class PostScorer:

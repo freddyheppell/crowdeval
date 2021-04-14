@@ -56,6 +56,10 @@
         font-size: 1em;
     }
 
+    &__label.rating--is-inline {
+        display: inline-block;
+    }
+
     &__info {
         margin-bottom: 1rem;
     }
