@@ -1,8 +1,9 @@
-from factory import LazyAttribute, Sequence
+from factory import LazyAttribute, Sequence, post_generation
 from factory.alchemy import SQLAlchemyModelFactory
 from factory.fuzzy import FuzzyInteger
 from faker import Faker
 from faker.providers import date_time, lorem, profile
+from  sqlalchemy.sql.expression import func
 
 from crowdeval.database import db
 from crowdeval.posts.models import Category, Post, Rating
@@ -61,6 +62,21 @@ class RatingFactory(BaseFactory):
     post_id = LazyAttribute(lambda a: PostFactory().save().id)
     rating = FuzzyInteger(0, 4)
     comments = LazyAttribute(lambda a: faker.paragraph())
+
+    @post_generation
+    def categories(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for group in extracted:
+                self.categories.append(group)
+        else:
+            # No categories passed in, pick some random ones
+            category = Category.query.order_by(func.rand()).limit(1).first()
+            self.categories.append(category)
 
     class Meta:
         model = Rating
