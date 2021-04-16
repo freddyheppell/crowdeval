@@ -3,7 +3,7 @@ from factory.alchemy import SQLAlchemyModelFactory
 from factory.fuzzy import FuzzyInteger
 from faker import Faker
 from faker.providers import date_time, lorem, profile
-from  sqlalchemy.sql.expression import func
+from sqlalchemy.sql.expression import func
 
 from crowdeval.database import db
 from crowdeval.posts.models import Category, Post, Rating
@@ -60,7 +60,7 @@ class CategoryFactory(BaseFactory):
 class RatingFactory(BaseFactory):
     user_id = LazyAttribute(lambda a: UserFactory().save().id)
     post_id = LazyAttribute(lambda a: PostFactory().save().id)
-    rating = FuzzyInteger(0, 4)
+    rating = FuzzyInteger(1, 5)
     comments = LazyAttribute(lambda a: faker.paragraph())
 
     @post_generation
