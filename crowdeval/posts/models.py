@@ -121,7 +121,9 @@ class Post(SearchableMixin, PkModel, CacheableMixin):
             .all()
         )
 
-        return Category.query.filter(Category.id.in_([id for id, _ in category_id_freqs])).all()
+        return Category.query.filter(
+            Category.id.in_([id for id, _ in category_id_freqs])
+        ).all()
 
 
 class Rating(PkModel):
