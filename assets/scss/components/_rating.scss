@@ -75,3 +75,17 @@
         }
     }
 }
+
+.category-list {
+    &--is-1 {
+        font-size: 1.6em;
+    }
+
+    &--is-2 {
+        font-size: 1.4em;
+    }
+
+    &--is-3 {
+        font-size: 1.2em;
+    }
+}

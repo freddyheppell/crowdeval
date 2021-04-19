@@ -6,17 +6,24 @@
     <h1 class="mb-3">Rating for {{ post.author_name }}'s Post</h1>
 
     <div class="row mb-5">
-        <div class="col-md-5 rating__embed">
-            {% from 'posts/embeds/_embed.html' import embed %}
-            {{ embed(post) }}
-        </div>
-        <div class="col-md-7">
-            {% from 'posts/_rating.html' import rating, rating_badge %}
-            {{ rating(post) }}
-        </div>
+            <div class="col-md-5 rating__embed">
+                {% from 'posts/embeds/_embed.html' import embed %}
+                {{ embed(post) }}
+            </div>
+            <div class="col-md-4">
+                {% from 'posts/_rating.html' import rating, rating_badge %}
+                {{ rating(post) }}
+            </div>
+            <div class="col-md-3">
+                <ul class="list-unstyled category-list">
+                    {% for category in post.get_top_categories()[:5] %}
+                    <li class="category-list--is-{{ loop.index }}"><i class="{{ category.icon_class}} fa-fw"></i> {{ category.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
     </div>
-
-    
+    <div>
+    </div>
 
     <div class="row">
         <div class="col-md-6">

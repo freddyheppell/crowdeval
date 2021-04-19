@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Tuple
 
 import timeago
+from sqlalchemy import func
 from sqlalchemy.dialects.mysql import JSON, TINYINT
 from sqlalchemy.dialects.mysql.types import TEXT
 
@@ -100,6 +101,27 @@ class Post(SearchableMixin, PkModel, CacheableMixin):
     def get_rating_count(self) -> int:
         """Get the number of valid ratings for this post."""
         return len(self.ratings)
+
+    def get_top_categories(self):
+        """Get the top categories of the post."""
+        # This is equivalent to
+        # SELECT category_id, COUNT(category_id) FROM ratings
+        # RIGHT JOIN category_rating ON ratings.id = category_rating.rating_id
+        # WHERE ratings.post_id = <ID>
+        # GROUP BY category_id
+        # ORDER BY count(category_id) DESC
+        count = func.count(category_rating.c.category_id)
+        category_id_freqs = (
+            db.session.query(category_rating.c.category_id, count)
+            .select_from(Rating)
+            .outerjoin(category_rating, Rating.id == category_rating.c.rating_id)
+            .filter(Rating.post_id == 1)
+            .group_by(category_rating.c.category_id)
+            .order_by(count.desc())
+            .all()
+        )
+
+        return Category.query.filter(Category.id.in_([id for id, _ in category_id_freqs])).all()
 
 
 class Rating(PkModel):
