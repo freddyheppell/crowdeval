@@ -5,6 +5,14 @@
 {% block content %}
     <h1>Rate a post</h1>
 
+    {% with message = get_flashed_messages(category_filter=["post_submit_status"]) %}
+    {% if message|length > 0 %}
+        {% if message[0] == "new" %}
+            <div class="fs-4 fw-bold text-success mb-5"><i class="fas fa-sparkles me-2"></i> We've never seen this post before</div>
+        {% endif %}
+    {% endif %}
+    {% endwith %}
+
     <div class="row">
         <div class="col-md-4">
             {% from 'posts/embeds/_embed.html' import embed %}

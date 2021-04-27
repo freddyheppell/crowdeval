@@ -2,8 +2,28 @@
 
 {% block page_title %}Show Post{% endblock %}
 
+{% block content_noc %}
+    {% with message = get_flashed_messages(category_filter=["post_submit_status"]) %}
+    {% if message|length > 0 %}
+        {% if message[0] == "existing" %}
+            <div class="bg-light py-3">
+                <div class="container">
+                    <div class="fs-4 fw-bold">We've seen this post before, here's what the crowd says</div>
+                    <p class="lead">Other CrowdEval users have rated this post, and we've compared it to {{ "{:,}".format(post_count) }} other posts.</p>
+
+                    <a href="{{ url_for('posts.rate', id=post.id) }}" class="btn btn-secondary btn-sm btn-icon-right">Add your rating <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+    {% endwith %}
+{% endblock %}
+
 {% block content %}
-    <h1 class="mb-3">Rating for {{ post.author_name }}'s Post</h1>
+    <div class="post-heading">
+        <h1>Rating for {{ post.author_name }}'s Post</h1>
+        <a href="{{ url_for('posts.rate', id=post.id) }}" class="btn btn-outline-secondary btn-icon-right">Add your rating <i class="fas fa-arrow-right"></i></a>
+    </div>
 
     <div class="row mb-5">
             <div class="col-md-5 rating__embed">

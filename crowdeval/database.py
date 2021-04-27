@@ -1,5 +1,7 @@
 """Common database behaviour layer."""
 
+from sqlalchemy import func
+
 from .extensions import db
 
 Column = db.Column
@@ -57,6 +59,11 @@ class PkModel(Model):
         ):
             return cls.query.get(int(record_id))
         return None
+
+    @classmethod
+    def fast_count(cls):
+        """Return the count of posts."""
+        return db.session.query(func.count(cls.id)).scalar()
 
 
 class CacheableMixin(object):

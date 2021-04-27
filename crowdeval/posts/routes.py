@@ -1,7 +1,7 @@
 """Routes relating to posts functionality."""
 
 
-from flask import Blueprint, abort, redirect, render_template
+from flask import Blueprint, abort, flash, redirect, render_template
 from flask.helpers import url_for
 from flask_login import current_user, login_required
 from sqlalchemy.orm import subqueryload
@@ -32,6 +32,7 @@ def show(id):
     weighted_scorer = WeightedAverageSimilarPostScorer(similar_posts, scores)
     similar_post_score = weighted_scorer.get_score()
     similar_post_rating = ScoreEnum(max(1, min(round(similar_post_score), 5)))
+    post_count = Post.fast_count()
     return render_template(
         "posts/show.html",
         post=post,
@@ -39,6 +40,7 @@ def show(id):
         scores=scores,
         similar_post_score=similar_post_score,
         similar_post_rating=similar_post_rating,
+        post_count=post_count,
     )
 
 
@@ -90,12 +92,14 @@ def submit():
 
         try:
             existing_post = query.one()
-            return redirect(url_for("posts.rate", id=existing_post.id))
+            flash("existing", "post_submit_status")
+            return redirect(url_for("posts.show", id=existing_post.id))
         except NoResultFound:
             post_data = external_post.get_data()
             post = Post(**post_data)
             db.session.add(post)
             db.session.commit()
+            flash("new", "post_submit_status")
             return redirect(url_for("posts.rate", id=post.id))
 
     return render_template("posts/create.html", form=form)

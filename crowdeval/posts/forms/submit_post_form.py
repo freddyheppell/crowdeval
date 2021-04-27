@@ -8,5 +8,5 @@ from wtforms.validators import URL, DataRequired
 class SubmitPostForm(FlaskForm):
     """Represents a submission of the post form."""
 
-    url = StringField("url", validators=[DataRequired(), URL(require_tld=True)])
+    url = StringField("URL", validators=[DataRequired(), URL(require_tld=True)])
     recaptcha = RecaptchaField()
