@@ -1,4 +1,4 @@
-{% macro embed(post, classes="") %}
+{% macro embed(post, classes="", link_to_post=False) %}
 <div class="card {{ classes }}">
     <div class="card-body">
     {% if post.platform == 1 %}
@@ -11,5 +11,12 @@
         <strong class="text-danger">Unable to embed post, unknown platform</strong>
     {% endif %}
     </div>
+    {% if link_to_post %}
+    <div class="card-footer embed__link-to">
+        <a href="{{ url_for('posts.show', id=post.id) }}" class="text-muted btn-icon-right">
+            View Full Rating<i class="fas fa-caret-right"></i>
+        </a>
+    </div>
+    {% endif %}
 </div>
 {% endmacro %}

@@ -52,7 +52,7 @@
             <div class="row">
                 {% for post in similar_posts %}
                     <div class="col-md-6 mb-2">
-                        {{ embed(post, "embed--is-stacked") }}
+                        {{ embed(post, classes="embed--is-stacked", link_to_post=True) }}
                     </div>
                 {% endfor %}
             </div>
