@@ -1,17 +1,3 @@
-.post-heading {
-    margin-bottom: 2rem;
-    @include media-breakpoint-up(md) {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 4rem;
-    }
-
-    h1 {
-        margin-bottom: 0;
-    }
-}
-
 .rating {
     &--is-false {
         color: $colour-false;

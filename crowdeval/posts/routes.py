@@ -1,6 +1,8 @@
 """Routes relating to posts functionality."""
 
 
+from itertools import groupby
+
 from flask import Blueprint, abort, flash, redirect, render_template
 from flask.helpers import url_for
 from flask_login import current_user, login_required
@@ -52,7 +54,14 @@ def rate(id):
         abort(404)
 
     form = SubmitRatingForm()
-    form.category_id.choices = Category.get_tuples()
+    categories = Category.query.all()
+    form.category_id.choices = Category.get_tuples(categories)
+    grouped_categories = {
+        k: list(g)
+        for k, g in groupby(
+            categories, lambda t: t.category_type if t.category_type is not None else ""
+        )
+    }
 
     if form.validate_on_submit():
         rating = Rating(rating=form.rating.data, comments=form.comments.data)
@@ -70,9 +79,12 @@ def rate(id):
             )
         db.session.commit()
 
-        return redirect("/")
+        flash("Your review has been added succesfully", category="success")
+        return redirect(url_for("posts.show", id=post.id))
 
-    return render_template("posts/rate.html", post=post, form=form)
+    return render_template(
+        "posts/rate.html", post=post, form=form, grouped_categories=grouped_categories
+    )
 
 
 @blueprint.route("/submit", methods=["GET", "POST"])

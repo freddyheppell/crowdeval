@@ -2,10 +2,12 @@
 @import '~bootstrap/scss/bootstrap';
 
 @import "components/_embed";
+@import "components/_rating-field";
 @import "components/_rating";
 @import "components/_review";
 
 @import "pages/_home";
+@import "pages/_post";
 
 .btn-icon-left {
     i, svg {

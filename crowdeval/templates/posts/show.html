@@ -64,7 +64,11 @@
             {% for rating in post.ratings %}
             <div class="review">
                 <div class="review__text">
-                    {{ rating.comments }}
+                    {% if rating.comments != "" %}
+                        {{ rating.comments }}
+                    {% else %}
+                        <em class="text-muted">This user didn't leave a comment</em>
+                    {% endif %}
                 </div>
                 <div class="review__footer">
                     <div>{{ rating_badge(rating.to_enum().name, small=True) }}</div>
@@ -74,6 +78,8 @@
                     </div>
                 </div>
             </div>
+            {% else %}
+                <div class="text-muted fst-italic">No ratings yet, why not leave one?</div>
             {% endfor %}
         </div>
     </div>

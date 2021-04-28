@@ -169,10 +169,8 @@ class Category(PkModel):
         super().__init__(name=name, icon_class=icon_class, category_type=category_type)
 
     @staticmethod
-    def get_tuples():
+    def get_tuples(categories):
         """Return a list of (id, name) tuples of all categories."""
-        categories = Category.query.all()
-
         category_tuples = []
         for category in categories:
             category_tuples.append((str(category.id), category.name))

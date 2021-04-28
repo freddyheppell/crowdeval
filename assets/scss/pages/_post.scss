@@ -1,0 +1,24 @@
+.post-heading {
+    margin-bottom: 1rem;
+    border-bottom: $card-border-width solid $card-border-color;
+    padding-bottom: 0.5rem;
+
+    a {
+        margin-top: 0.5rem;
+    }
+
+    h1 {
+        margin-bottom: 0;
+    }
+
+    @include media-breakpoint-up(md) {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        
+        a {
+            margin-top: 0;
+        }
+    }
+}

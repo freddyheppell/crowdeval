@@ -19,11 +19,78 @@
             {{ embed(post) }}
         </div>
         <div class="col-md-8">
-            <form action="{{ url_for('posts.rate', id=post.id) }}" method="post" id="submit_rating">
+            <form action="{{ url_for('posts.rate', id=post.id) }}" method="post" class="rate-form" id="submit_rating">
                 {{ wtf.form_errors(form) }}
                 {{ form.csrf_token }}
-                {{ wtf.form_field(form.rating) }}
-                {{ wtf.form_field(form.category_id) }}
+                {# {{ wtf.form_field(form.rating) }} #}
+
+
+                <div class="mb-3 rating-radios">
+                    <h2>How true do you think this post is?</h2>
+                    <div class="">
+                        <div class="form-check">
+                            <input class="form-check-input" id="5" name="rating" type="radio" value="5">
+                            <label class="form-check-label rating--is-true" for="5">
+                                <i class="fas fa-circle" data-fa-transform="shrink-4"></i> True
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="4" name="rating" type="radio" value="4">
+                            <label class="form-check-label rating--is-mostly-true" for="4">
+                                <i class="fas fa-adjust" data-fa-transform="shrink-4"></i> Mostly True
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="3" name="rating" type="radio" value="3">
+                            <label class="form-check-label rating--is-mixed" for="3">
+                                <i class="far fa-circle" data-fa-transform="shrink-4"></i> Mixed
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="2" name="rating" type="radio" value="2">
+                            <label class="form-check-label rating--is-mostly-false" for="2">
+                                <i class="fas fa-adjust" data-fa-transform="shrink-4 flip-h"></i> Mostly False
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="1" name="rating" type="radio" value="1">
+                            <label class="form-check-label rating--is-false" for="1">
+                                <i class="fas fa-circle" data-fa-transform="shrink-4"></i> False
+                            </label>
+                        </div>
+                    </div>
+                    </div>
+
+
+                <h2 class="mt-5">How would you categorise this post?</h2>
+
+                {# {{ form.category_id(ul_class='list-unstyled') | safe }} #}
+
+                {# Rating field #}
+
+                {# {{ grouped_categories }} #}
+
+                <div class="category-field">
+                    {% for group, categories in grouped_categories.items() %}
+                        <div class="category-section">
+                            <h5>{{ group | title if group != "" else "Other" }}</h5>
+                            <div class="row mb-3">
+                                {% for category in categories %}
+                                    <div class="col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="category_id" value="{{ category.id }}" id="group-check-{{category.id}}">
+                                            <label class="form-check-label" for="group-check-{{category.id}}">
+                                                <i class="{{ category.icon_class }}"></i> {{ category.name }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+
                 {{ wtf.form_field(form.comments) }}
                 {{ form.recaptcha }}
                 
