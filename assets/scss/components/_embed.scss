@@ -32,5 +32,8 @@
     &__link-to {
         font-size: 0.7em;
         text-align: center;
+
+        display: flex;
+        justify-content: space-between;
     }
 }

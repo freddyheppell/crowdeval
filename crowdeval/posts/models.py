@@ -92,6 +92,7 @@ class Post(SearchableMixin, PkModel, CacheableMixin):
 
         return self._scorer.get_bound(), self._scorer.get_width()
 
+    @cache.memoize(120)  # memoize for 2 minutes
     def get_rounded_score(self, force_rescore=False) -> ScoreEnum:
         """Get the score rounded to the nearest integer.
 
