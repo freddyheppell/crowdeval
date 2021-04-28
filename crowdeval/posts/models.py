@@ -33,6 +33,8 @@ class Post(SearchableMixin, PkModel, CacheableMixin):
     external_created_at = Column(db.DateTime, nullable=False)
     created_at = Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
+    ratings = db.relationship("Rating", order_by="desc(Rating.id)")
+
     def __init__(
         self,
         platform,
@@ -134,7 +136,7 @@ class Rating(PkModel):
     user_id = reference_col("users")
     user = db.relationship("User", backref="ratings")
     post_id = reference_col("posts")
-    post = db.relationship("Post", backref="ratings")
+    post = db.relationship("Post")
     rating = Column(TINYINT(unsigned=True), nullable=False)
     comments = Column(TEXT(), nullable=False)
     categories = db.relationship("Category", secondary="category_rating")

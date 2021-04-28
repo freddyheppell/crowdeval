@@ -80,7 +80,7 @@
             </div>
             <div class="modal-body">
             {% if post.get_rating_count() == 0 %}
-                <p>This post doesn't have any ratings yet.</p>
+                <p>This post doesn't have any ratings yet, so we can't assign it a score.</p>
             {% else %}
                 {% set calculator = post.get_scorer().get_calculator() %}        
                 <p>The score has a 95% certainty of being in the range {{ "{:.3f}".format(calculator.get_lower_bound()) }} - {{ "{:.3f}".format(calculator.get_upper_bound()) }}</p>
