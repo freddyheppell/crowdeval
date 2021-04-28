@@ -155,12 +155,8 @@ class BayesianRatingCalculator:
             score_sum += self.score_values[score] * frac
             score_sum_sq += (self.score_values[score] ** 2) * frac
 
-        print(score_sum)
-        print(score_sum_sq)
-
         # Compute the variance and standard deviations
         variance = (score_sum_sq - (score_sum ** 2)) / (self.N + self.K + 1)
-        print(variance)
         stdev = sqrt(variance)
 
         # This is the credible amount the score could be above or below the expectation

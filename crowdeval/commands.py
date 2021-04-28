@@ -233,3 +233,14 @@ def seed_ratings():
 def reindex():
     """Reindex all posts."""
     Post.reindex()
+
+
+@click.command()
+@with_appcontext
+def recache_explore():
+    """Recache the explore listings."""
+    from crowdeval.explore.routes import post_ids_for_rating
+
+    for s in range(1, 6):
+        print(s)
+        post_ids_for_rating(s)

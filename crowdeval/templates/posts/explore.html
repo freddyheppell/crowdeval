@@ -7,6 +7,22 @@
 
     <div class="row">
         <div class="col-md-3">
+            <h4>Filter</h4>
+
+            <div class="list-group mb-3">
+                <a href="{{ url_for('explore.latest') }}" class="list-group-item list-group-item-action {% if active_filter == 'latest' %} active {% endif %}" aria-current="true">
+                    Latest
+                </a>
+            </div>
+
+            <div class="list-group">
+                <a href="{{ url_for('explore.by_result', rating='true') }}" class="list-group-item list-group-item-action {% if active_filter == 'true' %} active {% endif %}">True</a>
+                <a href="{{ url_for('explore.by_result', rating='likely-true') }}" class="list-group-item list-group-item-action {% if active_filter == 'likely-true' %} active {% endif %}">Likely True</a>
+                <a href="{{ url_for('explore.by_result', rating='mixed') }}" class="list-group-item list-group-item-action {% if active_filter == 'mixed' %} active {% endif %}">Mixed</a>
+                <a href="{{ url_for('explore.by_result', rating='likely-false') }}" class="list-group-item list-group-item-action {% if active_filter == 'likely-false' %} active {% endif %}">Likely False</a>
+                <a href="{{ url_for('explore.by_result', rating='false') }}" class="list-group-item list-group-item-action {% if active_filter == 'false' %} active {% endif %}">False</a>
+            </div>
+
             <div class="text-muted">
                 {{ "{:,}".format(pagination.total) }} results.
             </div>
@@ -31,7 +47,7 @@
                     {% endif %}
                 {% endfor %}
 
-                <li class="page-item {% if pagination.page == pagination.pages %}disabled{% endif %}">
+                <li class="page-item {% if pagination.page == pagination.pages or pagination.pages == 0 %} disabled {% endif %}">
                     <a class="page-link" href="?page={{ pagination.next_num }}">Next</a>
                 </li>
             </ul>    
