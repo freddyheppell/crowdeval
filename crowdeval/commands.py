@@ -238,7 +238,10 @@ def reindex():
 @click.command()
 @with_appcontext
 def recache_explore():
-    """Recache the explore listings."""
+    """Recache the explore listings.
+
+    This command should be run periodically.
+    """
     from crowdeval.explore.routes import post_ids_for_rating
 
     for s in range(1, 6):

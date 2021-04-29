@@ -33,7 +33,7 @@ def latest():
     return explore_page(pagination=pagination, label="Latest", active_filter="latest")
 
 
-@cache.memoize(None)
+@cache.memoize(0)
 def post_ids_for_rating(result):
     """Get the post ids that have this rating currently."""
     posts = Post.query.all()
