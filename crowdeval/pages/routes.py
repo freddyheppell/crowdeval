@@ -7,5 +7,5 @@ blueprint = Blueprint("pages", __name__, static_folder="../static")
 
 @blueprint.route("/")
 def index():
-    """Index page route"""
+    """Index page route."""
     return render_template("index.html")

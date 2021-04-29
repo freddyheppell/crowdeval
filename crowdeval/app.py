@@ -5,7 +5,15 @@ import sys
 
 from flask import Flask, send_from_directory
 
-from crowdeval import commands, explore, extensions, posts, template_filters, users, pages
+from crowdeval import (
+    commands,
+    explore,
+    extensions,
+    pages,
+    posts,
+    template_filters,
+    users,
+)
 
 
 def create_app(config_object="crowdeval.settings"):

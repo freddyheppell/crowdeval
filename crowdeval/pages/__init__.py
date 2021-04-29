@@ -1,2 +1,2 @@
 """Static webpages for the app."""
-from . import routes # noqa
+from . import routes  # noqa
