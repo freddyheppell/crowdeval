@@ -93,11 +93,12 @@ class Post(SearchableMixin, PkModel, CacheableMixin):
         return self._scorer.get_bound(), self._scorer.get_width()
 
     def get_rating_score_counts(self, force_rescore=False):
+        """Get a score->freq dictionary of ratings."""
         if force_rescore or self._scorer is None:
             self._scorer = PostScorer(self)
-            
+
         return self._scorer.score_counts
-    
+
     @cache.memoize(120)  # memoize for 2 minutes
     def get_rounded_score(self, force_rescore=False) -> ScoreEnum:
         """Get the score rounded to the nearest integer.

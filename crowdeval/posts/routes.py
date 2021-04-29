@@ -48,13 +48,11 @@ def show(id):
 
 @blueprint.route("/post/<id>/stats")
 def stats(id):
+    """Show statistics about a post."""
     if (post := Post.query.options(subqueryload("ratings")).get(id)) is None:
         abort(404)
 
-    return render_template(
-        "posts/stats.html",
-        post=post
-    )
+    return render_template("posts/stats.html", post=post)
 
 
 @blueprint.route("/post/<id>/rate", methods=["GET", "POST"])
