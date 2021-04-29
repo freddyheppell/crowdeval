@@ -5,7 +5,7 @@ import sys
 
 from flask import Flask, send_from_directory
 
-from crowdeval import commands, explore, extensions, posts, template_filters, users
+from crowdeval import commands, explore, extensions, posts, template_filters, users, pages
 
 
 def create_app(config_object="crowdeval.settings"):
@@ -43,6 +43,7 @@ def register_blueprints(app):
     app.register_blueprint(users.routes.blueprint)
     app.register_blueprint(posts.routes.blueprint)
     app.register_blueprint(explore.routes.blueprint)
+    app.register_blueprint(pages.routes.blueprint)
 
 
 def register_shellcontext(app):
