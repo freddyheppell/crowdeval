@@ -13,7 +13,7 @@ import click
 from flask.cli import with_appcontext
 from flask_migrate import downgrade, upgrade
 
-from crowdeval.extensions import db, es, cache
+from crowdeval.extensions import cache, db, es
 from crowdeval.posts.models import Post
 from crowdeval.posts.support.twitter_post import TwitterPost
 from crowdeval.users.models import User
