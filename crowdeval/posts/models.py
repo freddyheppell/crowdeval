@@ -101,6 +101,13 @@ class Post(SearchableMixin, PkModel, CacheableMixin):
         rounded = max(1, min(round(self.get_score(force_rescore)[0]), 5))
         return ScoreEnum(rounded)
 
+    def is_score_certain(self, force_rescore=False) -> bool:
+        """Is this score narrower than the threshold?."""
+        if force_rescore or self._scorer is None:
+            self._scorer = PostScorer(self)
+
+        return self._scorer.get_width() < 1
+
     def get_rating_count(self) -> int:
         """Get the number of valid ratings for this post."""
         return len(self.ratings)

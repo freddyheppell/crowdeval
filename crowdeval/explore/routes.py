@@ -37,7 +37,10 @@ def latest():
 def post_ids_for_rating(result):
     """Get the post ids that have this rating currently."""
     posts = Post.query.all()
-    filterd_posts = filter(lambda p: p.get_rounded_score() == result, posts)
+
+    filterd_posts = filter(
+        lambda p: p.get_rounded_score() == result and p.is_score_certain(), posts
+    )
     filtered_ids = list(map(lambda p: p.id, filterd_posts))
 
     return filtered_ids
