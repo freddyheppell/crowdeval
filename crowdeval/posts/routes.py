@@ -46,6 +46,17 @@ def show(id):
     )
 
 
+@blueprint.route("/post/<id>/stats")
+def stats(id):
+    if (post := Post.query.options(subqueryload("ratings")).get(id)) is None:
+        abort(404)
+
+    return render_template(
+        "posts/stats.html",
+        post=post
+    )
+
+
 @blueprint.route("/post/<id>/rate", methods=["GET", "POST"])
 @login_required
 def rate(id):

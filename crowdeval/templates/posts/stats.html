@@ -1,0 +1,63 @@
+{% extends "layout/base.html" %}
+
+{% block page_title %}Post Statistics{% endblock %}
+
+{% block content %}
+    <div class="post-heading">
+        <h1>Statistics for {{ post.author_name }}'s Post</h1>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-md-5 rating__embed">
+            {% from 'posts/embeds/_embed.html' import embed %}
+            {{ embed(post) }}
+        </div>
+        <div class="col-md-4 mx-auto">
+            <canvas data-chart data-chart-type="pie" data-data-key="ratingPercentage"></canvas>
+        </div>
+    </div>
+
+    {% set score_counts = post.get_rating_score_counts() %}
+
+    <script type="text/javascript">
+        window.CHART_DATA["ratingPercentage"] =  {
+            type: 'pie',
+            data: {
+                labels: [
+                    'False',
+                    'Likely False',
+                    'Mixed',
+                    'Likely True',
+                    'True'
+                ],
+                datasets: [{
+                    label: 'My First Dataset',
+                    data: [
+                        {% for n in range(1,6) %}
+                            {{ score_counts[n] }},
+                        {% endfor %}
+                    ],
+                    backgroundColor: [
+                        '#D0021B',
+                        '#FF7F00',
+                        '#FBBF24',
+                        '#7ED321',
+                        '#417505'
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Frequency of review types'
+                    }
+                },
+            },
+        }
+    </script>
+{% endblock %}

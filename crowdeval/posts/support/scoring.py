@@ -61,6 +61,7 @@ class PostScorer:
         ratings = [(rating.rating) for rating in self.post.ratings]
         score_counts = dict(Counter(ratings))
         score_values = dict(zip(list(map(int, ScoreEnum)), list(map(int, ScoreEnum))))
+        self.score_counts = score_counts
 
         self.calculator = BayesianRatingCalculator(score_counts, score_values)
 

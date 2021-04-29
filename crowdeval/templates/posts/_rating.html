@@ -48,7 +48,7 @@
 
         <div class="rating__actions">
             <a href="#" class="text-muted btn-icon-left" data-bs-toggle="modal" data-bs-target="#rating-explanation-{{post.id}}"><i class="fas fa-question-circle"></i>How is this calculated?</a>
-            <a href="#" class="text-muted btn-icon-left"><i class="fas fa-chart-pie"></i>Statistics</a>
+            <a href="{{ url_for('posts.stats', id=post.id )}}" class="text-muted btn-icon-left"><i class="fas fa-chart-pie"></i>Statistics</a>
         </div>
 
         <ul class="rating__counts">
