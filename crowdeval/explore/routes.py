@@ -39,7 +39,10 @@ def post_ids_for_rating(result):
     posts = Post.query.all()
 
     filtered_posts = filter(
-        lambda p: p.get_rounded_score() == result and p.is_score_certain() and p.get_rating_count() > 0, posts
+        lambda p: p.get_rounded_score() == result
+        and p.is_score_certain()
+        and p.get_rating_count() > 0,
+        posts,
     )
     filtered_ids = list(map(lambda p: p.id, filtered_posts))
 

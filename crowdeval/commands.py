@@ -10,7 +10,7 @@ from itertools import zip_longest
 from subprocess import call
 
 import click
-from factory.declarations import LazyAttribute, LazyFunction
+from factory.declarations import LazyFunction
 from flask.cli import with_appcontext
 from flask_migrate import downgrade, upgrade
 
@@ -224,11 +224,13 @@ def import_tweet_seeds(directory, rate, delay):
 
 @click.command()
 @with_appcontext
-@click.argument('veracities', default='.veractities.json', type=click.File('r'))
+@click.argument("veracities", default=".veractities.json", type=click.File("r"))
 def seed_ratings(veracities):
-    veracities = json.load(veracities)
+    """Create number of ratings for each post.
 
-    """Create number of ratings for each post."""
+    The veracities file is a list of external post id -> veracity which bias the random selection.
+    """
+    veracities = json.load(veracities)
     all_posts = Post.query.all()
     user = User.query.first()
 
@@ -246,14 +248,25 @@ def seed_ratings(veracities):
                     counts = [2, 3, 10, 3, 2]
 
                 def rating():
-                    return random.choice([5] * counts[0] + [4] * counts[1] + [3] * counts[2] + [2] * counts[3] + [1] * counts[4])
+                    return random.choice(
+                        [5] * counts[0]
+                        + [4] * counts[1]
+                        + [3] * counts[2]
+                        + [2] * counts[3]
+                        + [1] * counts[4]
+                    )
+
             else:
                 print("!")
+
                 def rating():
                     return random.randint(1, 5)
 
             RatingFactory.create_batch(
-                random.randrange(0, 20), post_id=post.id, user_id=user.id, rating=LazyFunction(rating)
+                random.randrange(0, 20),
+                post_id=post.id,
+                user_id=user.id,
+                rating=LazyFunction(rating),
             )
             db.session.commit()
 
