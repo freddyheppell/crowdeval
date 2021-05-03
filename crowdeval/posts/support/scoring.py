@@ -113,8 +113,8 @@ class BayesianRatingCalculator:
         self.N = sum(score_counts.values())
         # ... and the number of different scores
         self.K = len(score_values.keys())
-        # Precomputed value for the value on a normalised normal distribution where the certainty is 95%
-        self.z = 1.65
+        # Precomputed value for the value on a normalised normal distribution where the certainty is 90%
+        self.z = 1.29
 
         self._credible_width = None
         self._lower_bound = None
