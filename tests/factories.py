@@ -14,6 +14,8 @@ faker.add_provider(lorem)
 faker.add_provider(profile)
 faker.add_provider(date_time)
 
+veracities = None
+
 
 class BaseFactory(SQLAlchemyModelFactory):
     """Base factory."""
