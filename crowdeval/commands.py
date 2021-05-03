@@ -154,6 +154,9 @@ def import_tweet_seeds(directory, rate, delay):
     succesful_imports = 0
     failed_imports = 0
 
+    # Store the tweet ID -> veracity for possible later use
+    id_veracities = {}
+
     tweet_files = [
         f.path for f in os.scandir(directory) if str(f.name).endswith(".json")
     ]
@@ -166,6 +169,8 @@ def import_tweet_seeds(directory, rate, delay):
 
             for tweet in jsoned_tweets:
                 tweet_ids.add(tweet["id_str"])
+                # Store the veracity of this tweet
+                id_veracities[tweet["id_str"]] = tweet["VERACITY"]
 
     def grouper(n, iterable, padvalue=None):
         """Chunk the iterable into groups of n."""
@@ -185,7 +190,6 @@ def import_tweet_seeds(directory, rate, delay):
                 continue
 
             try:
-                # nb fails for some tweet names eg with id 500375839498723328
                 ratelimit_count += 1
                 tweet_obj = TwitterPost(tweet_id)
                 tweet_data = tweet_obj.get_data()
@@ -211,6 +215,10 @@ def import_tweet_seeds(directory, rate, delay):
     print("FINISHED")
     print("Imported", succesful_imports, "ok")
     print("Failed for", failed_imports)
+
+    print("Writing veractities")
+    with open(".veractities.json", "w+") as veracity_file:
+        json.dump(id_veracities, veracity_file)
 
 
 @click.command()
