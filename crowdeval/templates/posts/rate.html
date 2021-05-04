@@ -90,11 +90,13 @@
                     {% endfor %}
                 </div>
 
+                <h2 class="mt-5">Any Comments?</h2>
+                <p>These will be visible to other CrowdEval users.</p>
 
-                {{ wtf.form_field(form.comments) }}
+                {{ form.comments(class="form-control mb-3") }}
                 {{ form.recaptcha }}
                 
-                <button type="submit" class="btn btn-primary">Submit and Rate</button>
+                <button type="submit" class="btn btn-primary mt-3">Submit and Rate</button>
             </form>
         </div>
     </div>
