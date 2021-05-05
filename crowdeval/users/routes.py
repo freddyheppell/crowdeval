@@ -79,7 +79,7 @@ def logout():
     """Logout."""
     logout_user()
     flash("You are logged out.", "info")
-    return redirect(url_for("public.index"))
+    return redirect(url_for("pages.index"))
 
 
 @oauth_error.connect_via(blueprint)
