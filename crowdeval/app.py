@@ -7,6 +7,7 @@ from flask import Flask, send_from_directory
 
 from crowdeval import (
     commands,
+    evaluation_commands,
     explore,
     extensions,
     pages,
@@ -74,6 +75,8 @@ def register_commands(app):
     app.cli.add_command(commands.seed_ratings)
     app.cli.add_command(commands.reindex)
     app.cli.add_command(commands.recache_explore)
+
+    app.cli.add_command(evaluation_commands.test_review_thresholds)
 
 
 def register_template_filters(app):
