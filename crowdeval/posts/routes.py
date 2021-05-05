@@ -121,7 +121,7 @@ def submit():
             pass
 
         except NoResultFound:
-            post_data = external_post.get_data()    
+            post_data = external_post.get_data()
             post = Post(**post_data)
             db.session.add(post)
             db.session.commit()
