@@ -13,7 +13,7 @@ from crowdeval.extensions import db
 from crowdeval.posts.forms.rate_post_form import SubmitRatingForm
 from crowdeval.posts.forms.submit_post_form import SubmitPostForm
 from crowdeval.posts.models import Category, Post, Rating, category_rating
-from crowdeval.posts.support.post_recogniser import detect_post
+from crowdeval.posts.support.post_recogniser import UnsupportedUrlException, detect_post
 from crowdeval.posts.support.scoring import ScoreEnum, WeightedAverageSimilarPostScorer
 
 blueprint = Blueprint("posts", __name__, static_folder="../static")
@@ -99,24 +99,29 @@ def rate(id):
 @blueprint.route("/submit", methods=["GET", "POST"])
 @login_required
 def submit():
-    """Submit a route, then either create or take to existing known post."""
+    """Submit a URL, then either create or take to existing known post."""
     form = SubmitPostForm()
 
     if form.validate_on_submit():
-        external_post = detect_post(form.url.data)
-
-        # Check if we already know about this post
-        query = Post.query.filter_by(
-            platform=external_post.get_platform().value,
-            external_post_id=external_post.get_external_id(),
-        )
-
         try:
+            external_post = detect_post(form.url.data)
+
+            # Check if we already know about this post
+            query = Post.query.filter_by(
+                platform=external_post.get_platform().value,
+                external_post_id=external_post.get_external_id(),
+            )
+
             existing_post = query.one()
             flash("existing", "post_submit_status")
             return redirect(url_for("posts.show", id=existing_post.id))
+
+        except UnsupportedUrlException:
+            form.url.errors.append("URL is from an unsupported platform")
+            pass
+
         except NoResultFound:
-            post_data = external_post.get_data()
+            post_data = external_post.get_data()    
             post = Post(**post_data)
             db.session.add(post)
             db.session.commit()
