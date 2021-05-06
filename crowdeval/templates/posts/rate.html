@@ -73,7 +73,7 @@
                 <div class="category-field">
                     {% for group, categories in grouped_categories.items() %}
                         <div class="category-section">
-                            <h5>{{ group | title if group != "" else "Other" }}</h5>
+                            <h5>{{ group.replace("-", " ") | title if group != "" else "Other" }}</h5>
                             <div class="row mb-3">
                                 {% for category in categories %}
                                     <div class="col-md-3">
