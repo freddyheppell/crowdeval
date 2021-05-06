@@ -14,7 +14,7 @@ from factory.declarations import LazyFunction
 from flask.cli import with_appcontext
 from flask_migrate import downgrade, upgrade
 
-from crowdeval.extensions import cache, db, es
+from crowdeval.extensions import db, es
 from crowdeval.posts.models import Post
 from crowdeval.posts.support.twitter_post import TwitterPost
 from crowdeval.users.models import User
@@ -287,7 +287,7 @@ def recache_explore():
     """
     from crowdeval.explore.routes import post_ids_for_rating
 
-    cache.delete_memoized(post_ids_for_rating)
+    os.environ["IS_CLI"] = "true"
 
     for s in range(1, 6):
         print(s)

@@ -60,6 +60,7 @@ def register_shellcontext(app):
 
     def shell_context():
         """Shell context objects."""
+        os.environ["IS_CLI"] = "true"
         return {"db": extensions.db, "User": users.models.User}
 
     app.shell_context_processor(shell_context)

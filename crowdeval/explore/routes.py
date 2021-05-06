@@ -1,6 +1,8 @@
 """Routes for the explore blueprint."""
 
 
+from os import environ
+
 from flask import Blueprint, redirect, render_template, request, url_for
 from sqlalchemy.orm import subqueryload
 
@@ -33,7 +35,12 @@ def latest():
     return explore_page(pagination=pagination, label="Latest", active_filter="latest")
 
 
-@cache.memoize(0)
+def should_force_update():
+    """Is this app running in a CLI environment."""
+    return "IS_CLI" in environ
+
+
+@cache.memoize(0, forced_update=should_force_update)
 def post_ids_for_rating(result):
     """Get the post ids that have this rating currently."""
     posts = Post.query.all()
