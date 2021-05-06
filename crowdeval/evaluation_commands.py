@@ -64,9 +64,50 @@ def test_polarised():
     print("\n\n")
 
 
+def test_score_progression(review):
+    """Report the upper/lower boundaries at each review count.
+
+    Outputs in LaTeX pgfplots point format.
+    """
+    print("TESTING", ScoreEnum(review))
+    print("n,width,lower,upper")
+
+    lowers = []
+    uppers = []
+
+    for i in range(1, 31):
+        score_counts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+        score_counts[review] = i
+
+        calculator = BayesianRatingCalculator(score_counts, SCORE_VALUES)
+
+        low = calculator.get_lower_bound()
+        upp = calculator.get_upper_bound()
+
+        lowers.append((i, round(low, 3)))
+        uppers.append((i, round(upp, 3)))
+
+    print("LOWERS")
+    for lower in lowers:
+        print(lower, end="")
+    print()
+    print("UPPERS")
+    for upper in uppers:
+        print(upper, end="")
+
+    print("\n\n\n\n\n\n")
+
+
 @click.command()
 def test_review_thresholds():
     """Execute tests of the ranking algorithm's thresholds."""
     test_singles()
     test_uniform()
     test_polarised()
+
+    print("Testing polarised reviews")
+    test_score_progression(5)
+    test_score_progression(4)
+    test_score_progression(3)
+    test_score_progression(2)
+    test_score_progression(1)
