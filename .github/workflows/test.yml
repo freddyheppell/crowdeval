@@ -1,4 +1,4 @@
-name: Build Status
+name: Test & Lint
 
 on:
   - push
