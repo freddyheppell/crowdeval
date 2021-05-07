@@ -238,7 +238,6 @@ def seed_ratings(veracities):
         for post in bar:
             # Check if this post has a veracity
             if post.external_post_id in veracities:
-                print(".")
                 veracity = veracities[post.external_post_id]
                 if veracity == "true":
                     counts = [10, 10, 5, 2, 1]
@@ -257,8 +256,6 @@ def seed_ratings(veracities):
                     )
 
             else:
-                print("!")
-
                 def rating():
                     return random.randint(1, 5)
 
