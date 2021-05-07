@@ -256,6 +256,7 @@ def seed_ratings(veracities):
                     )
 
             else:
+
                 def rating():
                     return random.randint(1, 5)
 
