@@ -71,9 +71,9 @@ class PostScorer:
 
         # Use the center-biased bound
         if center >= 3:
-            self.bound = self.calculator.get_lower_bound()
-        else:
             self.bound = self.calculator.get_upper_bound()
+        else:
+            self.bound = self.calculator.get_lower_bound()
 
     def get_width(self):
         """Return the width of the interval."""

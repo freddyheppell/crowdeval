@@ -240,9 +240,9 @@ def seed_ratings(veracities):
             if post.external_post_id in veracities:
                 veracity = veracities[post.external_post_id]
                 if veracity == "true":
-                    counts = [10, 10, 5, 2, 1]
+                    counts = [15, 8, 5, 2, 1]
                 elif veracity == "false":
-                    counts = [1, 2, 5, 10, 10]
+                    counts = [1, 2, 5, 8, 15]
                 else:
                     counts = [2, 3, 10, 3, 2]
 
