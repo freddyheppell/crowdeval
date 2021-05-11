@@ -22,8 +22,12 @@
         <link rel="stylesheet" type="text/css" href="{{ static_url_for('static', filename='css/app.css') }}"/>
         <script type="text/javascript" src="{{ static_url_for('static', filename='js/app.js') }}" defer></script>
         <script type="text/javascript">window.CHART_DATA = []</script>
+
         <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700;900&family=Red+Hat+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700;900&family=Red+Hat+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+        {# IMPORTANT: This is an embed for FontAwesome Pro. This won't function on non-localhost domains, unless added to the Kit.
+                      You should either substitute this with your own Pro kit URL, remove non-FA Free icons and change to a Free kit, or switch icon set. #}
         <script src="https://kit.fontawesome.com/2fa44b0192.js" crossorigin="anonymous"></script>
     </head>
     <body>
