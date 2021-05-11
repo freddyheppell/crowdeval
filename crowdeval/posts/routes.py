@@ -31,6 +31,9 @@ def show(id):
         .filter(Post.id.in_(similar_post_ids))
         .all()
     )
+    # Returned from db in id order so resort by post id
+    similar_posts = sorted(similar_posts, key=lambda p: similar_post_ids.index(p.id))
+    similar_posts = similar_posts[1:]
     weighted_scorer = WeightedAverageSimilarPostScorer(similar_posts, scores)
     similar_post_score = weighted_scorer.get_score()
     similar_post_rating = ScoreEnum(max(1, min(round(similar_post_score), 5)))
@@ -38,7 +41,7 @@ def show(id):
     return render_template(
         "posts/show.html",
         post=post,
-        similar_posts=similar_posts[1:],
+        similar_posts=similar_posts,
         scores=scores,
         similar_post_score=similar_post_score,
         similar_post_rating=similar_post_rating,
