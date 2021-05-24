@@ -2,7 +2,7 @@
 
 CrowdEval is an experimental crowdsourced factchecking application, created as part of my MComp Computer Science dissertation project.
 
-[![Test & Lint](https://github.com/freddyheppell/crowdeval/actions/workflows/test.yml/badge.svg)](https://github.com/freddyheppell/crowdeval/actions/workflows/test.yml) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
+[![Test & Lint](https://github.com/freddyheppell/crowdeval/actions/workflows/test.yml/badge.svg)](https://github.com/freddyheppell/crowdeval/actions/workflows/test.yml) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?logo=python&logoColor=white)](https://github.com/psf/black) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-f3df49.svg?logo=javascript&logoColor=white)](http://standardjs.com)
 
 ## Installation
 
@@ -28,7 +28,7 @@ CrowdEval is an experimental crowdsourced factchecking application, created as p
 
 ### Start Docker Infrastructure
 
-> This will download a ~400MB file as part of building the BERT-as-a-service container
+> This will download a ~400MB file as part of building the BERT as a Service container
 
 The database, search, cache and BERT embedding services are dockerised. Run `docker-compose up` to start.
 
