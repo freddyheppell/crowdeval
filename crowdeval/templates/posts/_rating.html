@@ -91,9 +91,9 @@
                     <p>This range is less than 1, so it can be assigned a single score.</p>
 
                     {% if calculator.get_center() >= 3%}
-                        <p>The center of this region is further towards <em>True</em> than the middle, so use the lower bound.</p>
+                        <p>The center of this region is further towards <em>True</em> than the middle, so use the upper bound.</p>
                     {% else %}
-                        <p>The center of this region is further towards <em>False</em> than the middle, so use the upper bound.</p>
+                        <p>The center of this region is further towards <em>False</em> than the middle, so use the lower bound.</p>
                     {% endif %}
 
                     <p>Rounded to the nearest number, this post scores {{ post.get_rounded_score().value }}</p>
