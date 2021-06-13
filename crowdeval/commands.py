@@ -217,14 +217,14 @@ def import_tweet_seeds(directory, rate, delay):
     print("Imported", succesful_imports, "ok")
     print("Failed for", failed_imports)
 
-    print("Writing veractities")
-    with open(".veractities.json", "w+") as veracity_file:
+    print("Writing veracities")
+    with open(".veracities.json", "w+") as veracity_file:
         json.dump(id_veracities, veracity_file)
 
 
 @click.command()
 @with_appcontext
-@click.argument("veracities", default=".veractities.json", type=click.File("r"))
+@click.argument("veracities", default=".veracities.json", type=click.File("r"))
 def seed_ratings(veracities):
     """Create number of ratings for each post.
 
