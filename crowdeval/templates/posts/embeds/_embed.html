@@ -14,7 +14,9 @@
     {% if link_to_post %}
     <div class="card-footer embed__link-to">
         {% from 'posts/_rating.html' import rating_badge %}
-        {{ rating_badge(post.get_rounded_score().name, small=True) }}
+        {% set score = post.get_rounded_score().name %}
+        {% set _, width = post.get_score() %}
+        {{ rating_badge(score, width, small=True) }}
         <a href="{{ url_for('posts.show', id=post.id) }}" class="text-muted btn-icon-right stretched-link">
             View Full Rating<i class="fas fa-caret-right"></i>
         </a>

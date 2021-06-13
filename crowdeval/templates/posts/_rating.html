@@ -1,5 +1,12 @@
-{% macro rating_badge(score, small=False, inline=False) %}
-    {% if score == "TRUE" %}
+{% macro rating_badge(score, width, small=False, inline=False) %}
+    {% if score == "UNSURE" or width > 1 %}
+        <div class="rating__label rating--is-indeterm {% if small %} rating--is-small {% endif %} {% if inline %} rating--is-inline {% endif %}">
+            <span class="fa-layers rating__counts-icon" >
+                <i class="fas fa-circle" data-fa-transform="shrink-4"></i>
+                <i class="fa-inverse fas fa-tilde" data-fa-transform="shrink-8"></i>
+            </span><span>Not Sure</span>
+    </div>
+    {% elif score == "TRUE" %}
         <div class="rating__label rating--is-true {% if small %} rating--is-small {% endif %} {% if inline %} rating--is-inline {% endif %}">
             <i class="fas fa-circle" data-fa-transform="shrink-4" class="rating__badge"></i>
             True
@@ -34,16 +41,9 @@
         </div>
         {% set score = post.get_rounded_score().name %}
         {% set exact_score, width = post.get_score() %}
+        {{ rating_badge(score, width) }}
         {% if width > 1 %}
-            <div class="rating__label rating--is-indeterm">
-                <span class="fa-layers rating__counts-icon" >
-                    <i class="fas fa-circle" data-fa-transform="shrink-4"></i>
-                    <i class="fa-inverse fas fa-tilde" data-fa-transform="shrink-8"></i>
-                </span><span>Not Sure</span>
-            </div>
             <div class="rating__info"><i class="fal fa-info-square fa-fw"></i> This post doesn't have enough consistent ratings yet.</div>
-        {% else %}
-            {{ rating_badge(score) }}
         {% endif %}
 
         <div class="rating__actions">

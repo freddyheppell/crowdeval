@@ -46,7 +46,7 @@
     <div class="row">
         <div class="col-md-6">
             <h2>Similar Posts</h2>
-            <div class="mb-3">Similar posts are generally {{ rating_badge(similar_post_rating.name, small=True, inline=True) }}</div>
+            <div class="mb-3">Similar posts are generally {{ rating_badge(similar_post_rating.name, 1, small=True, inline=True) }}</div>
             <div class="row">
                 {% for post in similar_posts %}
                     <div class="col-md-6 mb-2">
@@ -70,7 +70,7 @@
                     {% endif %}
                 </div>
                 <div class="review__footer">
-                    <div>{{ rating_badge(rating.to_enum().name, small=True) }}</div>
+                    <div>{{ rating_badge(rating.to_enum().name, 1, small=True) }}</div>
                     <div>
                         <a href="#" class="text-muted"><i class="fas fa-flag"></i></a>
                         <span class="review__date text-muted">{{ rating.get_human_created_at() }}</span>
