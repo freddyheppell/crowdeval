@@ -171,6 +171,16 @@ class Rating(PkModel):
         """Get the time difference string for the created at date."""
         return timeago.format(self.created_at, datetime.now())
 
+    @staticmethod
+    def check_exists_for(post_id, user_id):
+        """Check if this user has already submitted a review for this post."""
+        return (
+            Rating.query.filter(
+                Rating.post_id == post_id, Rating.user_id == user_id
+            ).first()
+            is not None
+        )
+
 
 class Category(PkModel):
     """Represents a category of rumour."""

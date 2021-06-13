@@ -65,6 +65,11 @@ def rate(id):
     if (post := Post.get_by_id(id)) is None:
         abort(404)
 
+    # Check if this user has rated this post before
+    if Rating.check_exists_for(id, current_user.id):
+        flash("You've already reviewed this post", category="danger")
+        return redirect(url_for("posts.show", id=post.id))
+
     form = SubmitRatingForm()
     categories = Category.query.all()
     form.category_id.choices = Category.get_tuples(categories)
