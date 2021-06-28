@@ -7,7 +7,7 @@
             <h5 class="card-title embed__author-name">{{ post.author_name }}</h5>
             <div class="text-muted embed__author-username">@{{ post.author_username }}</div>
             <p class="embed__text behaviour--add-disclaimer-to-links">
-            {{ post.text | urlize(40, true, target='_blank') | newline_to_br }}
+            {{ post.unescaped_text() | urlize(40, true, target='_blank') | newline_to_br }}
             </p>
             <div class="embed__footer">
                 <div class="text-muted"><i class="fab fa-twitter"></i> {{ post.formatted_external_created_at() }}</div>

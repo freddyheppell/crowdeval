@@ -1,5 +1,6 @@
 """Models for stored posts."""
 
+import html
 from datetime import datetime
 from typing import Tuple
 
@@ -141,6 +142,14 @@ class Post(SearchableMixin, PkModel, CacheableMixin):
         return Category.query.filter(
             Category.id.in_([id for id, _ in category_id_freqs])
         ).all()
+
+    def unescaped_text(self):
+        """Get the post text with HTML entities decoded.
+
+        The API returns some entities (e.g. &) as their HTML encoded forms (i.e. &amp;).
+        If this is passed to Jinja it will double encode them (&amp;amp;).
+        """
+        return html.unescape(self.text)
 
 
 class Rating(PkModel):
