@@ -6,9 +6,9 @@ COPY . /bert
 
 WORKDIR /bert
 
-ADD https://storage.googleapis.com/bert_models/2020_02_20/uncased_L-12_H-768_A-12.zip .
-RUN mkdir uncased_L-12_H-768_A-12
-RUN unzip uncased_L-12_H-768_A-12.zip -d uncased_L-12_H-768_A-12/
+ADD https://s3.eu-central-1.wasabisys.com/crowdeval-models/stsb_bert_base_converted.zip .
+RUN mkdir stsb_bert_base_converted
+RUN unzip stsb_bert_base_converted.zip -d stsb_bert_base_converted/
 
 RUN chmod +x start.sh
 
