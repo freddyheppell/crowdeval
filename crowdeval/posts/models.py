@@ -133,7 +133,7 @@ class Post(SearchableMixin, PkModel, CacheableMixin):
             db.session.query(category_rating.c.category_id, count)
             .select_from(Rating)
             .outerjoin(category_rating, Rating.id == category_rating.c.rating_id)
-            .filter(Rating.post_id == 1)
+            .filter(Rating.post_id == self.id)
             .group_by(category_rating.c.category_id)
             .order_by(count.desc())
             .all()
