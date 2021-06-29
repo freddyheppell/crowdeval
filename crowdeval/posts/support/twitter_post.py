@@ -3,7 +3,7 @@
 import json
 
 from flask.globals import current_app
-from TwitterAPI import TwitterAPI
+from TwitterAPI import HydrateType, TwitterAPI
 
 from crowdeval.posts.support.platform import Platform
 
@@ -68,7 +68,7 @@ class TwitterPost:
                 "user.fields": USER_FIELDS,
                 "media.fields": MEDIA_FIELDS,
             },
-            hydrate_tweets=True,
+            hydrate_type=HydrateType.REPLACE,
         )
 
         response_tweets = list(response.get_iterator())
