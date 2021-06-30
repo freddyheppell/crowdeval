@@ -1,6 +1,6 @@
 # CrowdEval
 
-CrowdEval is an experimental crowdsourced factchecking application, created as part of my MComp Computer Science dissertation project.
+CrowdEval is an experimental crowdsourced factchecking application, created as part of my MComp Computer Science dissertation project. The idea for this project was provided by the project supervisor, [Carolina Scarton](https://carolscarton.github.io/).
 
 [![Test & Lint](https://github.com/freddyheppell/crowdeval/actions/workflows/test.yml/badge.svg)](https://github.com/freddyheppell/crowdeval/actions/workflows/test.yml) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?logo=python&logoColor=white)](https://github.com/psf/black) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-f3df49.svg?logo=javascript&logoColor=white)](http://standardjs.com)
 
