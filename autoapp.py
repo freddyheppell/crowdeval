@@ -1,6 +1,7 @@
 """Automatically create and start the app."""
-from crowdeval.app import create_app
 from werkzeug.middleware.proxy_fix import ProxyFix
+
+from crowdeval.app import create_app
 
 # The use of ProxyFix ensure that the URLs are generated correctly
 # when we use OAuth to login via Twitter from behind a proxy.
