@@ -9,7 +9,6 @@ jobs:
     services:
       mysql:
         image: mysql:8.0
-        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
         env:
           MYSQL_ROOT_PASSWORD: 'crowdeval'
           MYSQL_DATABASE: 'crowdeval-test'
