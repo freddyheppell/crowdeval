@@ -7,16 +7,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     services:
-        mysql:
-          image: mysql:8:0
-          env:
-            MYSQL_ROOT_PASSWORD: 'crowdeval'
-            MYSQL_DATABASE: 'crowdeval-test'
-            MYSQL_USER: 'crowdeval'
-            MYSQL_PASSWORD: 'crowdeval'
-          ports:
-            - 3306
-          options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=5s --health-retries=3
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: 'crowdeval'
+          MYSQL_DATABASE: 'crowdeval-test'
+          MYSQL_USER: 'crowdeval'
+          MYSQL_PASSWORD: 'crowdeval'
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@v2
       - run: cp .env.ci .env
