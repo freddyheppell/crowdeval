@@ -34,8 +34,12 @@ RUN venv/bin/poetry config virtualenvs.create false
 # ... install all the python dependencies for the app
 RUN venv/bin/poetry install --no-dev
 
-# make sure we get all the javascript dependencies by doing
-RUN npm install
+# make sure we get all the javascript dependencies
+# we use NPM ci to install exactly what's in the lockfile
+RUN npm ci
+
+# Build frontend dependencies
+RUN npm run mix-prod
 
 # we want to run under gunicorn but it's not a dependency in the poetry config
 RUN venv/bin/pip install gunicorn
