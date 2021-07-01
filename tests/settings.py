@@ -1,7 +1,18 @@
 """Settings module for test app."""
+from environs import Env
+
+env = Env()
+env.read_env()
+
 ENV = "development"
 TESTING = True
-SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://crowdeval:crowdeval@localhost:3308/crowdeval-test?charset=utf8mb4"
+SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}:{port}/{database}?charset=utf8mb4".format(
+    username=env.str("DB_USER"),
+    password=env.str("DB_PASSWORD"),
+    hostname=env.str("DB_HOSTNAME"),
+    port=env.str("DB_PORT"),
+    database=env.str("DB_DATABASE"),
+)
 SECRET_KEY = "not-so-secret-in-tests"
 BCRYPT_LOG_ROUNDS = (
     4  # For faster tests; needs at least 4 to avoid "ValueError: Invalid rounds"
