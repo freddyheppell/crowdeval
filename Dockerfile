@@ -40,11 +40,6 @@ RUN npm install
 # we want to run under gunicorn but it's not a dependency in the poetry config
 RUN venv/bin/pip install gunicorn
 
-# for some reason I was getting failures unless I installed factory_boy. I've
-# no idea why this is and if it should be part of the poetry config but this
-# fixes the problem so...
-RUN venv/bin/pip install factory_boy
-
 # Long term we may want to vary the number of threads and workers we devote to
 # the app but 2 of each seems like a reasonable starting point for a demo service
 ENV WORKERS=2 THREADS=2
