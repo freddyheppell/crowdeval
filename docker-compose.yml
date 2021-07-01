@@ -1,10 +1,9 @@
-version: '3'
+version: '2.0'
 services:
   mysql:
     image: 'mysql:8.0'
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-    ports:
-      - '${DB_PORT}:3306'
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 'crowdeval'
       MYSQL_DATABASE: 'crowdeval'
@@ -12,42 +11,74 @@ services:
       MYSQL_PASSWORD: 'crowdeval'
     volumes:
       - 'cedb:/var/lib/mysql'
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping"]
-  mysql-test:
-    image: 'mysql:8.0'
-    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-    ports:
-      - '3308:3306'
-    environment:
-      MYSQL_ROOT_PASSWORD: 'crowdeval'
-      MYSQL_DATABASE: 'crowdeval-test'
-      MYSQL_USER: 'crowdeval'
-      MYSQL_PASSWORD: 'crowdeval'
-    volumes:
-      - 'cedb_test:/var/lib/mysql'
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping"]
+    networks:
+      - crowdeval
+# if you want to run the web app outside docker
+# uncomment this to expose the ports outside
+# the docker network
+#    ports:
+#      - '${DB_PORT}:3306'
+
   elasticsearch:
     image: 'docker.elastic.co/elasticsearch/elasticsearch:7.11.1'
-    ports:
-      - '9200:9200'
+    restart: always
     environment:
       discovery.type: 'single-node'
     volumes:
     - 'cesearch:/usr/share/elasticsearch/data'
+    networks:
+      - crowdeval
+# if you want to run the web app outside docker
+# uncomment this to expose the ports outside
+# the docker network
+#    ports:
+#      - '9200:9200'
+
   bert:
     build:
       context: './infrastructure/bert'
       dockerfile: Dockerfile
-    ports:
-      - '5555:5555'
-      - '5556:5556'
+    restart: always
+    networks:
+      - crowdeval
+# if you want to run the web app outside docker
+# uncomment this to expose the ports outside
+# the docker network
+#    ports:
+#      - '5555:5555'
+#      - '5556:5556'
+
   redis:
     image: 'redis:6.2'
+    restart: always
+    networks:
+      - crowdeval
+# if you want to run the web app outside docker
+# uncomment this to expose the ports outside
+# the docker network
+#    ports:
+#      - '6379:6379'
+
+
+  crowdeval:
+    build:
+      context: '.'
+      dockerfile: Dockerfile      
+    restart: always
     ports:
-      - '6379:6379'
+      - '8000:8000'
+    networks:
+      - crowdeval
+    depends_on:
+      - 'mysql'
+      - 'elasticsearch'
+      - 'bert'
+      - 'redis'
+
 volumes:
   cedb:
-  cedb_test:
   cesearch:
+
+networks:
+  crowdeval:
+    driver: bridge

@@ -81,6 +81,12 @@ This will create a `.veracities.json` file, which can then be used to seed rando
 $ flask seed-ratings
 ```
 
+With the app in a docker container the easiest way to run these commands is probably to get a shell inside the container via the command
+
+```shell
+$ docker-compose run --entrypoint "bash -l" crowdeval
+```
+
 ### Regenerating explore cache
 
 The explore by rating pages are served from Redis, and must be manually regenerated.
@@ -89,7 +95,13 @@ The explore by rating pages are served from Redis, and must be manually regenera
 $ flask recache-explore
 ```
 
-In production this would ideally be run as a scheduled task.
+In production this is probably best run as a scheduled task on the host machine via cron with an entry such as (note the
+hard coded path to the docker-compose.yml file):
+
+```
+*/5 * * * * /usr/local/bin/docker-compose -f /data/crowdeval/docker-compose.yml run --entrypoint "venv/bin/flask recache-explore" crowdeval >> crowdeval-cron.log 2>&1
+```
+
 
 ### Quality Control
 
