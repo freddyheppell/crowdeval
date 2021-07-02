@@ -31,7 +31,7 @@
         <script src="https://kit.fontawesome.com/2fa44b0192.js" crossorigin="anonymous"></script>
     </head>
     <body class="d-flex flex-column h-100">
-        <main class="flex-shrink-0">
+        <main class="flex-shrink-0 pb-5">
             {% import "bootstrap/wtf.html" as wtf %}
             {% include 'layout/_nav.html' %}
             {% with messages = get_flashed_messages(with_categories=true, category_filter=['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark']) %}
