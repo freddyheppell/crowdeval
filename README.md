@@ -49,7 +49,7 @@ Working from the root directory:
     * Enter the `TWITTER_` API keys. This has to be a [new-style Twitter project](https://developer.twitter.com/en/docs/projects/overview) because we use v2.0 of the Twitter API 
         * The callback URL should be `<your hostname>/login/twitter/authorized`
     * Enter the `RECAPTCHA_` API keys
-    * The remainder of the file is already configured for the development environment and shouldn't need to be changed
+    * The remainder of the file is already configured for the production environment and shouldn't need to be changed
 2. `docker-compose up`
 
 The application should now be built and started via Gunicorn.
