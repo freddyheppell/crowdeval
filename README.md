@@ -57,12 +57,15 @@ The application should now be built and started via Gunicorn.
 
 ## Administrative commands
 
+
 > In development, these commands should be prefixed with `poetry run` (or run `poetry shell` once to activate and run as is).
 > 
-> In production, attach to the `crowdeval` service and run as is, i.e.:
+> In production, attach to the `crowdeval` service i.e.:
 > ```shell
 > docker-compose run --entrypoint "bash -l" crowdeval
 > ```
+>
+> and then run the commands, although note that `flask` needs to be run from `./venv/bin/flask` to ensure the correct version is used.
 
 ### Seeding with dummy data
 
