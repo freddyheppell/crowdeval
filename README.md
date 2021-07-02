@@ -4,68 +4,68 @@ CrowdEval is an experimental crowdsourced factchecking application, created as p
 
 [![Test & Lint](https://github.com/freddyheppell/crowdeval/actions/workflows/test.yml/badge.svg)](https://github.com/freddyheppell/crowdeval/actions/workflows/test.yml) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?logo=python&logoColor=white)](https://github.com/psf/black) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-f3df49.svg?logo=javascript&logoColor=white)](http://standardjs.com)
 
-## Installation
+CrowdEval ships with two Docker environments:
 
-**Requirements**
-* Docker
+* a development environment with containerised infrastructure, but the app and frontend run natively
+* a fully containerised production environment
+
+
+## Installation of Development Environment
+
+Dependencies:
 * Python 3.9.4
 * [Poetry](https://python-poetry.org/)
 
-### Install Poetry Dependencies
-> On macOS Big Sur, set the environment variable `SYSTEM_VERSION_COMPAT` to `1`, otherwise Numpy may not install properly.
-
-1. Ensure Poetry is installed
+1. `cd` into the `webapp` directory
 2. Run `poetry install`
-3. To activate the virtual environment, run `poetry shell`, or run commands inside the environment individually with `poetry run <command>`
-    * Any `flask` commands must be run inside this environment.
+    * On macOS Big Sur, if Numpy fails to install, ensure  the environment variable `SYSTEM_VERSION_COMPAT` is set to `1` and try again
+3. `cp .env.dev .env`
+    * Enter a `SECRET_KEY`, which can be any string
+    * Enter the `TWITTER_` API keys. This has to be a [new-style Twitter project](https://developer.twitter.com/en/docs/projects/overview) because we use v2.0 of the Twitter API 
+        * The callback URL for development should be `localhost:5000/login/twitter/authorized`
+    * Enter the `RECAPTCHA_` API keys
+    * The remainder of the file is already configured for the development environment and shouldn't need to be changed
+4. Run `docker-compose up` to start
+    * This will download a ~400MB file as part of building the BERT-as-a-Service container
+5. Once the Elasticsearch service has started, run:
+    ```
+    $ poetry run flask create-index -i posts -c infrastructure/elasticsearch/posts.json
+    ```
+    This will create the required posts index.
+6. Install frontend dependencies with `npm install`
+7. To start asset compilation and the Flask dev server, run
+    ```
+    $ npm run start
+    ```
+    **The app will be started on `localhost:5000`**
+8. Migrate the database with `poetry run flask db upgrade`
 
-### Setup Environment
-1. `cp .env.example .env`
-2. Enter a `SECRET_KEY`, which should be a long random string
-2. Enter the `TWITTER_` API keys. This has to be a [new-style Twitter project](https://developer.twitter.com/en/docs/projects/overview) because we use v2.0 of the Twitter API 
-3. Enter the `RECAPTCHA_` API keys
-4. The remainder of the file is already configured for the docker development environment and shouldn't need to be changed
+## Deploying to production
 
-### Start Docker Infrastructure
+Working from the root directory:
 
-> This will download a ~400MB file as part of building the BERT as a Service container
+1. `cp webapp/.env.prod webapp/.env`
+    * Enter a `SECRET_KEY`, which should be a random ~32-character secret
+    * Enter the `TWITTER_` API keys. This has to be a [new-style Twitter project](https://developer.twitter.com/en/docs/projects/overview) because we use v2.0 of the Twitter API 
+        * The callback URL should be `<your hostname>/login/twitter/authorized`
+    * Enter the `RECAPTCHA_` API keys
+    * The remainder of the file is already configured for the development environment and shouldn't need to be changed
+2. `docker-compose up`
 
-The database, search, cache and BERT embedding services are dockerised. Run `docker-compose up` to start.
-
-### Setup Elasticsearch
-
-Once the Elasticsearch service has started, run:
-
-```bash
-$ flask create-index -i posts -c infrastructure/elasticsearch/posts.json
-```
-
-This tells Elasticsearch to store the BERT embeddings as a dense vector rather than an array.
-
-### Install frontend
-
-Install the frontend pipeline with
-
-```shell
-$ npm install
-```
+The application should now be built and started via Gunicorn.
 
 
-## Running
+## Administrative commands
 
-If it's not already running, start the docker environment with
 
-```shell
-$ docker-compose up
-```
-
-To start asset compilation and the flask dev server, run
-
-```shell
-$ npm run start
-```
-
-Flask will start on `localhost:5000`
+> In development, these commands should be prefixed with `poetry run` (or run `poetry shell` once to activate and run as is).
+> 
+> In production, attach to the `crowdeval` service i.e.:
+> ```shell
+> docker-compose run --entrypoint "bash -l" crowdeval
+> ```
+>
+> and then run the commands, although note that `flask` needs to be run from `./venv/bin/flask` to ensure the correct version is used.
 
 ### Seeding with dummy data
 
@@ -89,7 +89,12 @@ The explore by rating pages are served from Redis, and must be manually regenera
 $ flask recache-explore
 ```
 
-In production this would ideally be run as a scheduled task.
+In production this is probably best run as a scheduled task on the host machine via cron with an entry such as (note the
+hard coded path to the docker-compose.yml file):
+
+```
+*/5 * * * * /usr/local/bin/docker-compose -f /data/crowdeval/docker-compose.yml run --entrypoint "venv/bin/flask recache-explore" crowdeval >> crowdeval-cron.log 2>&1
+```
 
 ### Quality Control
 

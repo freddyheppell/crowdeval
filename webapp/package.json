@@ -15,6 +15,7 @@
     "start": "concurrently -n \"MIX,FLASK\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run mix-watch\" \"npm run flask\"",
     "flask": "poetry run flask run",
     "mix-watch": "npx mix watch",
+    "mix-prod": "npx mix --production",
     "lint": "eslint \"assets/js/*.js\""
   },
   "dependencies": {
