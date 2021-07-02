@@ -11,6 +11,12 @@ def index():
     return render_template("index.html")
 
 
+@blueprint.route("/license")
+def license():
+    """License page."""
+    return render_template("pages/license.html")
+
+
 @blueprint.route("/terms")
 def terms():
     """Terms and conditions page."""

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-100">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,23 +30,37 @@
                       You should either substitute this with your own Pro kit URL, remove non-FA Free icons and change to a Free kit, or switch icon set. #}
         <script src="https://kit.fontawesome.com/2fa44b0192.js" crossorigin="anonymous"></script>
     </head>
-    <body>
-        {% import "bootstrap/wtf.html" as wtf %}
-        {% include 'layout/_nav.html' %}
-        {% with messages = get_flashed_messages(with_categories=true, category_filter=['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark']) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        {{ message }}
-                    </div>
-                    <!-- end .alert -->
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        {% block content_noc %}{% endblock %}
-        <div class="container {% block container_classes %}{% endblock %} mt-3">
-            {% block content %}{% endblock %}
-        </div>
+    <body class="d-flex flex-column h-100">
+        <main class="flex-shrink-0">
+            {% import "bootstrap/wtf.html" as wtf %}
+            {% include 'layout/_nav.html' %}
+            {% with messages = get_flashed_messages(with_categories=true, category_filter=['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark']) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            {{ message }}
+                        </div>
+                        <!-- end .alert -->
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% block content_noc %}{% endblock %}
+            <div class="container {% block container_classes %}{% endblock %} mt-3">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+        <footer class="bg-light mt-auto text-muted pt-3 sticky-footer">
+            <div class="container d-md-flex justify-content-between">
+                <p>
+                &copy; 2020-21 Freddy Heppell &amp; The University of Sheffield.<br>
+                Licensed under <a href="/license" class="text-muted">GPL v3</a>. Source available on <a href="https://github.com/freddyheppell/crowdeval" class="text-muted"><i class="fab fa-github me-1"></i>GitHub</a>.
+                </p>
+                <p class="text-md-end">
+                    <a href="/terms" class="me-3 text-muted">Terms</a>
+                    <a href="/privacy" class="text-muted">Privacy</a>
+                </p>
+            </div>
+        </footer>
     </body>
 </html>
