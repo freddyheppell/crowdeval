@@ -15,7 +15,7 @@ RUN addgroup --gid 1001 "crowdeval" && \
       chmod +x /sbin/tini
 
 # copy the app into the users home folder
-COPY . /crowdeval/
+COPY --chown=crowdeval:crowdeval . /crowdeval/
 
 # Everything from here down runs as the unprivileged user account
 USER crowdeval:crowdeval
