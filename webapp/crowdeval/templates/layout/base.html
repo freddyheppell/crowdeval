@@ -45,7 +45,7 @@
             {% endif %}
         {% endwith %}
         {% block content_noc %}{% endblock %}
-        <div class="container mt-3">
+        <div class="container {% block container_classes %}{% endblock %} mt-3">
             {% block content %}{% endblock %}
         </div>
     </body>
