@@ -36,7 +36,7 @@ services:
 
   bert:
     build:
-      context: './infrastructure/bert'
+      context: './bert'
       dockerfile: Dockerfile
     restart: always
     networks:
@@ -62,8 +62,8 @@ services:
 
   crowdeval:
     build:
-      context: '.'
-      dockerfile: Dockerfile      
+      context: './webapp'
+      dockerfile: 'infrastructure/docker/Dockerfile'
     restart: always
     ports:
       - '8000:8000'

@@ -10,10 +10,11 @@ timeout 300 bash -c "until curl --silent --output /dev/null http://elasticsearch
 # This completes cleanly even if there are no changes
 venv/bin/flask db upgrade
 
-# Make sure the elasticsearch index exists and has the right mappings in place
-# Note that this does put an error in the logs if the index already exists
-# but this is safe to ignore.
-venv/bin/flask create-index -i posts -c infrastructure/elasticsearch/posts.json
+# Check to see if the elasticsearch index exists and if it doesn't then...
+if ! curl --silent --output /dev/null -f --head http://elasticsearch:9200/posts; then
+    # ... create it and set the right mapping so the bert stuff works properly
+    venv/bin/flask create-index -i posts -c infrastructure/elasticsearch/posts.json
+fi
 
 # Now we start the flask app using gunicorn.
 exec /sbin/tini --  venv/bin/gunicorn autoapp:app -w $WORKERS --threads $THREADS -b 0.0.0.0:8000

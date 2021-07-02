@@ -3,6 +3,10 @@ name: Test & Lint
 on:
   - push
 
+defaults:
+  run:
+    working-directory: webapp
+
 jobs:
   build:
     runs-on: ubuntu-latest

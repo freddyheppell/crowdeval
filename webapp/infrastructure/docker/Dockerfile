@@ -49,4 +49,4 @@ RUN venv/bin/pip install gunicorn
 ENV WORKERS=2 THREADS=2
 
 # use the shell script to start up the container
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["./infrastructure/docker/docker-entrypoint.sh"]
