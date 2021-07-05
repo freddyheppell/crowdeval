@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-100">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,23 +30,26 @@
                       You should either substitute this with your own Pro kit URL, remove non-FA Free icons and change to a Free kit, or switch icon set. #}
         <script src="https://kit.fontawesome.com/2fa44b0192.js" crossorigin="anonymous"></script>
     </head>
-    <body>
-        {% import "bootstrap/wtf.html" as wtf %}
-        {% include 'layout/_nav.html' %}
-        {% with messages = get_flashed_messages(with_categories=true, category_filter=['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark']) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show">
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        {{ message }}
-                    </div>
-                    <!-- end .alert -->
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        {% block content_noc %}{% endblock %}
-        <div class="container mt-3">
-            {% block content %}{% endblock %}
-        </div>
+    <body class="d-flex flex-column h-100">
+        <main class="flex-shrink-0 pb-5">
+            {% import "bootstrap/wtf.html" as wtf %}
+            {% include 'layout/_nav.html' %}
+            {% with messages = get_flashed_messages(with_categories=true, category_filter=['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark']) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            {{ message }}
+                        </div>
+                        <!-- end .alert -->
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% block content_noc %}{% endblock %}
+            <div class="container {% block container_classes %}{% endblock %} mt-3">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+        {% include 'layout/_footer.html' %}
     </body>
 </html>

@@ -9,3 +9,21 @@ blueprint = Blueprint("pages", __name__, static_folder="../static")
 def index():
     """Index page route."""
     return render_template("index.html")
+
+
+@blueprint.route("/license")
+def license():
+    """License page."""
+    return render_template("pages/license.html")
+
+
+@blueprint.route("/terms")
+def terms():
+    """Terms and conditions page."""
+    return render_template("pages/terms.html")
+
+
+@blueprint.route("/privacy")
+def privacy():
+    """Privacy page."""
+    return render_template("pages/privacy.html")
