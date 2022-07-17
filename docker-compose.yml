@@ -39,6 +39,8 @@ services:
       context: './bert'
       dockerfile: Dockerfile
     restart: always
+    volumes:
+      - cehuggingf:/root/.cache/huggingface
     networks:
       - crowdeval
 # if you want to run the web app outside docker
@@ -46,7 +48,6 @@ services:
 # the docker network
 #    ports:
 #      - '5555:5555'
-#      - '5556:5556'
 
   redis:
     image: 'redis:6.2'
@@ -78,6 +79,7 @@ services:
 volumes:
   cedb:
   cesearch:
+  cehuggingf:
 
 networks:
   crowdeval:

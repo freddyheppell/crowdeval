@@ -42,7 +42,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - '5555:5555'
-      - '5556:5556'
+    volumes:
+      - cehuggingf:/root/.cache/huggingface
   redis:
     image: 'redis:6.2'
     ports:
@@ -51,3 +52,4 @@ volumes:
   cedb:
   cedb_test:
   cesearch:
+  cehuggingf:
