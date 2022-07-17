@@ -1,0 +1,12 @@
+jtype: Flow
+with:
+  title: 'CrowdEval Search'
+  description: 'Semantic tweet searching API'
+  port: 5555
+executors:
+  - name: Encoder
+    uses: 'jinahub://TransformerTorchEncoder'
+    env:
+      JINA_LOG_LEVEL: DEBUG
+    uses_with:
+      pretrained_model_name_or_path: 'sentence-transformers/all-mpnet-base-v2'

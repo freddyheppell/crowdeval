@@ -1,7 +1,15 @@
 """Utilities for pushing to ElasticSearch."""
 
 
+from jina import Document
+
 from crowdeval.extensions import bert, es
+
+
+def _doc_to_embedding(text):
+    document = Document(content=text)
+    resp = bert.client.post("/encode", document)
+    return resp[0].embedding
 
 
 def add_to_index(index, model):
@@ -12,8 +20,7 @@ def add_to_index(index, model):
 
     if hasattr(model, "__bertify__"):
         for field in model.__bertify__:
-            vectorised = bert.connection.encode([getattr(model, field)])[0]
-            payload[field + "_vector"] = vectorised
+            payload[field + "_vector"] = _doc_to_embedding(getattr(model, field))
 
     es.index(index=index, id=model.id, body=payload)
 
@@ -40,7 +47,7 @@ def query_index(index, query, page, per_page):
 
 def bert_search_by_term(index, field, query, page, per_page, min_score):
     """Search with a textual query using BERT."""
-    query_vector = bert.connection.encode([query])[0]
+    query_vector = _doc_to_embedding(query)
 
     return bert_search_by_vector(index, field, query_vector, page, per_page, min_score)
 
