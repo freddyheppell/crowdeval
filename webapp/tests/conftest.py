@@ -4,7 +4,7 @@
 import logging
 
 import pytest
-from bert_serving.client import BertClient
+from jina import Client
 from pytest_mock import MockFixture
 from webtest import TestApp
 
@@ -90,8 +90,8 @@ def mock_elasticsearch(mocker: MockFixture):
 
 @pytest.fixture(autouse=True)
 def mock_bert(mocker: MockFixture):
-    mocker.patch("bert_serving.client.BertClient.__init__", return_value=None)
+    mocker.patch("jina.clients.grpc.GRPCClient.__init__", return_value=None)
     mocker.patch(
-        "bert_serving.client.BertClient.encode",
+        "jina.clients.grpc.GRPCClient.post",
         return_value=load_fixture("bert", "test.pickle"),
     )

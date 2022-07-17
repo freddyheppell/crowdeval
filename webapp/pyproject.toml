@@ -20,12 +20,12 @@ Flask-WTF = "^0.14.3"
 TwitterAPI = "^2.6.9"
 Flask-BS4 = "^5.0.0"
 Flask-Elasticsearch = "^0.2.5"
-bert-serving-client = "^1.10.0"
 timeago = "^1.0.15"
 Flask-Caching = "^1.10.1"
 redis = "^3.5.3"
 Faker = "^6.5.2"
 factory-boy = "^3.2.0"
+jina = "^3.6.13"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"

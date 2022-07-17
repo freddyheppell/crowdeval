@@ -26,7 +26,6 @@ Dependencies:
     * Enter the `RECAPTCHA_` API keys
     * The remainder of the file is already configured for the development environment and shouldn't need to be changed
 4. Run `docker-compose up` to start
-    * This will download a ~400MB file as part of building the BERT-as-a-Service container
 5. Once the Elasticsearch service has started, run:
     ```
     $ poetry run flask create-index -i posts -c infrastructure/elasticsearch/posts.json
