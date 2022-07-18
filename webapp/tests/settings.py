@@ -7,11 +7,11 @@ env.read_env()
 ENV = "development"
 TESTING = True
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}:{port}/{database}?charset=utf8mb4".format(
-    username=env.str("DB_USER"),
-    password=env.str("DB_PASSWORD"),
-    hostname=env.str("DB_HOSTNAME"),
-    port=env.str("DB_PORT"),
-    database=env.str("DB_DATABASE"),
+    username="crowdeval",
+    password="crowdeval",
+    hostname="localhost",
+    port=env.str("TEST_DB_PORT", '3308'),
+    database="crowdeval-test",
 )
 SECRET_KEY = "not-so-secret-in-tests"
 BCRYPT_LOG_ROUNDS = (
