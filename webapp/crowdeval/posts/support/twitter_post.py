@@ -15,7 +15,7 @@ TWEET_FIELDS = "created_at,author_id,public_metrics"
 USER_FIELDS = "location,profile_image_url,verified"
 
 
-class NoTweetsFoundException(Exception):
+class NoTweetsFoundError(Exception):
     """Exception meaning that no matching tweets could be retrived from the API."""
 
     def __init__(self, tweet_id):
@@ -74,7 +74,7 @@ class TwitterPost:
         response_tweets = list(response.get_iterator())
 
         if len(response_tweets) == 0:
-            raise NoTweetsFoundException(self.status_id)
+            raise NoTweetsFoundError(self.status_id)
 
         # Returns a list of tweets so only use first
         return response_tweets[0]

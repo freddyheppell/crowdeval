@@ -10,7 +10,7 @@ SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostnam
     username="crowdeval",
     password="crowdeval",
     hostname="localhost",
-    port=env.str("TEST_DB_PORT", '3308'),
+    port=env.str("TEST_DB_PORT", "3308"),
     database="crowdeval-test",
 )
 SECRET_KEY = "not-so-secret-in-tests"
