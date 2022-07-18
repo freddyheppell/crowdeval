@@ -1,8 +1,7 @@
 """Forms for rating posts."""
 
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms.fields.core import RadioField, SelectMultipleField
-from wtforms.fields.simple import TextAreaField
+from wtforms.fields import RadioField, SelectMultipleField, TextAreaField
 from wtforms.validators import DataRequired, Length, Optional
 
 RATING_CHOICES = [
