@@ -26,6 +26,11 @@ class WeightedAverageSimilarPostScorer:
     def _process_post(self, post, score) -> int:
         """Convert elasticsearch cosine similarity scores into 0-01 range."""
         scorer = PostScorer(post)
+
+        # Ignore post if it's too uncertain
+        if scorer.get_width() >=1:
+            return 0,0
+
         # Spread out values: 1.75 -> 0, 2 -> 1
         weight = (score - 1.75) * 4
         weighted_score = scorer.get_bound() * weight
