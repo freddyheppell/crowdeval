@@ -3,14 +3,15 @@
 import re
 
 from flask import Blueprint
-from jinja2 import Markup, escape, evalcontextfilter
+from jinja2 import pass_eval_context
+from markupsafe import Markup, escape
 
 blueprint = Blueprint("template_filters", __name__)
 
 NEWLINE_REGEXP = re.compile(r"(?:\r\n|\r|\n)")
 
 
-@evalcontextfilter
+@pass_eval_context
 @blueprint.app_template_filter()
 def newline_to_br(context, value: str) -> str:
     """Replace newlines with break tags."""

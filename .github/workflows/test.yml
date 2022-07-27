@@ -60,4 +60,4 @@ jobs:
       - name: Python Tests
         run: poetry run flask test
         env:
-          DB_PORT: ${{ job.services.mysql.ports[3306] }}
+          TEST_DB_PORT: ${{ job.services.mysql.ports[3306] }}

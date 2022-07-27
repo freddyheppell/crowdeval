@@ -1,7 +1,7 @@
 import pytest
 
 from crowdeval.posts.support.dummy_post import DummyPost
-from crowdeval.posts.support.post_recogniser import UnsupportedUrlException, detect_post
+from crowdeval.posts.support.post_recogniser import UnsupportedUrlError, detect_post
 from crowdeval.posts.support.twitter_post import TwitterPost
 
 
@@ -46,7 +46,7 @@ class TestPostRecogniser:
         ],
     )
     def test_fails_non_status_twitter_urls(self, url):
-        with pytest.raises(UnsupportedUrlException):
+        with pytest.raises(UnsupportedUrlError):
             detect_post(url)
 
     def test_can_recognise_dummy_url(self):

@@ -6,7 +6,7 @@ from crowdeval.posts.support.dummy_post import DummyPost
 from crowdeval.posts.support.twitter_post import TwitterPost
 
 
-class UnsupportedUrlException(Exception):
+class UnsupportedUrlError(Exception):
     """Exception meaning the URL could not be matched to a platform."""
 
     def __init__(self, url):
@@ -28,4 +28,4 @@ def detect_post(url):
     elif dummy_url := DUMMY_REGEXP.match(url):
         return DummyPost(dummy_url.group(1))
     else:
-        raise UnsupportedUrlException(url)
+        raise UnsupportedUrlError(url)
