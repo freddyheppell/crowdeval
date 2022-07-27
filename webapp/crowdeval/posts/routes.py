@@ -14,7 +14,7 @@ from crowdeval.posts.forms.rate_post_form import SubmitRatingForm
 from crowdeval.posts.forms.submit_post_form import SubmitPostForm
 from crowdeval.posts.models import Category, Post, Rating, category_rating
 from crowdeval.posts.support.post_recogniser import UnsupportedUrlError, detect_post
-from crowdeval.posts.support.scoring import ScoreEnum, WeightedAverageSimilarPostScorer
+from crowdeval.posts.support.scoring import WeightedAverageSimilarPostScorer
 
 blueprint = Blueprint("posts", __name__, static_folder="../static")
 
@@ -35,16 +35,15 @@ def show(id):
     similar_posts = sorted(similar_posts, key=lambda p: similar_post_ids.index(p.id))
     similar_posts = similar_posts[1:]
     weighted_scorer = WeightedAverageSimilarPostScorer(similar_posts, scores)
-    similar_post_score = weighted_scorer.get_score()
-    similar_post_rating = ScoreEnum(max(1, min(round(similar_post_score), 5)))
+    similar_post_rating, similar_post_certainty = weighted_scorer.get_rating()
     post_count = Post.fast_count()
     return render_template(
         "posts/show.html",
         post=post,
         similar_posts=similar_posts,
         scores=scores,
-        similar_post_score=similar_post_score,
         similar_post_rating=similar_post_rating,
+        similar_post_certainty=similar_post_certainty,
         post_count=post_count,
     )
 

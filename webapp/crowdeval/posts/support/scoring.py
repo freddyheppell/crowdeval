@@ -28,8 +28,8 @@ class WeightedAverageSimilarPostScorer:
         scorer = PostScorer(post)
 
         # Ignore post if it's too uncertain
-        if scorer.get_width() >=1:
-            return 0,0
+        if scorer.get_width() >= 1:
+            return 0, 0
 
         # Spread out values: 1.75 -> 0, 2 -> 1
         weight = (score - 1.75) * 4
@@ -41,6 +41,10 @@ class WeightedAverageSimilarPostScorer:
         """Get the weighted average."""
         similar_post_scores = list(starmap(self._process_post, self.similar_posts))
 
+        uncertain_count = sum(s[0] == 0 for s in similar_post_scores)
+        if uncertain_count >= (0.5 * len(similar_post_scores)):
+            return None
+
         if len(similar_post_scores) > 1:
             sum_weighted_scores, sum_weights = tuple(
                 sum(x) for x in zip(*similar_post_scores)
@@ -51,6 +55,21 @@ class WeightedAverageSimilarPostScorer:
             return 0
 
         return sum_weighted_scores / sum_weights
+
+    def get_rating(self) -> tuple[ScoreEnum, float]:
+        """Get the rating and width-compatible value of certainty.
+
+        The weight score returned will be some value greater than 1 if more than half of the posts were uncertain.
+        This is so the width is usable in the same way as an individual post score.
+        """
+        score = self.get_score()
+
+        if score is None:
+            return score, 10
+
+        rating = ScoreEnum(max(1, min(round(score), 5)))
+
+        return rating, 0
 
 
 class PostScorer:
