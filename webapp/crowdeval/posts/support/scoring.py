@@ -4,6 +4,7 @@ from collections import Counter
 from enum import IntEnum
 from itertools import starmap
 from math import inf, sqrt
+from typing import Optional
 
 
 class ScoreEnum(IntEnum):
@@ -27,17 +28,17 @@ class WeightedAverageSimilarPostScorer:
         """Convert elasticsearch cosine similarity scores into 0-01 range."""
         scorer = PostScorer(post)
 
-        # Ignore post if it's too uncertain
-        if scorer.get_width() >= 1:
-            return 0, 0
-
         # Spread out values: 1.75 -> 0, 2 -> 1
         weight = (score - 1.75) * 4
         weighted_score = scorer.get_bound() * weight
 
+        # Ignore post if it's too uncertain
+        if scorer.get_width() >= 1:
+            return 0, weighted_score
+
         return weighted_score, weight
 
-    def get_score(self) -> float:
+    def get_score(self) -> Optional[float]:
         """Get the weighted average."""
         similar_post_scores = list(starmap(self._process_post, self.similar_posts))
 
@@ -48,7 +49,8 @@ class WeightedAverageSimilarPostScorer:
         elif len(similar_post_scores) == 1:
             sum_weighted_scores, sum_weights = similar_post_scores[0]
         else:
-            return 0
+            return None
+
         # If uncertain posts make up more than half of the weight, don't assign a similar post score
         uncertain_post_weight_sum = sum(s[1] for s in similar_post_scores if s[0] == 0)
         if uncertain_post_weight_sum >= (0.5 * sum_weights):
@@ -56,16 +58,16 @@ class WeightedAverageSimilarPostScorer:
 
         return sum_weighted_scores / sum_weights
 
-    def get_rating(self) -> tuple[ScoreEnum, float]:
+    def get_rating(self) -> tuple[Optional[ScoreEnum], int]:
         """Get the rating and width-compatible value of certainty.
 
-        The weight score returned will be some value greater than 1 if more than half of the posts were uncertain.
+        The weight score returned will be some value greater than 1 if more than half of the post weight was uncertain.
         This is so the width is usable in the same way as an individual post score.
         """
         score = self.get_score()
 
         if score is None:
-            return score, 10
+            return None, 10
 
         rating = ScoreEnum(max(1, min(round(score), 5)))
 
