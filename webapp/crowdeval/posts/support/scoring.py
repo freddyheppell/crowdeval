@@ -41,10 +41,6 @@ class WeightedAverageSimilarPostScorer:
         """Get the weighted average."""
         similar_post_scores = list(starmap(self._process_post, self.similar_posts))
 
-        uncertain_count = sum(s[0] == 0 for s in similar_post_scores)
-        if uncertain_count >= (0.5 * len(similar_post_scores)):
-            return None
-
         if len(similar_post_scores) > 1:
             sum_weighted_scores, sum_weights = tuple(
                 sum(x) for x in zip(*similar_post_scores)
@@ -53,6 +49,10 @@ class WeightedAverageSimilarPostScorer:
             sum_weighted_scores, sum_weights = similar_post_scores[0]
         else:
             return 0
+        # If uncertain posts make up more than half of the weight, don't assign a similar post score
+        uncertain_post_weight_sum = sum(s[1] for s in similar_post_scores if s[0] == 0)
+        if uncertain_post_weight_sum >= (0.5 * sum_weights):
+            return None
 
         return sum_weighted_scores / sum_weights
 
