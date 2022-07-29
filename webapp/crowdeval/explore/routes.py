@@ -43,7 +43,7 @@ def should_force_update():
 @cache.memoize(0, forced_update=should_force_update)
 def post_ids_for_rating(result):
     """Get the post ids that have this rating currently."""
-    posts = Post.query.all()
+    posts = Post.query.options(subqueryload("ratings")).all()
 
     filtered_posts = filter(
         lambda p: p.get_rounded_score() == result
