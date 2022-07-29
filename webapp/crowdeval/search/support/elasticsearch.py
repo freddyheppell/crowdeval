@@ -22,7 +22,7 @@ def add_to_index(index, model):
         for field in model.__bertify__:
             payload[field + "_vector"] = _doc_to_embedding(getattr(model, field))
 
-    es.index(index=index, id=model.id, body=payload)
+    es.index(index=index, id=model.id, document=payload)
 
 
 def remove_from_index(index, model):
@@ -34,11 +34,9 @@ def query_index(index, query, page, per_page):
     """Run a basic similarity query."""
     search = es.search(
         index=index,
-        body={
-            "query": {"multi_match": {"query": query, "fields": ["*"]}},
-            "from": (page - 1) * per_page,
-            "size": per_page,
-        },
+        query={"multi_match": {"query": query, "fields": ["*"]}},
+        from_=(page - 1) * per_page,
+        size=per_page,
     )
     ids = [int(hit["_id"]) for hit in search["hits"]["hits"]]
     scores = dict(zip(ids, {int(hit["_score"]) for hit in search["hits"]["hits"]}))
@@ -67,12 +65,10 @@ def bert_search_by_vector(index, field, query_vector, page, per_page, min_score)
 
     search = es.search(
         index=index,
-        body={
-            "size": per_page,
-            "from": (page - 1) * per_page,
-            "query": script_query,
-            "_source": {"includes": ["text"]},
-        },
+        query=script_query,
+        from_=(page - 1) * per_page,
+        size=per_page,
+        _source={"includes": ["text"]},
     )
 
     ids = [int(hit["_id"]) for hit in search["hits"]["hits"]]
