@@ -27,6 +27,9 @@ WORKDIR /crowdeval
 # binaries and don't have to rely on installing as root
 RUN python -mvenv venv
 
+# Upgrade pip
+RUN venv/bin/pip install --upgrade pip
+
 # install poetry so that we can then...
 RUN venv/bin/pip install poetry
 RUN venv/bin/poetry config virtualenvs.create false
